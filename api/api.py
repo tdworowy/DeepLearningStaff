@@ -1,5 +1,7 @@
 import json
 from flask import Flask, jsonify, request
+
+from data.data_provider import get_keras_data_set
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
 
@@ -7,8 +9,8 @@ def build_model(values: json):
     model = ModelBuilder().model()
     for _layer in values['layers']:
 
-        layer = DenseLayerBuilder().\
-            units(_layer['units']).\
+        layer = DenseLayerBuilder(). \
+            units(_layer['units']). \
             activation(_layer['activation'])
 
         if "input_shape" in _layer:
@@ -32,7 +34,28 @@ def new_network():
 
         keras_wrapper.add_model(values['name'], build_model(values))
         response = {
-            "Message": "New Network added."
+            "Message": f"New Network {values['name']} added."
+        }
+        return jsonify(response), 200
+
+
+@app.route('/network/train', methods=['POST'])
+def new_network():
+    values = request.get_json()
+    required = ['name', 'data_set', 'epochs', 'batch_size']
+    if not all(k in values for k in required):
+        return 'Missing values', 400
+    else:
+        (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(values["data_set"])
+        keras_wrapper.train(values["name"],
+                            train_data=train_data,
+                            train_labels=train_labels,
+                            val_data=val_data,
+                            val_labels=val_labels,
+                            epochs=values['epochs'],
+                            batch_size=values['batch_size'])
+        response = {
+            "Message": f"Network {values['name']} training complete."
         }
         return jsonify(response), 200
 

@@ -1,0 +1,6 @@
+{
+  "name": "test",
+  "data_set": "imdb",
+  "epochs": "10",
+  "batch_size": 512
+}

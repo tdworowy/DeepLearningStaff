@@ -1,5 +1,4 @@
 import logging
-
 from keras import models, layers
 
 logger = logging.getLogger('logger')

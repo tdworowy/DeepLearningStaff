@@ -1,0 +1,26 @@
+{
+  "name": "test",
+  "optimizer":"rmsprop",
+  "loss":"binary_crossentropy",
+   "metrics":["acc"],
+  "layers": [
+    {
+      "units": 16,
+      "activation": "relu",
+      "input_shape": "(10000,)"
+    },
+     {
+      "units": 16,
+      "activation": "relu"
+    },
+     {
+      "units": 16,
+      "activation": "relu"
+    },
+     {
+      "units": 1,
+      "activation": "sigmoid"
+    }
+
+  ]
+}

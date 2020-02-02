@@ -14,7 +14,7 @@ def build_model(values: json):
             activation(_layer['activation'])
 
         if "input_shape" in _layer:
-            layer = layer.input_shape(_layer['input_shape'])
+            layer = layer.input_shape(tuple(map(int, _layer['input_shape'].split(','))))
 
         model = model.layer(layer.build())
     return model.build()
@@ -46,6 +46,11 @@ def compile_network():
     if not all(k in values for k in required):
         return 'Missing values', 400
     else:
+        if not keras_wrapper.models.get(values["name"], None):
+            response = {
+                "Message": f"Network {values['name']} not find."
+            }
+            return jsonify(response), 200
 
         keras_wrapper.compile(values['name'],
                               optimizer=values['optimizer'],
@@ -65,7 +70,7 @@ def train_network():
         return 'Missing values', 400
     else:
 
-        if keras_wrapper.models.get(values["name"], None):
+        if not keras_wrapper.models.get(values["name"], None):
             response = {
                 "Message": f"Network {values['name']} not find."
             }

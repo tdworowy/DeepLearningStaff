@@ -15,7 +15,10 @@ class ModelWrapper:
 
 class KerasWrapper:
     def __init__(self, _models=None):
-        self.models = _models
+        if _models:
+            self.models = _models
+        else:
+            self.models = dict()
 
     def add_model(self, name: str, model: models):
         self.models[name] = ModelWrapper(name, model, False, False)
@@ -50,6 +53,9 @@ class ModelBuilder:
 
 class DenseLayerBuilder:
 
+    def __init__(self):
+        self._input_shape = None
+
     def units(self, units: int):
         self._units = units
         return self
@@ -63,6 +69,10 @@ class DenseLayerBuilder:
         return self
 
     def build(self):
-        return layers.Dense(units=self._units,
-                            activation=self._activation,
-                            input_shape=self._input_shape)
+        if self._input_shape:
+            return layers.Dense(units=self._units,
+                                activation=self._activation,
+                                input_shape=self._input_shape)
+        else:
+            return layers.Dense(units=self._units,
+                                activation=self._activation)

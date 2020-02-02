@@ -3,5 +3,4 @@
   "optimizer":"rmsprop",
   "loss":"binary_crossentropy",
   "metrics":["acc"]
-
 }

@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "b7597a60-9729-47f3-a715-cf169de4db7f",
+		"name": "Deep learning api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create new network",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"test\",\r\n  \"layers\": [\r\n    {\r\n      \"units\": 16,\r\n      \"activation\": \"relu\",\r\n      \"input_shape\": \"10000\"\r\n    },\r\n     {\r\n      \"units\": 16,\r\n      \"activation\": \"relu\"\r\n    },\r\n     {\r\n      \"units\": 16,\r\n      \"activation\": \"relu\"\r\n    },\r\n     {\r\n      \"units\": 1,\r\n      \"activation\": \"sigmoid\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/network/new",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"network",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "compile_network",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"test\",\r\n  \"optimizer\":\"rmsprop\",\r\n  \"loss\":\"binary_crossentropy\",\r\n  \"metrics\":[\"acc\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/network/compile",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"network",
+						"compile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "train_network",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"test\",\r\n  \"data_set\": \"imdb\",\r\n  \"epochs\": \"10\",\r\n  \"batch_size\": 512\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/network/train",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"network",
+						"train"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -27,7 +27,7 @@ app = Flask(__name__)
 @app.route('/network/new', methods=['POST'])
 def new_network():
     values = request.get_json()
-    required = ['name', 'optimizer', 'loss', 'metrics', 'layers']
+    required = ['name', 'layers']
     if not all(k in values for k in required):
         return 'Missing values', 400
     else:
@@ -39,13 +39,44 @@ def new_network():
         return jsonify(response), 200
 
 
+@app.route('/network/compile', methods=['POST'])
+def compile_network():
+    values = request.get_json()
+    required = ['name', 'optimizer', 'loss', 'metrics']
+    if not all(k in values for k in required):
+        return 'Missing values', 400
+    else:
+
+        keras_wrapper.compile(values['name'],
+                              optimizer=values['optimizer'],
+                              loss=values['loss'],
+                              metrics=values['metrics'])
+        response = {
+            "Message": f"Network {values['name']} compiled."
+        }
+        return jsonify(response), 200
+
+
 @app.route('/network/train', methods=['POST'])
-def new_network():
+def train_network():
     values = request.get_json()
     required = ['name', 'data_set', 'epochs', 'batch_size']
     if not all(k in values for k in required):
         return 'Missing values', 400
     else:
+
+        if keras_wrapper.models.get(values["name"], None):
+            response = {
+                "Message": f"Network {values['name']} not find."
+            }
+            return jsonify(response), 200
+
+        if not keras_wrapper.models.get(values["name"], None).compiled:
+            response = {
+                "Message": f"Network {values['name']} need to be compiled."
+            }
+            return jsonify(response), 200
+
         (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(values["data_set"])
         keras_wrapper.train(values["name"],
                             train_data=train_data,

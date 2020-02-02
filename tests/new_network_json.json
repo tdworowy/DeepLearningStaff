@@ -1,8 +1,5 @@
 {
   "name": "test",
-  "optimizer":"rmsprop",
-  "loss":"binary_crossentropy",
-   "metrics":["acc"],
   "layers": [
     {
       "units": 16,

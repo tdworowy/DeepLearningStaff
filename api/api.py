@@ -82,7 +82,8 @@ def train_network():
             }
             return jsonify(response), 200
 
-        (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(values["data_set"])
+        (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(values["data_set"],
+                                                                                int(values['layers'][0]['input_shape']))
         keras_wrapper.train(values["name"],
                             train_data=train_data,
                             train_labels=train_labels,

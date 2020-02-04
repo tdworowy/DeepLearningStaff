@@ -16,7 +16,7 @@ with open("../resources/train_network_json.json") as json_file:
 @pytest.fixture(autouse=True, scope="module")
 def add_new_network():
     end_point = "http://localhost:5000/network/new"
-    new_network_response = requests.post(url=end_point, data=new_network_json,
+    new_network_response = requests.post(url=end_point, json=new_network_json,
                                          headers={"content-type": "application/json",
                                                   "Host": "localhost:5000"})
     return new_network_response
@@ -25,26 +25,26 @@ def add_new_network():
 @pytest.fixture(autouse=True, scope="module")
 def compile_network():
     end_point = "http://localhost:5000/network/compile"
-    compile_network_response = requests.post(url=end_point, data=compile_network_json,
+    compile_network_response = requests.post(url=end_point, json=compile_network_json,
                                              headers={"content-type": "application/json",
                                                       "Host": "localhost:5000"})
     return compile_network_response
 
 
 def test_add_network(add_new_network):
-    assert 200 in add_new_network
-    assert f'"Message": f"New Network {new_network_json["name"]} added."' in add_new_network
+    assert add_new_network.status_code is 200
+    assert add_new_network.json()['Message'] == f"New Network {new_network_json['name']} added."
 
 
 def test_compile_network(compile_network):
-    assert 200 in compile_network
-    assert f'"Message": "Network {new_network_json["name"]} compiled."' in compile_network
+    assert compile_network.status_code is 200
+    assert compile_network.json()['Message'] == f"Network {new_network_json['name']} compiled."
 
 
 def test_train_network():
     end_point = "http://localhost:5000/network/train"
-    train_network_response = requests.post(url=end_point, data=train_network_json,
+    train_network_response = requests.post(url=end_point, json=train_network_json,
                                            headers={"content-type": "application/json",
                                                     "Host": "localhost:5000"})
-    assert 200 in train_network_response
-    assert f'"Message": f"Network {new_network_json["name"]} training complete."' in train_network_response
+    assert train_network_response.status_code is 200
+    assert train_network_response.json()["Message"] == f"Network {new_network_json['name']} training complete."

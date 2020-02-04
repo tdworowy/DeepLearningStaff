@@ -1,9 +1,6 @@
-import numpy as np
-import pytest
 import json
-
+import pytest
 from data.data_provider import get_keras_data_set
-from data_utils.data_utils import vectorized_sequences
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
 with open("../resources/new_network_json.json") as json_file:
@@ -20,8 +17,8 @@ def build_model(values: json):
     model = ModelBuilder().model()
     for _layer in values['layers']:
 
-        layer = DenseLayerBuilder(). \
-            units(int(_layer['units'])). \
+        layer = DenseLayerBuilder().\
+            units(int(_layer['units'])).\
             activation(_layer['activation'])
 
         if "input_shape" in _layer:

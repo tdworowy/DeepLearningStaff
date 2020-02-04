@@ -1,6 +1,5 @@
 import json
 from flask import Flask, jsonify, request
-
 from data.data_provider import get_keras_data_set
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
@@ -9,8 +8,8 @@ def build_model(values: json):
     model = ModelBuilder().model()
     for _layer in values['layers']:
 
-        layer = DenseLayerBuilder(). \
-            units(_layer['units']). \
+        layer = DenseLayerBuilder().\
+            units(_layer['units']).\
             activation(_layer['activation'])
 
         if "input_shape" in _layer:
@@ -20,7 +19,6 @@ def build_model(values: json):
     return model.build()
 
 
-keras_wrapper = KerasWrapper()
 app = Flask(__name__)
 
 
@@ -106,4 +104,5 @@ def default():
 
 
 if __name__ == '__main__':
+    keras_wrapper = KerasWrapper()
     app.run(host='0.0.0.0', port=5000)

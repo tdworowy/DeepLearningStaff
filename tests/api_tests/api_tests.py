@@ -1,5 +1,4 @@
 import json
-
 import pytest
 import requests
 
@@ -12,22 +11,22 @@ with open("../resources/compile_network_json.json") as json_file:
 with open("../resources/train_network_json.json") as json_file:
     train_network_json = json.load(json_file)
 
+host = "http://localhost:5000"
+
 
 @pytest.fixture(autouse=True, scope="module")
 def add_new_network():
-    end_point = "http://localhost:5000/network/new"
+    end_point = f"{host}/network/new"
     new_network_response = requests.post(url=end_point, json=new_network_json,
-                                         headers={"content-type": "application/json",
-                                                  "Host": "localhost:5000"})
+                                         headers={"content-type": "application/json"})
     return new_network_response
 
 
 @pytest.fixture(autouse=True, scope="module")
 def compile_network():
-    end_point = "http://localhost:5000/network/compile"
+    end_point = f"{host}/network/compile"
     compile_network_response = requests.post(url=end_point, json=compile_network_json,
-                                             headers={"content-type": "application/json",
-                                                      "Host": "localhost:5000"})
+                                             headers={"content-type": "application/json"})
     return compile_network_response
 
 
@@ -42,9 +41,8 @@ def test_compile_network(compile_network):
 
 
 def test_train_network():
-    end_point = "http://localhost:5000/network/train"
+    end_point = f"{host}/network/train"
     train_network_response = requests.post(url=end_point, json=train_network_json,
-                                           headers={"content-type": "application/json",
-                                                    "Host": "localhost:5000"})
+                                           headers={"content-type": "application/json"})
     assert train_network_response.status_code is 200
     assert train_network_response.json()["Message"] == f"Network {new_network_json['name']} training complete."

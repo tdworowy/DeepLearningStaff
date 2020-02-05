@@ -50,7 +50,7 @@ def compile_network():
             }
             return jsonify(response), 200
 
-        keras_wrapper.compile(values['name'],
+        keras_wrapper.compile(model_name=values['name'],
                               optimizer=values['optimizer'],
                               loss=values['loss'],
                               metrics=values['metrics'])
@@ -82,7 +82,7 @@ def train_network():
 
         (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(values["data_set"],
                                                                                 int(values['layers'][0]['input_shape']))
-        keras_wrapper.train(values["name"],
+        keras_wrapper.train(model_name=values["name"],
                             train_data=train_data,
                             train_labels=train_labels,
                             val_data=val_data,

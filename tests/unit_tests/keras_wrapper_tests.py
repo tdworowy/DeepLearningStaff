@@ -47,7 +47,7 @@ def test_compile_model(keras_wrapper):
     model = build_model(new_network_json)
     keras_wrapper.add_model(new_network_json['name'], model)
 
-    keras_wrapper.compile(compile_network_json['name'],
+    keras_wrapper.compile(model_name=compile_network_json['name'],
                           optimizer=compile_network_json['optimizer'],
                           loss=compile_network_json['loss'],
                           metrics=compile_network_json['metrics'])
@@ -62,7 +62,7 @@ def test_train_model(keras_wrapper):
     model = build_model(new_network_json)
     keras_wrapper.add_model(new_network_json['name'], model)
 
-    keras_wrapper.compile(compile_network_json['name'],
+    keras_wrapper.compile(model_name=compile_network_json['name'],
                           optimizer=compile_network_json['optimizer'],
                           loss=compile_network_json['loss'],
                           metrics=compile_network_json['metrics'])
@@ -70,7 +70,7 @@ def test_train_model(keras_wrapper):
     (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(train_network_json["data_set"],
                                                                             int(new_network_json['layers'][0]['input_shape']))
 
-    keras_wrapper.train(train_network_json["name"],
+    keras_wrapper.train(model_name=train_network_json["name"],
                         train_data=train_data,
                         train_labels=train_labels,
                         val_data=val_data,

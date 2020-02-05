@@ -14,20 +14,14 @@ with open("../resources/train_network_json.json") as json_file:
 host = "http://localhost:5000"
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(autouse=True)
 def add_new_network():
-    end_point = f"{host}/network/new"
-    new_network_response = requests.post(url=end_point, json=new_network_json,
+    new_network_end_point = f"{host}/network/new"
+    delete_network_end_point = f"{host}/network/delete"
+    new_network_response = requests.post(url=new_network_end_point, json=new_network_json,
                                          headers={"content-type": "application/json"})
-    return new_network_response
-
-
-@pytest.fixture(autouse=True, scope="module")
-def compile_network():
-    end_point = f"{host}/network/compile"
-    compile_network_response = requests.post(url=end_point, json=compile_network_json,
-                                             headers={"content-type": "application/json"})
-    return compile_network_response
+    yield new_network_response
+    requests.delete(url=delete_network_end_point, json={'name': new_network_json['name']})
 
 
 def test_add_network(add_new_network):
@@ -35,9 +29,12 @@ def test_add_network(add_new_network):
     assert add_new_network.json()['Message'] == f"New Network {new_network_json['name']} added."
 
 
-def test_compile_network(compile_network):
-    assert compile_network.status_code is 200
-    assert compile_network.json()['Message'] == f"Network {new_network_json['name']} compiled."
+def test_compile_network():
+    end_point = f"{host}/network/compile"
+    compile_network_response = requests.post(url=end_point, json=compile_network_json,
+                                             headers={"content-type": "application/json"})
+    assert compile_network_response.status_code is 200
+    assert compile_network_response.json()['Message'] == f"Network {new_network_json['name']} compiled."
 
 
 def test_train_network():

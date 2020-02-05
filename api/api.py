@@ -8,8 +8,8 @@ def build_model(values: json):
     model = ModelBuilder().model()
     for _layer in values['layers']:
 
-        layer = DenseLayerBuilder().\
-            units(_layer['units']).\
+        layer = DenseLayerBuilder(). \
+            units(_layer['units']). \
             activation(_layer['activation'])
 
         if "input_shape" in _layer:
@@ -91,6 +91,25 @@ def train_network():
                             batch_size=values['batch_size'])
         response = {
             "Message": f"Network {values['name']} training complete."
+        }
+        return jsonify(response), 200
+
+
+@app.route('/network/delete', methods=['DELETE'])
+def delete_network():
+    values = request.get_json()
+    required = ['name']
+    if not all(k in values for k in required):
+        return 'Missing values', 400
+    else:
+        if not keras_wrapper.models.get(values["name"], None):
+            response = {
+                "Message": f"Network {values['name']} not find."
+            }
+            return jsonify(response), 200
+        keras_wrapper.models.pop(values['name'])
+        response = {
+            "Message": f"Network {values['name']} deleted."
         }
         return jsonify(response), 200
 

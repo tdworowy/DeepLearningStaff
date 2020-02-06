@@ -1,9 +1,10 @@
 - REST api for keras (flask)
 - graphql api 
-- keras wrapper use in api (use builder design patenr (to build network))
+- keras wrapper use in api (use builder design pattern (to build network))
+- add some layer between api and wrapper (message broker? Queues?) (?)
 - front-end (graphs etc.)
-- documantation (generated)
+- documentation (generated)
 - dockerize it
-- jenkins pieline
+- jenkins pipeline
 - unit tests 
 - selenium front end tests 

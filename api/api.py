@@ -8,8 +8,8 @@ def build_model(values: json):
     model = ModelBuilder().model()
     for _layer in values['layers']:
 
-        layer = DenseLayerBuilder(). \
-            units(_layer['units']). \
+        layer = DenseLayerBuilder().\
+            units(_layer['units']).\
             activation(_layer['activation'])
 
         if "input_shape" in _layer:
@@ -46,7 +46,7 @@ def compile_network():
     else:
         if not keras_wrapper.models.get(values["name"], None):
             response = {
-                "Message": f"Network {values['name']} not find."
+                "Message": f"Network {values['name']} not found."
             }
             return jsonify(response), 200
 
@@ -70,7 +70,7 @@ def train_network():
 
         if not keras_wrapper.models.get(values["name"], None):
             response = {
-                "Message": f"Network {values['name']} not find."
+                "Message": f"Network {values['name']} not found."
             }
             return jsonify(response), 200
 
@@ -104,7 +104,7 @@ def delete_network():
     else:
         if not keras_wrapper.models.get(values["name"], None):
             response = {
-                "Message": f"Network {values['name']} not find."
+                "Message": f"Network {values['name']} not found."
             }
             return jsonify(response), 200
         keras_wrapper.models.pop(values['name'])

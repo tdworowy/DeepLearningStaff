@@ -17,8 +17,8 @@ def build_model(values: json):
     model = ModelBuilder().model()
     for _layer in values['layers']:
 
-        layer = DenseLayerBuilder().\
-            units(int(_layer['units'])).\
+        layer = DenseLayerBuilder(). \
+            units(int(_layer['units'])). \
             activation(_layer['activation'])
 
         if "input_shape" in _layer:
@@ -33,8 +33,12 @@ def keras_wrapper():
     return KerasWrapper()
 
 
-def test_add_model(keras_wrapper):
-    model = build_model(new_network_json)
+@pytest.fixture(autouse=True)
+def model():
+    return build_model(new_network_json)
+
+
+def test_add_model(keras_wrapper, model):
     keras_wrapper.add_model(new_network_json['name'], model)
 
     assert keras_wrapper.models.get(new_network_json['name'])
@@ -43,8 +47,7 @@ def test_add_model(keras_wrapper):
     assert keras_wrapper.models.get(new_network_json['name']).model == model
 
 
-def test_compile_model(keras_wrapper):
-    model = build_model(new_network_json)
+def test_compile_model(keras_wrapper, model):
     keras_wrapper.add_model(new_network_json['name'], model)
 
     keras_wrapper.compile(model_name=compile_network_json['name'],
@@ -58,8 +61,7 @@ def test_compile_model(keras_wrapper):
     assert keras_wrapper.models.get(new_network_json['name']).model == model
 
 
-def test_train_model(keras_wrapper):
-    model = build_model(new_network_json)
+def test_train_model(keras_wrapper, model):
     keras_wrapper.add_model(new_network_json['name'], model)
 
     keras_wrapper.compile(model_name=compile_network_json['name'],
@@ -68,7 +70,8 @@ def test_train_model(keras_wrapper):
                           metrics=compile_network_json['metrics'])
 
     (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(train_network_json["data_set"],
-                                                                            int(new_network_json['layers'][0]['input_shape']))
+                                                                            int(new_network_json['layers'][0][
+                                                                                    'input_shape']))
 
     keras_wrapper.train(model_name=train_network_json["name"],
                         train_data=train_data,

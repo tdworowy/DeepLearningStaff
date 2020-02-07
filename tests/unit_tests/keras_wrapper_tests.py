@@ -70,8 +70,7 @@ def test_train_model(keras_wrapper, model):
                           metrics=compile_network_json['metrics'])
 
     (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(train_network_json["data_set"],
-                                                                            int(new_network_json['layers'][0][
-                                                                                    'input_shape']))
+                                                                            int(train_network_json['input_shape']))
 
     keras_wrapper.train(model_name=train_network_json["name"],
                         train_data=train_data,

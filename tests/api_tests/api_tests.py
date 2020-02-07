@@ -38,8 +38,13 @@ def test_compile_network():
 
 
 def test_train_network():
-    end_point = f"{host}/network/train"
-    train_network_response = requests.post(url=end_point, json=train_network_json,
+    end_point_train = f"{host}/network/train"
+    end_point_compile = f"{host}/network/compile"
+
+    requests.post(url=end_point_compile, json=compile_network_json,
+                  headers={"content-type": "application/json"})
+
+    train_network_response = requests.post(url=end_point_train, json=train_network_json,
                                            headers={"content-type": "application/json"})
     assert train_network_response.status_code is 200
     assert train_network_response.json()["Message"] == f"Network {new_network_json['name']} training complete."

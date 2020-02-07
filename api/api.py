@@ -8,8 +8,8 @@ def build_model(values: json):
     model = ModelBuilder().model()
     for _layer in values['layers']:
 
-        layer = DenseLayerBuilder().\
-            units(_layer['units']).\
+        layer = DenseLayerBuilder(). \
+            units(_layer['units']). \
             activation(_layer['activation'])
 
         if "input_shape" in _layer:
@@ -81,7 +81,7 @@ def train_network():
             return jsonify(response), 200
 
         (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(values["data_set"],
-                                                                                int(values['layers'][0]['input_shape']))
+                                                                                int(values['input_shape']))
         keras_wrapper.train(model_name=values["name"],
                             train_data=train_data,
                             train_labels=train_labels,
@@ -124,4 +124,4 @@ def default():
 
 if __name__ == '__main__':
     keras_wrapper = KerasWrapper()
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, threaded=False)

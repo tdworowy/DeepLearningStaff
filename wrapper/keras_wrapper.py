@@ -2,6 +2,7 @@ import logging
 import sys
 from keras import models, layers
 
+
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger('logger')
 

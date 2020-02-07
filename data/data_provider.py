@@ -1,7 +1,4 @@
-import importlib
-
 import numpy as np
-from keras.datasets import imdb
 
 from data_utils.data_utils import vectorized_sequences
 

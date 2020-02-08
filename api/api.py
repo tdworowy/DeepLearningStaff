@@ -122,6 +122,22 @@ def default():
     return jsonify(response), 200
 
 
+@app.route('/networks', methods=['GET'])
+def get_networks():
+    response = {
+        keras_wrapper.models.keys()
+    }
+    return jsonify(response), 200
+
+
+@app.route('/data-sources', methods=['GET'])
+def get_data_sources():
+    response = {
+        get_data_sources()
+    }
+    return jsonify(response), 200
+
+
 if __name__ == '__main__':
     keras_wrapper = KerasWrapper()
     app.run(host='0.0.0.0', port=5000, threaded=False)

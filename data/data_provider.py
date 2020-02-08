@@ -1,10 +1,9 @@
 import numpy as np
-
 from data_utils.data_utils import vectorized_sequences
 
 
 def get_keras_data_set(data_set_name: str, sample: int):
-    return data_set[data_set_name](sample)
+    return data_sets[data_set_name](sample)
 
 
 def get_imdb_data_set(num_words: int):
@@ -17,4 +16,8 @@ def get_imdb_data_set(num_words: int):
     return (train_data, train_labels), (val_data, val_labels)
 
 
-data_set = {'imdb': get_imdb_data_set}
+data_sets = {'imdb': get_imdb_data_set}
+
+
+def get_data_sources():
+    return data_sets.keys()

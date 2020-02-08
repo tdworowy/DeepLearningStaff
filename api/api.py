@@ -19,15 +19,20 @@ def build_model(values: json):
     return model.build()
 
 
-def prepare_response(message: json, method: str, status: int):
+def prepare_response(message: json, status: int):
     response = jsonify(message)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Methods", method)
-    response.headers.add("Access-Control-Allow-Headers", "accept, content-type")
     return response, status
 
 
 app = Flask(__name__)
+
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
 
 
 @app.route('/network/new', methods=['POST'])
@@ -35,14 +40,14 @@ def new_network():
     values = request.get_json()
     required = ['name', 'layers']
     if not all(k in values for k in required):
-        return prepare_response({'Massage': 'Missing values'}, 'POST, OPTIONS', 400)
+        return prepare_response({'Massage': 'Missing values'}, 400)
     else:
 
         keras_wrapper.add_model(values['name'], build_model(values))
         response = {
             "Message": f"New Network {values['name']} added."
         }
-        return prepare_response(response, 'POST, OPTIONS', 200)
+        return prepare_response(response, 200)
 
 
 @app.route('/network/compile', methods=['POST'])
@@ -50,13 +55,13 @@ def compile_network():
     values = request.get_json()
     required = ['name', 'optimizer', 'loss', 'metrics']
     if not all(k in values for k in required):
-        prepare_response({"Message": "Missing value"}, 'POST, OPTIONS', 400)
+        prepare_response({"Message": "Missing value"}, 400)
     else:
         if not keras_wrapper.models.get(values["name"], None):
             response = {
                 "Message": f"Network {values['name']} not found."
             }
-            return prepare_response(response, 'POST, OPTIONS', 200)
+            return prepare_response(response, 200)
 
         keras_wrapper.compile(model_name=values['name'],
                               optimizer=values['optimizer'],
@@ -65,7 +70,7 @@ def compile_network():
         response = {
             "Message": f"Network {values['name']} compiled."
         }
-        return prepare_response(response, 'POST, OPTIONS', 200)
+        return prepare_response(response, 200)
 
 
 @app.route('/network/train', methods=['POST'])
@@ -73,20 +78,20 @@ def train_network():
     values = request.get_json()
     required = ['name', 'data_set', 'epochs', 'batch_size']
     if not all(k in values for k in required):
-        return prepare_response({"Message": "Missing value"}, 'POST, OPTIONS', 400)
+        return prepare_response({"Message": "Missing value"}, 400)
     else:
 
         if not keras_wrapper.models.get(values["name"], None):
             response = {
                 "Message": f"Network {values['name']} not found."
             }
-            return prepare_response(response, 'POST, OPTIONS', 200)
+            return prepare_response(response, 200)
 
         if not keras_wrapper.models.get(values["name"], None).compiled:
             response = {
                 "Message": f"Network {values['name']} need to be compiled."
             }
-            return prepare_response(response, 'POST, OPTIONS', 200)
+            return prepare_response(response, 200)
 
         (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(values["data_set"],
                                                                                 int(values['input_shape']))
@@ -100,7 +105,7 @@ def train_network():
         response = {
             "Message": f"Network {values['name']} training complete."
         }
-        return prepare_response(response, 'POST, OPTIONS', 200)
+        return prepare_response(response, 200)
 
 
 @app.route('/network/delete', methods=['DELETE'])
@@ -108,19 +113,19 @@ def delete_network():
     values = request.get_json()
     required = ['name']
     if not all(k in values for k in required):
-        return prepare_response({'Massage': 'Missing values'}, 'DELETE, OPTIONS', 400)
+        return prepare_response({'Massage': 'Missing values'}, 400)
     else:
         if not keras_wrapper.models.get(values["name"], None):
             response = {
                 "Message": f"Network {values['name']} not found."
             }
-            return prepare_response(response, 'DELETE, OPTIONS', 200)
+            return prepare_response(response, 200)
 
         keras_wrapper.models.pop(values['name'])
         response = {
             "Message": f"Network {values['name']} deleted."
         }
-        return prepare_response(response, 'DELETE, OPTIONS', 200)
+        return prepare_response(response, 200)
 
 
 @app.route('/', methods=['GET'])
@@ -128,7 +133,7 @@ def default():
     response = {
         "Message": "API running"
     }
-    return prepare_response(response, 'GET', 200)
+    return prepare_response(response, 200)
 
 
 @app.route('/networks', methods=['GET'])
@@ -136,7 +141,7 @@ def get_networks():
     response = {
         keras_wrapper.models.keys()
     }
-    return prepare_response(response, 'GET', 200)
+    return prepare_response(response, 200)
 
 
 @app.route('/data-sources', methods=['GET'])
@@ -144,7 +149,7 @@ def get_data_sources():
     response = {
         get_data_sources()
     }
-    return prepare_response(response, 'GET', 200)
+    return prepare_response(response, 200)
 
 
 if __name__ == '__main__':

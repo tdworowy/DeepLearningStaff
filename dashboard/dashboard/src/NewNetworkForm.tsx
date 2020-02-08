@@ -36,7 +36,7 @@ export class NewNetwork extends React.Component<{},State> {
         console.log(`POST:${this.state}`);
         postNetwork(this.state)
             .then((data) => {
-                console.log(data);
+                console.log(`Response:${data}`);
             });
         
     }

@@ -89,7 +89,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"test\",\r\n  \"data_set\": \"imdb\",\r\n  \"epochs\": 10,\r\n  \"batch_size\": 512\r\n}",
+					"raw": "{\r\n  \"name\": \"test\",\r\n  \"data_set\": \"imdb\",\r\n  \"epochs\": 10,\r\n  \"batch_size\": 512,\r\n  \"input_shape\": 10000,\r\n  \"test_sample_size\": 10000\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

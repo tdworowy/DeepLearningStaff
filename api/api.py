@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify, request, make_response
+from flask import Flask, jsonify, request
 from data.data_provider import get_keras_data_set
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
@@ -24,6 +24,7 @@ def prepare_response(message: json, status: int):
     return response, status
 
 
+test_data_dict = dict()
 app = Flask(__name__)
 
 
@@ -76,7 +77,7 @@ def compile_network():
 @app.route('/network/train', methods=['POST'])
 def train_network():
     values = request.get_json()
-    required = ['name', 'data_set', 'epochs', 'batch_size']
+    required = ['name', 'data_set', 'epochs', 'batch_size', 'test_sample_size']
     if not all(k in values for k in required):
         return prepare_response({"Message": "Missing value"}, 400)
     else:
@@ -93,8 +94,14 @@ def train_network():
             }
             return prepare_response(response, 200)
 
-        (train_data, train_labels), (val_data, val_labels) = get_keras_data_set(values["data_set"],
-                                                                                int(values['input_shape']))
+        (train_data, train_labels), \
+        (val_data, val_labels), \
+        (test_data, test_labels) = get_keras_data_set(values["data_set"],
+                                                      values['input_shape'],
+                                                      values['test_sample_size'])
+
+        test_data_dict[values['name']] = (test_data, test_labels)
+
         keras_wrapper.train(model_name=values["name"],
                             train_data=train_data,
                             train_labels=train_labels,
@@ -124,6 +131,29 @@ def delete_network():
         keras_wrapper.models.pop(values['name'])
         response = {
             "Message": f"Network {values['name']} deleted."
+        }
+        return prepare_response(response, 200)
+
+
+@app.route('/network/evaluate', methods=['POST'])
+def evaluate_network():
+    values = request.get_json()
+    required = ['name']
+    if not all(k in values for k in required):
+        return prepare_response({'Massage': 'Missing values'}, 400)
+    else:
+        if not keras_wrapper.models.get(values["name"], None):
+            response = {
+                "Message": f"Network {values['name']} not found."
+            }
+            return prepare_response(response, 200)
+
+        test_loss, test_acc = keras_wrapper.evaluate(model_name=values['name'],
+                                                     test_data=test_data_dict[values['name']][0],
+                                                     test_labels=test_data_dict[values['name']][1])
+        response = {
+            "Test_accuracy": test_acc,
+            "Test_loss": test_loss
         }
         return prepare_response(response, 200)
 

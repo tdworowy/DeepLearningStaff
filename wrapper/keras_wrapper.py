@@ -2,7 +2,6 @@ import logging
 import sys
 from keras import models, layers
 
-
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger('logger')
 
@@ -49,6 +48,9 @@ class KerasWrapper(metaclass=Singleton):
                                                     validation_data=(val_data, val_labels))
         self.models[model_name].trained = True
         self.models[model_name].history = history
+
+    def evaluate(self, model_name: str, test_data, test_labels):
+        return self.models[model_name].model.evaluate(test_data, test_labels)
 
 
 class ModelBuilder:

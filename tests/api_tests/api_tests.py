@@ -33,6 +33,7 @@ def test_compile_network():
     end_point = f"{host}/network/compile"
     compile_network_response = requests.post(url=end_point, json=compile_network_json,
                                              headers={"content-type": "application/json"})
+
     assert compile_network_response.status_code is 200
     assert compile_network_response.json()['Message'] == f"Network {new_network_json['name']} compiled."
 
@@ -46,5 +47,25 @@ def test_train_network():
 
     train_network_response = requests.post(url=end_point_train, json=train_network_json,
                                            headers={"content-type": "application/json"})
+
     assert train_network_response.status_code is 200
     assert train_network_response.json()["Message"] == f"Network {new_network_json['name']} training complete."
+
+
+def test_evaluate_network():
+    end_point_train = f"{host}/network/train"
+    end_point_compile = f"{host}/network/compile"
+    end_point_evaluate = f"{host}/network/evaluate"
+
+    requests.post(url=end_point_compile, json=compile_network_json,
+                  headers={"content-type": "application/json"})
+
+    requests.post(url=end_point_train, json=train_network_json,
+                  headers={"content-type": "application/json"})
+
+    evaluate_network_response = requests.post(url=end_point_evaluate, json={"name": train_network_json["name"]},
+                                              headers={"content-type": "application/json"})
+
+    assert evaluate_network_response.status_code is 200
+    assert evaluate_network_response.json()["Test_accuracy"] is not None
+    assert evaluate_network_response.json()["Test_loss"] is not None

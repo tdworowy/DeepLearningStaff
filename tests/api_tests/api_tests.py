@@ -29,6 +29,14 @@ def test_add_network(add_new_network):
     assert add_new_network.json()['Message'] == f"New Network {new_network_json['name']} added."
 
 
+def test_get_networks():
+    get_networks_end_point = f"{host}/networks"
+    get_networks_response = requests.get(url=get_networks_end_point, headers={"content-type": "application/json"})
+
+    assert get_networks_response.status_code is 200
+    assert get_networks_response.json()['Networks'] == [new_network_json['name']]
+
+
 def test_compile_network():
     end_point = f"{host}/network/compile"
     compile_network_response = requests.post(url=end_point, json=compile_network_json,

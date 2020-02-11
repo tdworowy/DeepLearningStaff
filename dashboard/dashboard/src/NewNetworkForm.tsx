@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import { newNetwrokEndPoint } from './Config';
 
 class Layer {
     public units: number
@@ -12,8 +13,8 @@ class Layer {
         this.input_shape = input_shape
     }
 }
-async  function postNetwork(data:any) {
-    const response = await fetch('http://localhost:5000/network/new', {
+async function postNetwork(data:any) {
+    const response = await fetch(newNetwrokEndPoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(data)

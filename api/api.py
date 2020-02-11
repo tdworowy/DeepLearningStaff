@@ -1,6 +1,6 @@
 import json
 from flask import Flask, jsonify, request
-from data.data_provider import get_keras_data_set
+from data.data_provider import get_keras_data_set, data_sources
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
 
@@ -168,17 +168,15 @@ def default():
 
 @app.route('/networks', methods=['GET'])
 def get_networks():
-    response = {
-        keras_wrapper.models.keys()
-    }
+    response = list(keras_wrapper.models.keys()) if keras_wrapper.models.keys() else [""]
+    response = {"Networks": response}
     return prepare_response(response, 200)
 
 
 @app.route('/data-sources', methods=['GET'])
 def get_data_sources():
-    response = {
-        get_data_sources()
-    }
+    response = data_sources()
+    response = {"Dat_Sources": response}
     return prepare_response(response, 200)
 
 

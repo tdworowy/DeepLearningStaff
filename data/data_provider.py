@@ -30,5 +30,5 @@ def get_imdb_data_set(num_words: int, test_set_size: int):
 data_sets = {'imdb': get_imdb_data_set}
 
 
-def get_data_sources():
-    return data_sets.keys()
+def data_sources():
+    return list(data_sets.keys())

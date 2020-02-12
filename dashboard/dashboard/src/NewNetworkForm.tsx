@@ -28,20 +28,20 @@ export class NewNetwork extends React.Component<{},State> {
       super(props);
       this.addLayerHandler = this.addLayerHandler.bind(this);
       this.addNetworkHandler = this.addNetworkHandler.bind(this);
-      this.state = { 
+      this.state ={  
           name: '', 
           layers:[]
         }
     }
     addNetworkHandler = (event:any) => {
-        console.log(`POST:${this.state}`);
+        console.log(`POST:${JSON.stringify(this.state)}`);
         postNetwork(this.state)
             .then((data) => {
-                console.log(`Response:${data}`);
+                console.log(`Response:${JSON.stringify(data)}`);
             });
         
     }
-    addLayerHandler = (event:any) => {
+    addLayerHandler = (event:any) => {//TODO don't work
         console.log(`Add layer:${event.target}`);
         let layer:Layer = new Layer(event.target.units,
                           event.target.activation,
@@ -77,7 +77,7 @@ export class NewNetwork extends React.Component<{},State> {
             type ='text'
             />
             <br></br>
-            <input type="submit" value="Add layer" onChange={this.addLayerHandler}/>
+            <input type="submit" value="Add layer" onClick={this.addLayerHandler}/>
             </form>
             <button onClick ={this.addNetworkHandler}>Add new network</button> 
             </div>

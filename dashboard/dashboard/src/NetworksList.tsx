@@ -13,25 +13,29 @@ async function getNetworks() {
 
 type State = { networks: Array<string> };
 export class NetworksList extends React.Component<{},State> {
+    timer:any 
+    
     constructor(props:any) {
       super(props);
       this.state = { 
         networks: []
       }
     }
- 
+    componentDidMount(){
+        this.timer = setInterval(()=>  getNetworks()
+            .then((data) => {
+                console.log(`Response:${JSON.stringify(data.Networks)}`);
+                this.setState({networks:data.Networks})
+            }), 30000)
+       }    
     createNetworkList = () => {
         let networks:Array<JSX.Element> = []
 
-        getNetworks()
-        .then((data) => {
-            console.log(`Response:${data.Networks}`);
-            this.setState({networks:data.Networks})
-        });
+      
     
         this.state.networks.forEach(function (value) {
             console.log(value) 
-            networks.push(<a href={`http://${value}`}>value</a>)
+            networks.push(<a href={`http://${value}`}>${value}</a>)
         })
         return networks
       }

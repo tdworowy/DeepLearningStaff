@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { newNetwrokEndPoint } from './Config';
 
-
+//TODO add clear state button
 
 class Layer {
     public units: number
@@ -44,6 +44,9 @@ export class NewNetwork extends React.Component {
             localStorage.clear();  
         
     }
+    clearNetworkHandler = (event:any) => {
+        localStorage.clear();
+    }
 
     addLayerHandler = async (event:any) => {
         const data = new FormData(event.target)
@@ -71,31 +74,34 @@ export class NewNetwork extends React.Component {
       return (
             <div>
                 <form onSubmit={this.addLayerHandler}>
-                    <p>Network name:</p>
-                    <input
-                    name = 'name'
-                    type = 'text'
-                // defaultValue={this.state.name}
-                    />
-                    <p>units:</p>
-                    <input
-                    name = 'units'
-                    type = 'text'
-                    />
-                    <p>activation:</p>
-                    <input
-                    name = 'activation'
-                    type ='text'
-                    />
-                    <p>input_shape:</p>
-                    <input
-                    name = 'input_shape'
-                    type ='text'
-                    />
-                    <br></br>
+                    Network name:&nbsp;&nbsp;
+                        <input
+                        name = 'name'
+                        type = 'text'
+                        />
+                    <br/>
+                    units:&nbsp;&nbsp;
+                        <input
+                        name = 'units'
+                        type = 'text'
+                        />
+                    <br/>
+                    activation:&nbsp;&nbsp;
+                        <input
+                        name = 'activation'
+                        type ='text'
+                        />
+                    <br/>
+                    input_shape:&nbsp;&nbsp;
+                        <input
+                        name = 'input_shape'
+                        type ='text'
+                        />
+                    <br/>
                     <input type="submit" value="Add Layer"/>
                 </form>
-                <button onClick ={this.addNetworkHandler}>Add new network</button> 
+                <button onClick ={this.addNetworkHandler}>Add new network</button>
+                <button onClick ={this.clearNetworkHandler}>Clear network</button>
             </div>
         );
     }

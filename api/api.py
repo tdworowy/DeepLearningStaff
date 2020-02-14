@@ -1,4 +1,5 @@
 import json
+import yaml
 from flask import Flask, jsonify, request
 from data.data_provider import get_keras_data_set, data_sources
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
@@ -173,6 +174,14 @@ def get_networks():
     return prepare_response(response, 200)
 
 
+@app.route('/network/<name>', methods=['GET'])
+def get_network_status(name):
+    compiled = keras_wrapper.models[name].compiled
+    trained = keras_wrapper.models[name].trained
+    response = {"Name": name, "Compiled": compiled, "Trained": trained}
+    return prepare_response(response, 200)
+
+
 @app.route('/data-sources', methods=['GET'])
 def get_data_sources():
     response = data_sources()
@@ -180,6 +189,13 @@ def get_data_sources():
     return prepare_response(response, 200)
 
 
+def read_config():
+    with open('config.yaml') as file:
+        return yaml.safe_load(file)
+
+
 if __name__ == '__main__':
     keras_wrapper = KerasWrapper()
-    app.run(host='0.0.0.0', port=5000, threaded=False)
+    config = read_config()
+
+    app.run(host=config.get('host'), port=config.get('port'), threaded=False)

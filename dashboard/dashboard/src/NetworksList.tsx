@@ -24,16 +24,24 @@ export class NetworksList extends React.Component<{},State> {
     componentDidMount(){
         this.timer = setInterval(()=>  getNetworks()
             .then((data) => {
-                console.log(`Response:${JSON.stringify(data.Networks)}`)
-                this.setState({networks:data.Networks})
+                if(data.Networks != ""){
+                    console.log(`Response:${JSON.stringify(data.Networks)}`)
+                    this.setState({networks:data.Networks})
+                }
             }), 10000)
        }    
     createNetworkList = () => {
         let networks:Array<JSX.Element> = []
-        this.state.networks.forEach(function (value) {
-            console.log(value) 
-            networks.push(<a href={`http://${value}`}>{value}</a>)
-        })
+        if ( this.state.networks.length > 0) {
+            this.state.networks.forEach(function (value) {
+                console.log(value) 
+                networks.push(<div>
+                                {value}&nbsp;&nbsp;
+                                <button>Compile Network</button>
+                                <button>Train Network</button>
+                              </div> )
+            })
+        }
         return networks
       }
 

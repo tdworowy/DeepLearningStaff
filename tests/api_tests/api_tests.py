@@ -1,6 +1,7 @@
 import json
 import pytest
 import requests
+import yaml
 
 with open("../resources/new_network_json.json") as json_file:
     new_network_json = json.load(json_file)
@@ -11,7 +12,14 @@ with open("../resources/compile_network_json.json") as json_file:
 with open("../resources/train_network_json.json") as json_file:
     train_network_json = json.load(json_file)
 
-host = "http://localhost:5000"
+
+def read_config():
+    with open('../../config.yaml') as file:
+        return yaml.safe_load(file)
+
+
+config = read_config()
+host = f"http://{config.get('host')}:{config.get('port')}"
 
 
 @pytest.fixture(autouse=True)

@@ -190,7 +190,7 @@ def get_data_sources():
 
 
 def read_config():
-    with open('config.yaml') as file:
+    with open('../config.yaml') as file:
         return yaml.safe_load(file)
 
 

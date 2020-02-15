@@ -20,7 +20,7 @@ async function compileNetwork(data:any) {
     const response = await fetch(compileNetwrokEndPoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
-        body: data
+        body: JSON.stringify(data)
         })
     return await response.json()
 }
@@ -28,7 +28,7 @@ async function trainNetwork(data:any) {
     const response = await fetch(trainNetwrokEndPoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
-        body: data
+        body: JSON.stringify(data)
         })
     return await response.json()
 }

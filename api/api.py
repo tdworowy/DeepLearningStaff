@@ -57,7 +57,7 @@ def compile_network():
     values = request.get_json()
     required = ['name', 'optimizer', 'loss', 'metrics']
     if not all(k in values for k in required):
-        prepare_response({"Message": "Missing value"}, 400)
+        return prepare_response({"Message": "Missing value"}, 400)
     else:
         if not keras_wrapper.models.get(values["name"], None):
             response = {

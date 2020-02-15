@@ -39,7 +39,6 @@ export class NewNetwork extends React.Component {
                 console.log(`Response:${JSON.stringify(data)}`)
             });
             localStorage.clear();  
-        
     }
     clearNetworkHandler = (event:any) => {
         localStorage.clear();

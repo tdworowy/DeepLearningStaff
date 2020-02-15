@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { networksEndPoint } from './Config';
 import { NetworkDetails } from './NetworkDetails';
+import ReactDOM from 'react-dom';
 
 async function getNetworks() {
     const response = await fetch(networksEndPoint, {
@@ -23,12 +24,13 @@ export class NetworksList extends React.Component<{},State> {
     componentDidMount(){
         this.timer = setInterval(()=>  getNetworks()
             .then((data) => {
-                if(data.Networks != ""){
+                if(data.Networks !== ""){
                     console.log(`Response:${JSON.stringify(data.Networks)}`)
                     this.setState({networks:data.Networks})
                 }
             }), 10000)
-       }    
+       }
+    
     createNetworkList = () => {
         let networks:Array<JSX.Element> = []
         if ( this.state.networks.length > 0) {
@@ -36,7 +38,7 @@ export class NetworksList extends React.Component<{},State> {
                 console.log(value) 
                 networks.push(<li>
                                 {value}&nbsp;&nbsp;
-                                <button onClick={event =>  window.location.href=`/networkDetails#${value}`}>Details</button>
+                                <button onClick={event => ReactDOM.render(<NetworkDetails params={value}/>, document.getElementById('root'))}>Details</button>
                               </li> )
             })
         }

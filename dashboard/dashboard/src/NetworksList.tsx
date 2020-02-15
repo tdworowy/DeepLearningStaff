@@ -1,7 +1,6 @@
-
 import * as React from 'react';
 import { networksEndPoint } from './Config';
-
+import { NetworkDetails } from './NetworkDetails';
 
 async function getNetworks() {
     const response = await fetch(networksEndPoint, {
@@ -35,11 +34,10 @@ export class NetworksList extends React.Component<{},State> {
         if ( this.state.networks.length > 0) {
             this.state.networks.forEach(function (value) {
                 console.log(value) 
-                networks.push(<div>
+                networks.push(<li>
                                 {value}&nbsp;&nbsp;
-                                <button>Compile Network</button>
-                                <button>Train Network</button>
-                              </div> )
+                                <button onClick={event =>  window.location.href=`/networkDetails#${value}`}>Details</button>
+                              </li> )
             })
         }
         return networks
@@ -48,7 +46,9 @@ export class NetworksList extends React.Component<{},State> {
     render() {
         return (
             <div>
+            <ul>
             {this.createNetworkList()}
+            </ul>
             </div>
         )}
 }

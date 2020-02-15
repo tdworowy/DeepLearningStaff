@@ -175,7 +175,7 @@ def get_networks():
 
 
 @app.route('/network/<name>', methods=['GET'])
-def get_network_status(name):
+def get_network_details(name):
     compiled = keras_wrapper.models[name].compiled
     trained = keras_wrapper.models[name].trained
     response = {"Name": name, "Compiled": compiled, "Trained": trained}

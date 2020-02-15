@@ -1,8 +1,5 @@
-
 import * as React from 'react';
 import { newNetwrokEndPoint } from './Config';
-
-//TODO add clear state button
 
 class Layer {
     public units: number
@@ -47,6 +44,18 @@ export class NewNetwork extends React.Component {
     clearNetworkHandler = (event:any) => {
         localStorage.clear();
     }
+    getNetworkName = () => {
+        if (typeof localStorage.globalState !== 'undefined') {   
+            return  JSON.parse(localStorage.globalState).name
+        }
+        else return ""     
+    }
+    getTempNetworkDetails = () => {
+        if (typeof localStorage.globalState !== 'undefined') {   
+            return localStorage.globalState
+        }
+        else return ""     
+    }
 
     addLayerHandler = async (event:any) => {
         const data = new FormData(event.target)
@@ -78,6 +87,7 @@ export class NewNetwork extends React.Component {
                         <input
                         name = 'name'
                         type = 'text'
+                        defaultValue = {this.getNetworkName()}
                         />
                     <br/>
                     units:&nbsp;&nbsp;
@@ -98,10 +108,12 @@ export class NewNetwork extends React.Component {
                         type ='text'
                         />
                     <br/>
-                    <input type="submit" value="Add Layer"/>
+                    <input id="add_layer" type="submit" value="Add Layer"/>
                 </form>
-                <button onClick ={this.addNetworkHandler}>Add new network</button>
-                <button onClick ={this.clearNetworkHandler}>Clear network</button>
+                <button id ="add_netwrok_button" onClick ={this.addNetworkHandler}>Add new network</button>
+                <button id="clear_network_button" onClick ={this.clearNetworkHandler}>Clear network</button>
+                <br/>
+                <textarea id="new_layer_details" rows={4} cols={50} value={this.getTempNetworkDetails()}></textarea>
             </div>
         );
     }

@@ -2,6 +2,8 @@ from keras import models, layers
 
 from _logging._logger import get_logger
 
+logger = get_logger(__name__)
+
 
 class ModelWrapper:
     def __init__(self, name: str, model: models, compiled: bool, trained: bool):
@@ -30,19 +32,19 @@ class KerasWrapper(metaclass=Singleton):
             self.models = dict()
 
     def add_model(self, name: str, model: models):
-        get_logger().info(f"Add new Model {name}")
+        logger.info(f"Add new Model {name}")
         self.models[name] = ModelWrapper(name, model, False, False)
 
     def compile(self, model_name: str, optimizer: str, loss: str, metrics: list):
-        get_logger().info(f"Compiled model {model_name}")
+        logger.info(f"Compiled model {model_name}")
         if self.models[model_name].compiled:
-            get_logger().info(f"Model {model_name} already compiled")
+            logger.warning(f"Model {model_name} already compiled")
         else:
             self.models[model_name].model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
             self.models[model_name].compiled = True
 
     def train(self, model_name: str, train_data, train_labels, val_data, val_labels, epochs: int, batch_size: int):
-        get_logger().info(f"Train model {model_name}")
+        logger.info(f"Train model {model_name}")
         history = self.models[model_name].model.fit(train_data, train_labels,
                                                     epochs=epochs, batch_size=batch_size,
                                                     validation_data=(val_data, val_labels))
@@ -50,7 +52,7 @@ class KerasWrapper(metaclass=Singleton):
         self.models[model_name].history = history
 
     def evaluate(self, model_name: str, test_data, test_labels):
-        get_logger().info(f"Evaluate model {model_name}")
+        logger.info(f"Evaluate model {model_name}")
         return self.models[model_name].model.evaluate(test_data, test_labels)
 
 

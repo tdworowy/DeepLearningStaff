@@ -5,6 +5,8 @@ from _logging._logger import get_logger
 from data.data_provider import get_keras_data_set, data_sources
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
+logger = get_logger(__name__)
+
 
 def build_model(values: json):
     model = ModelBuilder().model()
@@ -22,20 +24,21 @@ def build_model(values: json):
 
 
 def prepare_response(message: json, status: int):
-    get_logger().info(f"Response:{message}")
+    logger.info(f"Response:{message}")
     response = jsonify(message)
     return response, status
 
 
 test_data_dict = dict()
+keras_wrapper = KerasWrapper()
 app = Flask(__name__)
 
 
 @app.after_request
 def after_request(response):
-    get_logger().info(f"Request:{request}")
+    logger.info(f"Request:{request}")
 
-    get_logger().info(f"Request json:{request.get_json(silent=True)}")
+    logger.info(f"Request json:{request.get_json(silent=True)}")
 
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
@@ -195,13 +198,18 @@ def get_data_sources():
     return prepare_response(response, 200)
 
 
+def get_app():
+    return app
+
+
 def read_config():
     with open('../config.yaml') as file:
         return yaml.safe_load(file)
 
 
-if __name__ == '__main__':
-    keras_wrapper = KerasWrapper()
-    config = read_config()
 
-    app.run(host=config.get('host'), port=config.get('port'), threaded=False)
+# if __name__ == '__main__':
+#     keras_wrapper = KerasWrapper()
+#     config = read_config()
+#
+#     app.run(host=config.get('host'), port=config.get('port'), threaded=False)

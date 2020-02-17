@@ -7,8 +7,7 @@ logging.basicConfig(filename=path.join(logs_path, 'logs.log'),
                     format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
                     datefmt='%H:%M:%S',
                     level=logging.DEBUG)
-logger = logging.getLogger('logger')
 
 
-def get_logger():
-    return logger
+def get_logger(name: str):
+    return logging.getLogger(name)

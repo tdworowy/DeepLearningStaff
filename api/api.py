@@ -1,6 +1,7 @@
 import json
 import yaml
 from flask import Flask, jsonify, request
+from _logging._logger import get_logger
 from data.data_provider import get_keras_data_set, data_sources
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
@@ -21,6 +22,7 @@ def build_model(values: json):
 
 
 def prepare_response(message: json, status: int):
+    get_logger().info(f"Response:{message}")
     response = jsonify(message)
     return response, status
 
@@ -31,6 +33,10 @@ app = Flask(__name__)
 
 @app.after_request
 def after_request(response):
+    get_logger().info(f"Request:{request}")
+
+    get_logger().info(f"Request json:{request.get_json(silent=True)}")
+
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')

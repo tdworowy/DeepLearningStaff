@@ -7,3 +7,4 @@ jspm_packages
 dist
 .vscode
 *.js
+logs

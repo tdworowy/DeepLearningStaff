@@ -1,8 +1,8 @@
 {
   "name": "test",
   "data_set": "imdb",
-  "epochs": 10,
-  "batch_size": 512,
-  "input_shape": 10000,
-  "test_sample_size": 10000
+  "epochs": "10",
+  "batch_size": "512",
+  "input_shape": "10000",
+  "test_sample_size": "10000"
 }

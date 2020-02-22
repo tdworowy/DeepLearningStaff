@@ -1,5 +1,5 @@
+import pandas as pd
 from keras import models, layers
-
 from _logging._logger import get_logger
 
 logger = get_logger(__name__)
@@ -49,7 +49,7 @@ class KerasWrapper(metaclass=Singleton):
                                                     epochs=epochs, batch_size=batch_size,
                                                     validation_data=(val_data, val_labels))
         self.models[model_name].trained = True
-        self.models[model_name].history = history
+        self.models[model_name].history = pd.DataFrame.from_dict(history.history).to_json()
 
     def evaluate(self, model_name: str, test_data, test_labels):
         logger.info(f"Evaluate model {model_name}")

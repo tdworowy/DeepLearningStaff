@@ -17,7 +17,8 @@ def build_model(values: json):
             activation(_layer['activation'])
 
         if "input_shape" in _layer:
-            layer = layer.input_shape(tuple(map(int, _layer['input_shape'].split(','))))
+            if _layer["input_shape"] != "":
+                layer = layer.input_shape(tuple(map(int, _layer['input_shape'].split(','))))
 
         model = model.layer(layer.build())
     return model.build()
@@ -107,8 +108,8 @@ def train_network():
         (train_data, train_labels), \
         (val_data, val_labels), \
         (test_data, test_labels) = get_keras_data_set(values["data_set"],
-                                                      values['input_shape'],
-                                                      values['test_sample_size'])
+                                                      int(values['input_shape']),
+                                                      int(values['test_sample_size']))
 
         test_data_dict[values['name']] = (test_data, test_labels)
 
@@ -117,8 +118,8 @@ def train_network():
                             train_labels=train_labels,
                             val_data=val_data,
                             val_labels=val_labels,
-                            epochs=values['epochs'],
-                            batch_size=values['batch_size'])
+                            epochs=int(values['epochs']),
+                            batch_size=int(values['batch_size']))
         response = {
             "Message": f"Network {values['name']} training complete."
         }
@@ -191,6 +192,13 @@ def get_network_details(name):
     return prepare_response(response, 200)
 
 
+@app.route('/network/history/<name>', methods=['GET'])
+def get_network_history(name):
+    history = keras_wrapper.models[name].history
+    response = {"Name": name, "History": history}
+    return prepare_response(response, 200)
+
+
 @app.route('/data-sources', methods=['GET'])
 def get_data_sources():
     response = data_sources()
@@ -205,11 +213,3 @@ def get_app():
 def read_config():
     with open('../config.yaml') as file:
         return yaml.safe_load(file)
-
-
-
-# if __name__ == '__main__':
-#     keras_wrapper = KerasWrapper()
-#     config = read_config()
-#
-#     app.run(host=config.get('host'), port=config.get('port'), threaded=False)

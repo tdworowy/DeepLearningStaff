@@ -85,3 +85,32 @@ def test_evaluate_network():
     assert evaluate_network_response.status_code is 200
     assert evaluate_network_response.json()["Test_accuracy"] is not None
     assert evaluate_network_response.json()["Test_loss"] is not None
+
+
+def test_get_network_training_history():
+    end_point_train = f"{host}/network/train"
+    end_point_compile = f"{host}/network/compile"
+    end_point_get_history = f"{host}/network/history/{train_network_json['name']}"
+
+    requests.post(url=end_point_compile, json=compile_network_json,
+                  headers={"content-type": "application/json"})
+
+    requests.post(url=end_point_train, json=train_network_json,
+                  headers={"content-type": "application/json"})
+
+    get_history_response = requests.get(url=end_point_get_history,
+                                        headers={"content-type": "application/json"})
+
+    assert get_history_response.status_code is 200
+    assert get_history_response.json()["History"] is not {}
+
+
+def test_get_network_details():
+    get_network_details_end_point = f"{host}/network/{new_network_json['name']}"
+    get_networks_response = requests.get(url=get_network_details_end_point,
+                                         headers={"content-type": "application/json"})
+
+    assert get_networks_response.status_code is 200
+    assert get_networks_response.json()['Name'] == new_network_json['name']
+    assert get_networks_response.json()['Compiled'] is False
+    assert get_networks_response.json()['Trained'] is False

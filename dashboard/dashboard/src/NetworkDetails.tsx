@@ -1,26 +1,42 @@
 import * as React from 'react';
 import { networkDetailsEndPoint,dataSetsEndPoint,compileNetwrokEndPoint,trainNetwrokEndPoint } from './Config';
+import { SyncRequestClient } from 'ts-sync-request/dist'
 
-async function getNetworkDetails(networkName:string | undefined) {
-    const response = await fetch(networkDetailsEndPoint + networkName, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json'}
-        })
-    return await response.json()
+class CompileNetworkData {
+    name: string|File|null
+    optimizer: string|File|null
+    loss: string|File|null
+    metrics: Array<String|File|null>
+
+    constructor(name:string|File|null,optimizer:string|File|null,loss:string|File|null,metrics:Array<string|File|null>) {
+        this.name = name
+        this.optimizer = optimizer
+        this.loss = loss
+        this.metrics = metrics
+    }
+
 }
-async function getDataSets() {
-    const response = await fetch(dataSetsEndPoint, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json'}
-        })
-    return await response.json()
+
+const sleep = (milliseconds:number) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))}
+
+function getNetworkDetailsSync(networkName:string | undefined) {
+     return new SyncRequestClient()
+            .addHeader("Content-Type", "application/json")
+            .get<Response>(networkDetailsEndPoint + networkName)
+   
+}
+function getDataSetsSync() {
+    return new SyncRequestClient()
+        .addHeader("Content-Type", "application/json")
+        .get<Response>(dataSetsEndPoint)
 }
 
 async function compileNetwork(data:any) {
     const response = await fetch(compileNetwrokEndPoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
+        body: data
         })
     return await response.json()
 }
@@ -28,7 +44,7 @@ async function trainNetwork(data:any) {
     const response = await fetch(trainNetwrokEndPoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
+        body: data
         })
     return await response.json()
 }
@@ -51,29 +67,37 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
 
     compileNetworkHandler = (event:any) => {
         const data = new FormData(event.target)
-        compileNetwork(data)
+        const compileNetworkData = new CompileNetworkData(
+            data.get("name"),
+            data.get("optimizer"),
+            data.get("loss"),
+            [data.get("metrics")]
+        )
+        const json = JSON.stringify(compileNetworkData)
+        console.log(`POST:${json}`) 
+        compileNetwork(json)
             .then((response) => {
                 console.log(`Response:${JSON.stringify(response)}`)
             });
     }
     trainNetworkHandler = (event:any) => {
         const data = new FormData(event.target)
-        trainNetwork(data)
+        const json = JSON.stringify(Object.fromEntries(data))
+        console.log(`POST:${json}`)
+        trainNetwork(json)
             .then((response) => {
                 console.log(`Response:${JSON.stringify(response)}`)
             });
     }
     getDataSources() {
         var dat_sources: Array<string> = []
-        getDataSets()
-            .then((data) => {
-                if(data.Dat_Sources !== ""){
-                    console.log(`Response:${JSON.stringify(data.Dat_Sources)}`)
-                    dat_sources = data.Dat_Sources
-                }
-            })
-        return dat_sources
-       }    
+        var data:any = getDataSetsSync()
+        if(data.Dat_Sources !== "") {
+               console.log(`Response:${JSON.stringify(data)}`)
+               dat_sources = data.Dat_Sources
+            }
+       return dat_sources
+    }    
     createDataSources = () => {
         let data_sources:Array<JSX.Element> = []
         if ( this.getDataSources().length > 0) {
@@ -143,19 +167,19 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                     epochs:&nbsp;&nbsp;
                         <input
                         name = 'epochs'
-                        type ='text'
+                        type ='number'
                         />
                     <br/>
                     batch_size:&nbsp;&nbsp;
                         <input
                         name = 'batch_size'
-                        type ='text'
+                        type ='number'
                         />
                     <br/>
                     input_shape:&nbsp;&nbsp;
                         <input
                         name = 'input_shape'
-                        type ='text'
+                        type ='number'
                         />
                     <br/>
                     test_sample_size:&nbsp;&nbsp;
@@ -168,24 +192,23 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
         </form>
         )
     }
-    getNetworkDetails =() =>{
-        var networkDetails:InetworkDetails = {Name: "",Compiled: false,Trained: false }
-        getNetworkDetails(this.state.name)
-            .then((data) => {
-                console.log(`Network details:${JSON.stringify(data)}`)
-                networkDetails = data
-            })
-        return networkDetails
+
+    getNetworkDetails() {
+       return getNetworkDetailsSync(this.state.name)
     } 
-  getForm() {
-        var details:InetworkDetails = this.getNetworkDetails()
-        console.log(`Network details:${JSON.stringify(details)}`)
-        if (details.Compiled !== true) { 
+    getForm():any {
+        var details:any = this.getNetworkDetails()
+        console.log(`Network details in getFrom:${JSON.stringify(details)}`)
+        if (details.Compiled === false) {
              return this.compileForm()
         }
-        else {
+        if (details.Trained === false) {
            return this.trainForm()
         }
+        else {
+            return ("Add training chart")
+        }
+
     }
     render() {
         return (

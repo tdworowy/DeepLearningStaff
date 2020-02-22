@@ -6,7 +6,7 @@ class Layer {
     public activation: string |File |null
     public input_shape: string | File | null
 
-    constructor(units: number,activation:string|File |null,input_shape:string|File|null=null) {
+    constructor(units:number,activation:string|File|null,input_shape:string|File|null=null) {
         this.units = units
         this.activation = activation
         this.input_shape = input_shape
@@ -38,10 +38,14 @@ export class NewNetwork extends React.Component {
             .then((data) => {
                 console.log(`Response:${JSON.stringify(data)}`)
             });
-            localStorage.clear();  
+            this.clearNetworkHandler(undefined)  
     }
     clearNetworkHandler = (event:any) => {
         localStorage.clear();
+        const textArea: HTMLInputElement | null = document.getElementById("new_layer_details") as  HTMLInputElement
+        if(!!textArea){
+            textArea.value = ""
+        }
     }
     getNetworkName = () => {
         if (typeof localStorage.globalState !== 'undefined') {   

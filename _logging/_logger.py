@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
                     datefmt='%H:%M:%S',
                     handlers=[
-                        logging.FileHandler("{0}/{1}.log".format(logs_path, "logs")),
+                        logging.FileHandler(f"{logs_path}/logs.log"),
                         logging.StreamHandler(sys.stdout)
                     ]
                     )

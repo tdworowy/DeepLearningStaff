@@ -159,15 +159,24 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                         <option value='is_categorical_crossentropy'>is_categorical_crossentropy</option>
                         </select>
                     <br/>
+                    
                     metrics:&nbsp;&nbsp;
-                        <input
+                        <select
                         name = 'metrics'
-                        type ='text'
-                        />
+                        multiple
+                        >
+                        <option value='accuracy'>accuracy</option>    
+                        <option value='binary_accuracy'>binary_accuracy</option>
+                        <option value='categorical_accuracy'>categorical_accuracy</option>   
+                        <option value='sparse_categorical_accuracy'>sparse_categorical_accuracy</option>
+                        <option value='top_k_categorical_accuracy'>top_k_categorical_accuracy</option>
+                        <option value='sparse_top_k_categorical_accuracy'>sparse_top_k_categorical_accuracy</option>
+                        <option value='cosine_proximity'>cosine_proximity</option>                                
+                        </select> 
                     <br/>
                     <input id="compile" type="submit" value="Compile network"/>
         </form>
-        )
+        )// TODO only sends one value from 'metrics'
     }
     
     trainForm() {

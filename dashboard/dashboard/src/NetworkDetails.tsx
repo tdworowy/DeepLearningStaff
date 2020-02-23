@@ -124,16 +124,40 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                         />
                     <br/>
                     optimizer:&nbsp;&nbsp;
-                        <input
+                        <select
                         name = 'optimizer'
-                        type = 'text'
-                        />
+                        >
+                        <option value='sgd'>SGD</option>
+                        <option value='rmsprop'>rmsprop</option>     
+                        <option value='adagrad'>Adagrad</option>      
+                        <option value='adadelta'>Adadelta</option>
+                        <option value='adam'>Adam</option>
+                        <option value='adamax'>Adamax</option> 
+                        <option value='nadam'>Nadam</option>     
+                        </select>
                     <br/>
                     loss:&nbsp;&nbsp;
-                        <input
+                        <select
                         name = 'loss'
-                        type ='text'
-                        />
+                        >
+                        <option value='mean_squared_error'>mean_squared_error</option>
+                        <option value='mean_absolute_error'>mean_absolute_error</option>
+                        <option value='mean_absolute_percentage_error'>mean_absolute_percentage_error</option>
+                        <option value='mean_squared_logarithmic_error'>mean_squared_logarithmic_error</option>
+                        <option value='squared_hinge'>squared_hinge</option>
+                        <option value='hinge'>hinge</option>
+                        <option value='categorical_hinge'>categorical_hinge</option>
+                        <option value='logcosh'>logcosh</option>
+                        <option value='huber_loss'>huber_loss</option>
+                        <option value='categorical_crossentropy'>categorical_crossentropy</option>
+                        <option value='sparse_categorical_crossentropy'>sparse_categorical_crossentropy</option>
+                        <option value='binary_crossentropy'>binary_crossentropy</option>
+                        <option value='kullback_leibler_divergence'>kullback_leibler_divergence</option>
+                        <option value='poisson'>poisson</option>
+                        <option value='cosine_proximity'>cosine_proximity</option>
+                        <option value='is_categorical_crossentropy'>is_categorical_crossentropy</option>
+                        <option value='is_categorical_crossentropy'>is_categorical_crossentropy</option>
+                        </select>
                     <br/>
                     metrics:&nbsp;&nbsp;
                         <input

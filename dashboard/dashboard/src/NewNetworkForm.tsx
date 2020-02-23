@@ -100,10 +100,19 @@ export class NewNetwork extends React.Component {
                         />
                     <br/>
                     activation:&nbsp;&nbsp;
-                        <input
+                        <select
                         name = 'activation'
-                        type ='text'
-                        />
+                        >
+                        <option value='relu'>relu</option>
+                        <option value='softmax'>softmax</option>
+                        <option value='selu'>selu</option>
+                        <option value='softsign'>softsign</option>
+                        <option value='tanh'>tanh</option>
+                        <option value='sigmoid'>sigmoid</option>
+                        <option value='hard_sigmoid'>hard_sigmoid</option>
+                        <option value='exponential'>exponential</option>
+                        <option value='linear'>linear</option>
+                        </select>  
                     <br/>
                     input_shape:&nbsp;&nbsp;
                         <input

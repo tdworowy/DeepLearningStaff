@@ -222,6 +222,7 @@ def get_plot_loss(name):
     loss = history.history['loss']
     val_loss = history.history['val_loss']
     epochs = range(1, len(loss) + 1)
+
     plt_html = mpld3.fig_to_html(plot(epochs=epochs,
                                       train_values=loss,
                                       validation_values=val_loss,

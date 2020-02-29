@@ -32,16 +32,7 @@ function getDataSetsSync() {
         .addHeader("Content-Type", "application/json")
         .get<Response>(dataSetsEndPoint)
 }
-function getPlotAccSync(name:string) {
-    return new SyncRequestClient()
-        .addHeader("Content-Type", "application/json")
-        .get<Response>(plotAccEndPoint+name)
-}
-function getPlotLossSync(name:string) {
-    return new SyncRequestClient()
-        .addHeader("Content-Type", "application/json")
-        .get<Response>(plotLossEndPoint+name)
-}
+
 function compileNetworkSync(data:any) {
     return new SyncRequestClient()
     .addHeader("Content-Type", "application/json")
@@ -52,22 +43,7 @@ function trainNetworkSync(data:any) {
     .addHeader("Content-Type", "application/json")
     .post<Url,any>(trainNetwrokEndPoint,data)
 }
-async function compileNetwork(data:any) {
-    const response = await fetch(compileNetwrokEndPoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: data
-        })
-    return await response.json()
-}
-async function trainNetwork(data:any) {
-    const response = await fetch(trainNetwrokEndPoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: data
-        })
-    return await response.json()
-}
+
 
 export interface ViewProperties {
     params: string
@@ -244,11 +220,12 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
        return getNetworkDetailsSync(this.state.name)
     }
     getPlotAcc() {
-        return getPlotAccSync(this.state.name)
-     } 
-     getPlotLoos() {
-        return getPlotLoosSync(this.state.name)
-     }  
+        return plotAccEndPoint + this.state.name
+    } 
+    getPlotLoss() {
+        return plotLossEndPoint + this.state.name
+    }  
+   
     getForm():any {
         var details:any = this.getNetworkDetails()
         console.log(`Network details in getFrom:${JSON.stringify(details)}`)
@@ -261,10 +238,11 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
         else {
             return (
                 <div>
-                {this.getPlotAcc()}
-                {this.getPlotLoos()}
+                     <iframe src= {this.getPlotAcc()}  width="100%" height="100%" /> 
+                     <iframe src= {this.getPlotLoss()}  width="100%" height="100%" />
                 </div>
-            )
+                
+            ) //TODD make it prettier
         }
 
     }
@@ -272,6 +250,7 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
         return (
             <div>
                 {this.getForm()}
+                <br/>
                 <textarea id="network_details" rows={4} cols={50} value={JSON.stringify(this.getNetworkDetails())}></textarea>
             </div>
         )}

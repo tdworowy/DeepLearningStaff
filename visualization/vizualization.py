@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 
 
-def plot(epochs: range, train_values: list, validation_values: list, metric: str):
+def plot(epochs: range, train_values: list, validation_values: list, metric: str) -> Figure:
     fig, _plt = plt.subplots()
     _plt.plot(epochs, train_values, 'bo', label=f"Training {metric}")
     _plt.plot(epochs, validation_values, 'b', label=f"Validation {metric}")

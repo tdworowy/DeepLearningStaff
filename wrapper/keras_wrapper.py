@@ -12,7 +12,6 @@ class ModelWrapper:
         self.model = model
         self.name = name
         self.history_json = None
-        self.history = None
 
 
 class Singleton(type):
@@ -47,7 +46,6 @@ class KerasWrapper(metaclass=Singleton):
                                                     epochs=epochs, batch_size=batch_size,
                                                     validation_data=(val_data, val_labels))
         self.models[model_name].trained = True
-        self.models[model_name].history = history
         self.models[model_name].history_json = pd.DataFrame.from_dict(history.history).to_json()
 
     def evaluate(self, model_name: str, test_data, test_labels):

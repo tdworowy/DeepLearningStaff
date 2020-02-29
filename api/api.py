@@ -205,10 +205,11 @@ def get_network_history(name):
 
 @app.route('/network/plot/accuracy/<name>', methods=['GET'])
 def get_plot_accuracy(name):
-    history = keras_wrapper.models[name].history
-    acc = history.history['acc']
-    val_acc = history.history['val_acc']
+    history = json.loads(keras_wrapper.models[name].history_json)
+    acc = list(history['acc'].values())
+    val_acc = list(history['val_acc'].values())
     epochs = range(1, len(acc) + 1)
+
     plt_html = mpld3.fig_to_html(plot(epochs=epochs,
                                       train_values=acc,
                                       validation_values=val_acc,
@@ -218,9 +219,9 @@ def get_plot_accuracy(name):
 
 @app.route('/network/plot/loss/<name>', methods=['GET'])
 def get_plot_loss(name):
-    history = keras_wrapper.models[name].history
-    loss = history.history['loss']
-    val_loss = history.history['val_loss']
+    history = json.loads(keras_wrapper.models[name].history_json)
+    loss = list(history['loss'].values())
+    val_loss = list(history['val_loss'].values())
     epochs = range(1, len(loss) + 1)
 
     plt_html = mpld3.fig_to_html(plot(epochs=epochs,

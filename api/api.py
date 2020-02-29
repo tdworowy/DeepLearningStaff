@@ -1,8 +1,11 @@
 import json
+
+import mpld3
 import yaml
 from flask import Flask, jsonify, request
 from _logging._logger import get_logger
 from data.data_provider import get_keras_data_set, data_sources
+from visualization.vizualization import plot
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
 logger = get_logger(__name__)
@@ -188,15 +191,42 @@ def get_networks():
 def get_network_details(name):
     compiled = keras_wrapper.models[name].compiled
     trained = keras_wrapper.models[name].trained
-    response = {"Name": name, "Compiled": compiled, "Trained": trained}
+    model_json = keras_wrapper.models[name].model.to_json()
+    response = {"Name": name, "Compiled": compiled, "Trained": trained, "Model": model_json}
     return prepare_response(response, 200)
 
 
 @app.route('/network/history/<name>', methods=['GET'])
 def get_network_history(name):
-    history = keras_wrapper.models[name].history
-    response = {"Name": name, "History": history}
+    history_json = keras_wrapper.models[name].history_json
+    response = {"Name": name, "History": history_json}
     return prepare_response(response, 200)
+
+
+@app.route('/network/plot/accuracy/<name>', methods=['GET'])
+def get_plot_accuracy(name):
+    history = keras_wrapper.models[name].history
+    acc = history.history['acc']
+    val_acc = history.history['val_acc']
+    epochs = range(1, len(acc) + 1)
+    plt_html = mpld3.fig_to_html(plot(epochs=epochs,
+                                      train_values=acc,
+                                      validation_values=val_acc,
+                                      metric="Accuracy"))
+    return plt_html
+
+
+@app.route('/network/plot/loss/<name>', methods=['GET'])
+def get_plot_loss(name):
+    history = keras_wrapper.models[name].history
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+    epochs = range(1, len(loss) + 1)
+    plt_html = mpld3.fig_to_html(plot(epochs=epochs,
+                                      train_values=loss,
+                                      validation_values=val_loss,
+                                      metric="Loss"))
+    return plt_html
 
 
 @app.route('/data-sources', methods=['GET'])

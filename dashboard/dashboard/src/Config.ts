@@ -6,3 +6,5 @@ export const dataSetsEndPoint = `${host}/data-sources`
 export const compileNetwrokEndPoint =`${host}/network/compile`
 export const trainNetwrokEndPoint =`${host}/network/train`
 export const deleteNetworkEndPoint = `${host}/network/delete`
+export const plotAccEndPoint = `${host}/network/plot/accuracy/`
+export const plotLossEndPoint = `${host}/network/plot/loss/`

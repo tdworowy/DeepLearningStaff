@@ -11,6 +11,7 @@ class ModelWrapper:
         self.compiled = compiled
         self.model = model
         self.name = name
+        self.history_json = None
         self.history = None
 
 
@@ -37,11 +38,8 @@ class KerasWrapper(metaclass=Singleton):
 
     def compile(self, model_name: str, optimizer: str, loss: str, metrics: list):
         logger.info(f"Compiled model {model_name}")
-        if self.models[model_name].compiled:
-            logger.warning(f"Model {model_name} already compiled")
-        else:
-            self.models[model_name].model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
-            self.models[model_name].compiled = True
+        self.models[model_name].model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
+        self.models[model_name].compiled = True
 
     def train(self, model_name: str, train_data, train_labels, val_data, val_labels, epochs: int, batch_size: int):
         logger.info(f"Train model {model_name}")
@@ -49,7 +47,8 @@ class KerasWrapper(metaclass=Singleton):
                                                     epochs=epochs, batch_size=batch_size,
                                                     validation_data=(val_data, val_labels))
         self.models[model_name].trained = True
-        self.models[model_name].history = pd.DataFrame.from_dict(history.history).to_json()
+        self.models[model_name].history = history
+        self.models[model_name].history_json = pd.DataFrame.from_dict(history.history).to_json()
 
     def evaluate(self, model_name: str, test_data, test_labels):
         logger.info(f"Evaluate model {model_name}")

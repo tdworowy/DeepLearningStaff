@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { networkDetailsEndPoint,dataSetsEndPoint,compileNetwrokEndPoint,trainNetwrokEndPoint } from './Config';
+import { networkDetailsEndPoint,dataSetsEndPoint,compileNetwrokEndPoint,trainNetwrokEndPoint,plotAccEndPoint,plotLossEndPoint } from './Config';
 import { SyncRequestClient } from 'ts-sync-request/dist'
+import { Url } from 'url';
 
 class CompileNetworkData {
     name: string|File|null
@@ -31,7 +32,26 @@ function getDataSetsSync() {
         .addHeader("Content-Type", "application/json")
         .get<Response>(dataSetsEndPoint)
 }
-
+function getPlotAccSync(name:string) {
+    return new SyncRequestClient()
+        .addHeader("Content-Type", "application/json")
+        .get<Response>(plotAccEndPoint+name)
+}
+function getPlotLossSync(name:string) {
+    return new SyncRequestClient()
+        .addHeader("Content-Type", "application/json")
+        .get<Response>(plotLossEndPoint+name)
+}
+function compileNetworkSync(data:any) {
+    return new SyncRequestClient()
+    .addHeader("Content-Type", "application/json")
+    .post<Url,any>(compileNetwrokEndPoint,data)
+}
+function trainNetworkSync(data:any) {
+    return new SyncRequestClient()
+    .addHeader("Content-Type", "application/json")
+    .post<Url,any>(trainNetwrokEndPoint,data)
+}
 async function compileNetwork(data:any) {
     const response = await fetch(compileNetwrokEndPoint, {
         method: 'POST',
@@ -75,19 +95,14 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
         )
         const json = JSON.stringify(compileNetworkData)
         console.log(`POST:${json}`) 
-        compileNetwork(json)
-            .then((response) => {
-                console.log(`Response:${JSON.stringify(response)}`)
-            });
+        compileNetworkSync(compileNetworkData)
+     
     }
     trainNetworkHandler = (event:any) => {
         const data = new FormData(event.target)
         const json = JSON.stringify(Object.fromEntries(data))
         console.log(`POST:${json}`)
-        trainNetwork(json)
-            .then((response) => {
-                console.log(`Response:${JSON.stringify(response)}`)
-            });
+        trainNetworkSync(Object.fromEntries(data))
     }
     getDataSources() {
         var dat_sources: Array<string> = []
@@ -163,9 +178,8 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                     metrics:&nbsp;&nbsp;
                         <select
                         name = 'metrics'
-                        multiple
                         >
-                        <option value='accuracy'>accuracy</option>    
+                        <option value='acc'>accuracy</option>    
                         <option value='binary_accuracy'>binary_accuracy</option>
                         <option value='categorical_accuracy'>categorical_accuracy</option>   
                         <option value='sparse_categorical_accuracy'>sparse_categorical_accuracy</option>
@@ -176,7 +190,7 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                     <br/>
                     <input id="compile" type="submit" value="Compile network"/>
         </form>
-        )// TODO only sends one value from 'metrics'
+        )
     }
     
     trainForm() {
@@ -228,7 +242,13 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
 
     getNetworkDetails() {
        return getNetworkDetailsSync(this.state.name)
-    } 
+    }
+    getPlotAcc() {
+        return getPlotAccSync(this.state.name)
+     } 
+     getPlotLoos() {
+        return getPlotLoosSync(this.state.name)
+     }  
     getForm():any {
         var details:any = this.getNetworkDetails()
         console.log(`Network details in getFrom:${JSON.stringify(details)}`)
@@ -239,7 +259,12 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
            return this.trainForm()
         }
         else {
-            return ("Add training chart")
+            return (
+                <div>
+                {this.getPlotAcc()}
+                {this.getPlotLoos()}
+                </div>
+            )
         }
 
     }
@@ -247,6 +272,7 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
         return (
             <div>
                 {this.getForm()}
+                <textarea id="network_details" rows={4} cols={50} value={JSON.stringify(this.getNetworkDetails())}></textarea>
             </div>
         )}
 }

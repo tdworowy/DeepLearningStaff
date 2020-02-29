@@ -3,8 +3,8 @@
 - keras wrapper
 - add some layer between api and wrapper (message broker? Queues?) (?)
 - front-end (graphs etc.)
-- documentation (generated)(python and typescritp)
-- api documentation witch swaget 
+- documentation (generated)(python and typescript)
+- api documentation witch swagger
 - dockerize it
 - jenkins pipeline
 - unit tests 

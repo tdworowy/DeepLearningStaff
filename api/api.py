@@ -222,7 +222,7 @@ def get_plot_loss(name):
     history = json.loads(keras_wrapper.models[name].history_json)
     loss = list(history['loss'].values())
     val_loss = list(history['val_loss'].values())
-    epochs = range(len(loss)
+    epochs = range(len(loss))
 
     plt_html = mpld3.fig_to_html(plot(epochs=epochs,
                                       train_values=loss,

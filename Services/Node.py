@@ -29,8 +29,8 @@ async def call_service(nats_port: str, service_topic: str, response_topic, loop)
             logger.info(f"Received a message on '{subject}': {data}")
             data = json.loads(data)
             response = services[data['service_name']](data['data'])
-            await nc.publish(response_topic, response)  # TODO handle data (protobuf?)
-        except  Exception as ex:
+            await nc.publish(response_topic, response)
+        except Exception as ex:
             logger.error(ex)
 
     sid = await nc.subscribe(service_topic, cb=message_handler)

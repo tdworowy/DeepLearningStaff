@@ -12,3 +12,8 @@
 - api tests
 - desktop app 
 - mobile app
+
+
+_______________
+Next steps:
+wraper (more instances with shared data) -> message brocker layer -> api 

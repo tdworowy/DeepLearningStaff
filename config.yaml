@@ -1,2 +1,4 @@
 host: 'localhost'
 port: 5000
+nats_port: "4222"
+topic: "Services"

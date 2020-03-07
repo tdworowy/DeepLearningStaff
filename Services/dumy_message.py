@@ -13,9 +13,8 @@ async def run(nats_port: str, topic: str, loop):
     nc = NATS()
     await nc.connect(servers=[f"nats://127.0.0.1:{nats_port}"], loop=loop)
 
-    await nc.publish(topic, b'Hello')
-    await nc.publish(topic, b'World')
-    await nc.publish(topic, b'!!!!!')
+    await nc.publish(topic, b'{"service_name":"health_check", "data":{}}')
+
     await nc.flush()
     await nc.close()
 
@@ -23,6 +22,6 @@ if __name__ == '__main__':
     config = read_config()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run(nats_port=config.get('nats_port'),
-                                topic=config.get('topic'),
+                                topic=config.get('service_topic'),
                                 loop=loop))
     loop.close()

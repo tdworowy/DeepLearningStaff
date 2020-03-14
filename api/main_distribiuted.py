@@ -1,4 +1,4 @@
-from api import read_config, get_app
+from rest_api_distributed import read_config, get_app
 
 if __name__ == '__main__':
     config = read_config()

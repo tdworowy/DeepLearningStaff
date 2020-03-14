@@ -115,3 +115,11 @@ def test_get_network_details():
     assert get_networks_response.json()['Name'] == new_network_json['name']
     assert get_networks_response.json()['Compiled'] is False
     assert get_networks_response.json()['Trained'] is False
+
+
+def test_health_check():
+    health_check_end_point = f"{host}/healthCheck"
+    get_networks_response = requests.get(url=health_check_end_point,
+                                         headers={"content-type": "application/json"})
+
+    assert get_networks_response.status_code is 200

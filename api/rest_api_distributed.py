@@ -1,4 +1,6 @@
+import asyncio
 import json
+import time
 
 import mpld3
 import yaml
@@ -7,6 +9,10 @@ from _logging._logger import get_logger
 from data.data_provider import get_keras_data_set, data_sources
 from visualization.vizualization import plot
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
+import asyncio
+from nats.aio.client import Client as NATS
+from multiprocessing import Queue
+
 # TODO rewrite to use NATS message brocker
 logger = get_logger(__name__)
 
@@ -31,6 +37,38 @@ def prepare_response(message: json, status: int):
     logger.info(f"Response:{message}")
     response = jsonify(message)
     return response, status
+
+
+def send_message(service_name: str, data: str):  # TODO move it to new module
+    responses = Queue()
+
+    async def call_service(nats_port: str, service_topic: str, response_topic, loop):
+        nc = NATS()
+
+        await nc.connect(servers=[f"nats://127.0.0.1:{nats_port}"], loop=loop)
+        message = {'service_name': service_name, 'data': data}
+
+        async def message_handler(msg):
+            try:
+                subject = msg.subject
+                data = msg.data.decode()
+                logger.info(f"Received a message on '{subject}': {data}")
+                data = json.loads(data)
+                responses.put(data)
+            except Exception as ex:
+                logger.error(ex)
+
+        sid = await nc.subscribe(response_topic, cb=message_handler)
+        await nc.publish(service_topic, json.dumps(message).encode())
+
+    config = read_config()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(call_service(nats_port=config.get('nats_port'),
+                                         service_topic=config.get('service_topic'),
+                                         response_topic=config.get('response_topic'),
+                                         loop=loop))
+    response = responses.get(timeout=3)  # TODO DON"T WORK
+    return response
 
 
 test_data_dict = dict()
@@ -235,6 +273,15 @@ def get_plot_loss(name):
 def get_data_sources():
     response = data_sources()
     response = {"Dat_Sources": response}
+    return prepare_response(response, 200)
+
+
+@app.route('/healthCheck', methods=['GET'])
+def health_check():
+    response = send_message("health_check", "")
+    response = {
+        "Message": response
+    }
     return prepare_response(response, 200)
 
 

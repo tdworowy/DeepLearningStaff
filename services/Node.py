@@ -5,11 +5,11 @@ import yaml
 import asyncio
 from nats.aio.client import Client as NATS
 
-from Services import get_services
+from services import get_services
 from _logging._logger import get_logger
 
 services = get_services()
-logger = get_logger("Node" + str(uuid.uuid4()))
+logger = get_logger("Node_" + str(uuid.uuid4()))
 
 
 def read_config():
@@ -29,7 +29,8 @@ async def call_service(nats_port: str, service_topic: str, response_topic, loop)
             logger.info(f"Received a message on '{subject}': {data}")
             data = json.loads(data)
             response = services[data['service_name']](data['data'])
-            await nc.publish(response_topic, response)
+            logger.info(f"Response from service'{data['service_name']}': {response}")
+            await nc.publish(response_topic, response.encode())
         except Exception as ex:
             logger.error(ex)
 

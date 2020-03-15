@@ -123,3 +123,4 @@ def test_health_check():
                                          headers={"content-type": "application/json"})
 
     assert get_networks_response.status_code is 200
+    assert get_networks_response.json()["Message"] == {"health": "Live"}

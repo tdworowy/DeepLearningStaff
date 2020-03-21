@@ -25,7 +25,7 @@ async def call_service(nats_port: str, service_topic: str, services, response_to
     sid = await nc.subscribe(service_topic, cb=message_handler)
 
 
-def send_message(service_name: str, data: str, logger, config):
+def send_message(service_name: str, data: json, logger, config):
     responses = Queue()
 
     async def call_service(nats_port: str, service_topic: str, response_topic: str, loop):
@@ -55,6 +55,6 @@ def send_message(service_name: str, data: str, logger, config):
 
     Thread(target=loop.run_forever).start()  # might not be the best solution
 
-    response = responses.get(timeout=3)
+    response = responses.get(timeout=600)
     loop.stop()
     return response

@@ -1,31 +1,16 @@
 import json
+
 import mpld3
 import yaml
 from flask import Flask, jsonify, request
+
 from _logging._logger import get_logger
-from data.data_provider import get_keras_data_set, data_sources
+from data.data_provider import data_sources
 from nats_wrapper.nats_wrapper import send_message
 from visualization.vizualization import plot
-from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
-# TODO rewrite to use NATS message brocker
+
 logger = get_logger(__name__)
-
-
-def build_model(values: json):
-    model = ModelBuilder().model()
-    for _layer in values['layers']:
-
-        layer = DenseLayerBuilder(). \
-            units(_layer['units']). \
-            activation(_layer['activation'])
-
-        if "input_shape" in _layer:
-            if _layer["input_shape"] != "":
-                layer = layer.input_shape(tuple(map(int, _layer['input_shape'].split(','))))
-
-        model = model.layer(layer.build())
-    return model.build()
 
 
 def prepare_response(message: json, status: int):
@@ -34,8 +19,6 @@ def prepare_response(message: json, status: int):
     return response, status
 
 
-test_data_dict = dict()
-keras_wrapper = KerasWrapper()
 app = Flask(__name__)
 
 
@@ -59,10 +42,11 @@ def new_network():
         return prepare_response({'Massage': 'Missing values'}, 400)
     else:
 
-        keras_wrapper.add_model(values['name'], build_model(values))
-        response = {
-            "Message": f"New Network {values['name']} added."
-        }
+        response = send_message(service_name="new_network",
+                                data=values,
+                                logger=logger,
+                                config=read_config())
+
         return prepare_response(response, 200)
 
 
@@ -73,20 +57,22 @@ def compile_network():
     if not all(k in values for k in required):
         return prepare_response({"Message": "Missing value"}, 400)
     else:
-        if not keras_wrapper.models.get(values["name"], None):
+        networks = send_message(service_name="get_networks",
+                                data="",
+                                logger=logger,
+                                config=read_config())
+        if values["name"] not in networks['Networks']:
             response = {
                 "Message": f"Network {values['name']} not found."
             }
             return prepare_response(response, 200)
 
-        keras_wrapper.compile(model_name=values['name'],
-                              optimizer=values['optimizer'],
-                              loss=values['loss'],
-                              metrics=values['metrics'])
-        response = {
-            "Message": f"Network {values['name']} compiled."
-        }
-        return prepare_response(response, 200)
+    response = send_message(service_name="compile_network",
+                            data=values,
+                            logger=logger,
+                            config=read_config())
+
+    return prepare_response(response, 200)
 
 
 @app.route('/network/train', methods=['POST'])
@@ -96,37 +82,30 @@ def train_network():
     if not all(k in values for k in required):
         return prepare_response({"Message": "Missing value"}, 400)
     else:
-
-        if not keras_wrapper.models.get(values["name"], None):
+        networks = send_message(service_name="get_networks",
+                                data="",
+                                logger=logger,
+                                config=read_config())
+        if values["name"] not in networks['Networks']:
             response = {
                 "Message": f"Network {values['name']} not found."
             }
             return prepare_response(response, 200)
 
-        if not keras_wrapper.models.get(values["name"], None).compiled:
+        network_details = send_message(service_name="get_network_details",
+                                       data={'name': values["name"]},
+                                       logger=logger,
+                                       config=read_config())
+        if not network_details["Compiled"]:
             response = {
                 "Message": f"Network {values['name']} need to be compiled."
             }
             return prepare_response(response, 200)
 
-        (train_data, train_labels), \
-        (val_data, val_labels), \
-        (test_data, test_labels) = get_keras_data_set(values["data_set"],
-                                                      int(values['input_shape']),
-                                                      int(values['test_sample_size']))
-
-        test_data_dict[values['name']] = (test_data, test_labels)
-
-        keras_wrapper.train(model_name=values["name"],
-                            train_data=train_data,
-                            train_labels=train_labels,
-                            val_data=val_data,
-                            val_labels=val_labels,
-                            epochs=int(values['epochs']),
-                            batch_size=int(values['batch_size']))
-        response = {
-            "Message": f"Network {values['name']} training complete."
-        }
+        response = send_message(service_name="train_network",
+                                data=values,
+                                logger=logger,
+                                config=read_config())
         return prepare_response(response, 200)
 
 
@@ -137,16 +116,20 @@ def delete_network():
     if not all(k in values for k in required):
         return prepare_response({'Massage': 'Missing values'}, 400)
     else:
-        if not keras_wrapper.models.get(values["name"], None):
+        networks = send_message(service_name="get_networks",
+                                data="",
+                                logger=logger,
+                                config=read_config())
+        if values["name"] not in networks['Networks']:
             response = {
                 "Message": f"Network {values['name']} not found."
             }
             return prepare_response(response, 200)
 
-        keras_wrapper.models.pop(values['name'])
-        response = {
-            "Message": f"Network {values['name']} deleted."
-        }
+        response = send_message(service_name="delete_network",
+                                data=values,
+                                logger=logger,
+                                config=read_config())
         return prepare_response(response, 200)
 
 
@@ -157,19 +140,20 @@ def evaluate_network():
     if not all(k in values for k in required):
         return prepare_response({'Massage': 'Missing values'}, 400)
     else:
-        if not keras_wrapper.models.get(values["name"], None):
+        networks = send_message(service_name="get_networks",
+                                data="",
+                                logger=logger,
+                                config=read_config())
+        if values["name"] not in networks['Networks']:
             response = {
                 "Message": f"Network {values['name']} not found."
             }
             return prepare_response(response, 200)
 
-        test_loss, test_acc = keras_wrapper.evaluate(model_name=values['name'],
-                                                     test_data=test_data_dict[values['name']][0],
-                                                     test_labels=test_data_dict[values['name']][1])
-        response = {
-            "Test_accuracy": test_acc,
-            "Test_loss": test_loss
-        }
+        response = send_message(service_name="evaluate_network",
+                                data=values,
+                                logger=logger,
+                                config=read_config())
         return prepare_response(response, 200)
 
 
@@ -183,30 +167,38 @@ def default():
 
 @app.route('/networks', methods=['GET'])
 def get_networks():
-    response = list(keras_wrapper.models.keys()) if keras_wrapper.models.keys() else [""]
-    response = {"Networks": response}
+    response = send_message(service_name="get_networks",
+                            data="",
+                            logger=logger,
+                            config=read_config())
     return prepare_response(response, 200)
 
 
 @app.route('/network/<name>', methods=['GET'])
 def get_network_details(name):
-    compiled = keras_wrapper.models[name].compiled
-    trained = keras_wrapper.models[name].trained
-    model_json = keras_wrapper.models[name].model.to_json()
-    response = {"Name": name, "Compiled": compiled, "Trained": trained, "Model": model_json}
+    response = send_message(service_name="get_network_details",
+                            data={'name': name},
+                            logger=logger,
+                            config=read_config())
     return prepare_response(response, 200)
 
 
 @app.route('/network/history/<name>', methods=['GET'])
 def get_network_history(name):
-    history_json = keras_wrapper.models[name].history_json
-    response = {"Name": name, "History": history_json}
+    response = send_message(service_name="get_network_history",
+                            data={'name': name},
+                            logger=logger,
+                            config=read_config())
     return prepare_response(response, 200)
 
 
 @app.route('/network/plot/accuracy/<name>', methods=['GET'])
 def get_plot_accuracy(name):
-    history = json.loads(keras_wrapper.models[name].history_json)
+    history = send_message(service_name="get_network_history",
+                           data={'name': name},
+                           logger=logger,
+                           config=read_config())
+    history = history["History"]
     acc = list(history['acc'].values())
     val_acc = list(history['val_acc'].values())
     epochs = range(1, len(acc) + 1)
@@ -220,7 +212,11 @@ def get_plot_accuracy(name):
 
 @app.route('/network/plot/loss/<name>', methods=['GET'])
 def get_plot_loss(name):
-    history = json.loads(keras_wrapper.models[name].history_json)
+    history = send_message(service_name="get_network_history",
+                           data={'name': name},
+                           logger=logger,
+                           config=read_config())
+    history = history["History"]
     loss = list(history['loss'].values())
     val_loss = list(history['val_loss'].values())
     epochs = range(len(loss))

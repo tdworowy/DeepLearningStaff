@@ -6,3 +6,4 @@ keras
 flask
 pytest
 mpld3
+pymongo

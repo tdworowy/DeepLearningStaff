@@ -20,7 +20,7 @@ async def call_service(nats_port: str, service_topic: str, services, response_to
             logger.info(f"Response from service'{data['service_name']}': {response}")
             await nc.publish(response_topic, response.encode())
         except Exception as ex:
-            logger.error(ex)
+            logger.error(f"Exception in service {data['service_name']}: {ex}")
 
     sid = await nc.subscribe(service_topic, cb=message_handler)
 
@@ -42,7 +42,7 @@ def send_message(service_name: str, data: json, logger, config):
                 data = json.loads(data)
                 responses.put(data)
             except Exception as ex:
-                logger.error(ex)
+                logger.error(f"Exception in service {data['service_name']}: {ex}")
 
         sid = await nc.subscribe(response_topic, cb=message_handler)
         await nc.publish(service_topic, json.dumps(message).encode())

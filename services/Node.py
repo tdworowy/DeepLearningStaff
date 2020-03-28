@@ -1,14 +1,25 @@
+import time
 import uuid
 import yaml
 import asyncio
-from nats_wrapper.nats_wrapper import call_service
+from nats_wrapper.nats_wrapper import call_service, send_message
 from _logging._logger import get_logger
 from multiprocessing import Process
+from threading import Thread
 
 
 def read_config():
     with open('../config.yaml') as file:
         return yaml.safe_load(file)
+
+
+def synchronize(logger):
+    while 1:
+        send_message(service_name="synchronize_data", # TODO fix it 
+                     data="",
+                     logger=logger,
+                     config=read_config())
+        time.sleep(2)
 
 
 def start_node(config: dict):
@@ -23,6 +34,9 @@ def start_node(config: dict):
                                          loop=loop,
                                          logger=logger,
                                          services=services))
+
+    thread = Thread(target=synchronize, args=(logger,))
+    thread.start()
     loop.run_forever()
 
 

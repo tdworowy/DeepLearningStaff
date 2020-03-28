@@ -73,16 +73,16 @@ def test_train_model(keras_wrapper, model):
     (val_data, val_labels), \
     (test_data, test_labels) = get_keras_data_set(
         train_network_json["data_set"],
-        train_network_json['input_shape'],
-        train_network_json['test_sample_size'])
+        int(train_network_json['input_shape']),
+        int(train_network_json['test_sample_size']))
 
     keras_wrapper.train(model_name=train_network_json["name"],
                         train_data=train_data,
                         train_labels=train_labels,
                         val_data=val_data,
                         val_labels=val_labels,
-                        epochs=train_network_json['epochs'],
-                        batch_size=train_network_json['batch_size'])
+                        epochs=int(train_network_json['epochs']),
+                        batch_size=int(train_network_json['batch_size']))
 
     assert keras_wrapper.models.get(new_network_json['name'])
     assert keras_wrapper.models.get(new_network_json['name']).compiled
@@ -102,16 +102,16 @@ def test_evaluate_model(keras_wrapper, model):
     (val_data, val_labels), \
     (test_data, test_labels) = get_keras_data_set(
         train_network_json["data_set"],
-        train_network_json['input_shape'],
-        train_network_json['test_sample_size'])
+        int(train_network_json['input_shape']),
+        int(train_network_json['test_sample_size']))
 
     keras_wrapper.train(model_name=train_network_json["name"],
                         train_data=train_data,
                         train_labels=train_labels,
                         val_data=val_data,
                         val_labels=val_labels,
-                        epochs=train_network_json['epochs'],
-                        batch_size=train_network_json['batch_size'])
+                        epochs=int(train_network_json['epochs']),
+                        batch_size=int(train_network_json['batch_size']))
 
     evaluate_results = keras_wrapper.evaluate(model_name=train_network_json["name"],
                                               test_data=test_data,

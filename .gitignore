@@ -7,4 +7,5 @@ jspm_packages
 dist
 .vscode
 *.js
+*.hdf5
 logs

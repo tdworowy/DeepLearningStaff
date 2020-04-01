@@ -2,7 +2,7 @@ import json
 
 import yaml
 from keras.engine.saving import load_model
-
+import uuid
 from _logging._logger import get_logger
 from data.data_provider import get_keras_data_set
 from data_base.mongo_wrapper import MongoWrapper
@@ -43,12 +43,12 @@ def build_model(values: json):
     return model.build()
 
 
-def health_check_service(*args):
+def health_check_service(*args) -> str:
     logger.info("Call service:health_check")
     return '{"health": "Live"}'
 
 
-def new_network_service(values: json):
+def new_network_service(values: json) -> str:
     keras_wrapper.add_model(values['name'], build_model(values))
     response = {
         "Message": f"New Network {values['name']} added."
@@ -56,7 +56,7 @@ def new_network_service(values: json):
     return json.dumps(response)
 
 
-def compile_network(values: json):
+def compile_network(values: json) -> str:
     keras_wrapper.compile(model_name=values['name'],
                           optimizer=values['optimizer'],
                           loss=values['loss'],
@@ -67,7 +67,7 @@ def compile_network(values: json):
     return json.dumps(response)
 
 
-def train_network(values: json):
+def train_network(values: json) -> str:
     (train_data, train_labels), \
     (val_data, val_labels), \
     (test_data, test_labels) = get_keras_data_set(values["data_set"],
@@ -88,13 +88,13 @@ def train_network(values: json):
     return json.dumps(response)
 
 
-def get_networks(*args):
+def get_networks(*args) -> str:
     response = keras_wrapper.get_models_names()
     response = {"Networks": response}
     return json.dumps(response)
 
 
-def get_network_details(values: json):
+def get_network_details(values: json) -> str:
     name = values["name"]
     model = keras_wrapper.get_model(name)
     compiled = model.compiled
@@ -104,7 +104,7 @@ def get_network_details(values: json):
     return json.dumps(response)
 
 
-def delete_network(values: json):
+def delete_network(values: json) -> str:
     keras_wrapper.delete_network(values['name'])
     response = {
         "Message": f"Network {values['name']} deleted."
@@ -112,7 +112,7 @@ def delete_network(values: json):
     return json.dumps(response)
 
 
-def evaluate_network(values: json):
+def evaluate_network(values: json) -> str:
     test_loss, test_acc = keras_wrapper.evaluate(model_name=values['name'],
                                                  test_data=test_data_dict[values['name']][0],
                                                  test_labels=test_data_dict[values['name']][1])
@@ -123,34 +123,43 @@ def evaluate_network(values: json):
     return json.dumps(response)
 
 
-def get_network_history(values: json):
+def get_network_history(values: json) -> str:
     name = values['name']
     history_json = keras_wrapper.models[name].history_json
     response = {"Name": name, "History": history_json}
     return json.dumps(response)
 
 
-def model_to_json(network_name: str):
-    keras_wrapper.models[network_name].serialize_model(f'{network_name}.hdf5')
+def model_to_json(network_name: str) -> dict:
+    keras_wrapper.serialize_model(model_name=network_name,
+                                  path=f'{network_name}.hdf5')
     return {
         "name": network_name,
         "compiled": keras_wrapper.models[network_name].compiled,
         "trained": keras_wrapper.models[network_name].trained,
-        "model": open(f'{network_name}.hdf5').read(),
+        "model": open(f'{network_name}.hdf5', 'rb').read(),
         "history": keras_wrapper.models[network_name].history_json,
         "time_stamp": keras_wrapper.models[network_name].update_time_stamp
     }
 
 
-def json_to_model(data: json):
+def generate_temp_file(file_bytes: bytes) -> str:
+    uuid_ = str(uuid.uuid4())
+    file_name = f"temp{uuid_}.hdf5"
+    with open(file_name, 'wb') as temp:
+        temp.write(file_bytes)
+    return file_name
+
+
+def json_to_model_wrapper(data: json):
+    temp_file = generate_temp_file(data["model"])
     return ModelWrapper(
         name=data["name"],
         compiled=data["compiled"],
         trained=data["trained"],
-        model=load_model(data["model"]),
+        model=load_model(temp_file),
         history_json=data["history"],
         update_time_stamp=data["time_stamp"]
-
     )
 
 
@@ -167,8 +176,8 @@ def synchronize_data(*args):
         mongo_wrapper.delete(network_name)
 
     for network in mongo_wrapper.get_all():
-        model = json_to_model(network)
-        keras_wrapper.add_model(network['name'], model)
+        model_wrapper = json_to_model_wrapper(network)
+        keras_wrapper.models[network['name']] = model_wrapper
 
     response = {"Message": "Data synchronized"}
     return json.dumps(response)

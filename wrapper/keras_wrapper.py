@@ -37,9 +37,12 @@ class KerasWrapper(metaclass=Singleton):
         else:
             self.models = dict()
 
-    def add_model(self, name: str, model: models):
+    def add_model(self, name: str, model: models, compiled=False, trained=False):
         logger.info(f"Add new Model {name}")
-        self.models[name] = ModelWrapper(name, model, False, False)
+        self.models[name] = ModelWrapper(name=name,
+                                         model=model,
+                                         compiled=compiled,
+                                         trained=trained)
         self.models[name].update_time_stamp = datetime.now()
 
     def compile(self, model_name: str, optimizer: str, loss: str, metrics: list):
@@ -67,13 +70,13 @@ class KerasWrapper(metaclass=Singleton):
     def delete_network(self, model_name: str):
         self.get_model(model_name).deleted = True
 
-    def get_models_names(self):
+    def get_models_names(self) -> list:
         if self.models:
             return [model.name for model in list(self.models.values()) if not model.deleted]
         else:
-            return [""]
+            return []
 
-    def get_models(self):
+    def get_models(self) -> list or None:
         if self.models:
             return [model for model in list(self.models.values()) if not model.deleted]
         else:
@@ -82,8 +85,11 @@ class KerasWrapper(metaclass=Singleton):
     def get_model(self, model_name: str):
         return self.models[model_name] if not self.models[model_name].deleted else None
 
-    def get_deleted_models_names(self):
-        return [model.name for model in self.models if model.deleted]
+    def get_deleted_models_names(self) -> list:
+        if self.models:
+            return [model.name for model in list(self.models.values()) if model.deleted]
+        else:
+            return []
 
 
 class ModelBuilder:

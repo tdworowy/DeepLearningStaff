@@ -1,4 +1,5 @@
 import json
+import sys
 from multiprocessing import Queue
 import asyncio
 from threading import Thread
@@ -42,7 +43,9 @@ def send_message(service_name: str, data: json, logger, config):
                 data = json.loads(data)
                 responses.put(data)
             except Exception as ex:
+                type, value, traceback = sys.exc_info()
                 logger.error(f"Exception in service {data['service_name']}: {ex}")
+                logger.error(f"Type: {type} Value: {value} Traceback: {traceback}")
 
         sid = await nc.subscribe(response_topic, cb=message_handler)
         await nc.publish(service_topic, json.dumps(message).encode())

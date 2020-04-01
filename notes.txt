@@ -1,0 +1,7 @@
+mongodb
+
+mongo <- start
+show dbs <- display data bases
+
+use <db name>
+db.dropDatabase()  <- delete db

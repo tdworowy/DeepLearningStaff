@@ -15,16 +15,16 @@ def read_config():
 
 def synchronize(logger):
     while 1:
-        send_message(service_name="synchronize_data", # TODO fix it 
+        send_message(service_name="synchronize_data",
                      data="",
                      logger=logger,
                      config=read_config())
-        time.sleep(2)
+        time.sleep(10)
 
 
 def start_node(config: dict):
-    from services import get_services
-    services = get_services()
+    import services
+    services = services.get_services()
 
     logger = get_logger("Node_" + str(uuid.uuid4()))
     loop = asyncio.new_event_loop()

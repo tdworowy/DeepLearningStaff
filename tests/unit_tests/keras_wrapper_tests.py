@@ -2,6 +2,7 @@ import json
 import pytest
 from data.data_provider import get_keras_data_set
 from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
+import os
 
 with open("../resources/new_network_json.json") as json_file:
     new_network_json = json.load(json_file)
@@ -45,6 +46,13 @@ def test_add_model(keras_wrapper, model):
     assert not keras_wrapper.models.get(new_network_json['name']).trained
     assert not keras_wrapper.models.get(new_network_json['name']).compiled
     assert keras_wrapper.models.get(new_network_json['name']).model == model
+
+
+def test_save_model(keras_wrapper, model):
+    file_name = "test.hdf5"
+    keras_wrapper.add_model(new_network_json['name'], model)
+    keras_wrapper.serialize_model(new_network_json['name'], file_name)
+    assert os.path.isfile(file_name)
 
 
 def test_compile_model(keras_wrapper, model):

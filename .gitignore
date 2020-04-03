@@ -9,3 +9,5 @@ dist
 *.js
 *.hdf5
 logs
+geckodriver
+tests/chromedriver

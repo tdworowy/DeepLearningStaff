@@ -21,8 +21,8 @@ async function postNetwork(data:any) {
     return await response.json()
 }
 
-class Network  
-{ name?: string |File |null
+class Network { 
+   name?: string |File |null
   layers?:Array<Layer>
 }
 
@@ -129,4 +129,4 @@ export class NewNetwork extends React.Component {
             </div>
         );
     }
-  }
+  } 

@@ -18,7 +18,7 @@ async function deleteNetwork(name:string|File|null) {
         })
     return await response.json()
 }
-function deleteNetworkHandler(name:string){
+function deleteNetworkHandler(name:string) {
     return () => { 
         console.log(`Delete:${name}`) 
         deleteNetwork(name)

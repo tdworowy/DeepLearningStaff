@@ -122,7 +122,7 @@ export class NewNetwork extends React.Component {
                     <br/>
                     <input id="add_layer" type="submit" value="Add Layer"/>
                 </form>
-                <button id ="add_netwrok_button" onClick ={this.addNetworkHandler}>Add new network</button>
+                <button id ="add_network_button" onClick ={this.addNetworkHandler}>Add new network</button>
                 <button id="clear_network_button" onClick ={this.clearNetworkHandler}>Clear network</button>
                 <br/>
                 <textarea id="new_layer_details" rows={4} cols={50} value={this.getTempNetworkDetails()}></textarea>

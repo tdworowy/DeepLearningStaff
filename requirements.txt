@@ -7,3 +7,5 @@ flask
 pytest
 mpld3
 pymongo
+selenium
+behave

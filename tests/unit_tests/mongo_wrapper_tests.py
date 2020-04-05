@@ -33,3 +33,7 @@ def test_get_by_name(mongo_wrapper):
     assert len(mongo_wrapper.get_all()) == 1
     assert mongo_wrapper.get_by_name('test')['data'] == 'test_data'
     mongo_wrapper.drop_db()
+
+
+def test_get_empty(mongo_wrapper):
+    assert len(mongo_wrapper.get_all()) == 0

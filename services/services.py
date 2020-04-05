@@ -143,16 +143,16 @@ def model_to_json(network_name: str) -> dict:
     }
 
 
-def generate_temp_file(file_bytes: bytes) -> str:
+def generate_temp_file(network_name: str, file_bytes: bytes) -> str:
     uuid_ = str(uuid.uuid4())
-    file_name = f"temp{uuid_}.hdf5"
+    file_name = f"{network_name}_temp{uuid_}.hdf5"
     with open(file_name, 'wb') as temp:
         temp.write(file_bytes)
     return file_name
 
 
 def json_to_model_wrapper(data: json):
-    temp_file = generate_temp_file(data["model"])
+    temp_file = generate_temp_file(data["name"], data["model"])
     return ModelWrapper(
         name=data["name"],
         compiled=data["compiled"],
@@ -175,9 +175,11 @@ def synchronize_data(*args):
     for network_name in keras_wrapper.get_deleted_models_names():
         mongo_wrapper.delete(network_name)
 
-    for network in mongo_wrapper.get_all():
-        model_wrapper = json_to_model_wrapper(network)
-        keras_wrapper.models[network['name']] = model_wrapper
+    all_networks = mongo_wrapper.get_all()
+    for network in all_networks:
+        if network['name'] not in keras_wrapper.get_models_names():
+            model_wrapper = json_to_model_wrapper(network)
+            keras_wrapper.models[network['name']] = model_wrapper
 
     response = {"Message": "Data synchronized"}
     return json.dumps(response)

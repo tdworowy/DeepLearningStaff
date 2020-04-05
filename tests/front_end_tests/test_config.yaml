@@ -1,3 +1,3 @@
 url: 'http://localhost:3000/'
-geckodriver_path: '../geckodriver/geckodriver.exe'
-chromdriver_path: '../chromedriver/chromedriver.exe'
+driver_path: '../chromedriver/chromedriver.exe'
+browser: 'chrome'

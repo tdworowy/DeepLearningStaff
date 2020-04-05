@@ -52,10 +52,10 @@ export class NetworksList extends React.Component<{},State> {
         if ( this.state.networks.length > 0) {
             this.state.networks.forEach(function (value) {
                 console.log(value) 
-                networks.push(<li>
-                                <label id={value}>{value}&nbsp;&nbsp;</label>
-                                <button onClick={event => ReactDOM.render(<NetworkDetails params={value}/>, document.getElementById('root'))}>Details</button>
-                                <button onClick={deleteNetworkHandler(value)}>Delete</button>
+                networks.push(<li id={value}>
+                                <label>{value}&nbsp;&nbsp;</label>
+                                <button id='details' onClick={event => ReactDOM.render(<NetworkDetails params={value}/>, document.getElementById('root'))}>Details</button>
+                                <button id='delete' onClick={deleteNetworkHandler(value)}>Delete</button>
                               </li> )
             })
         }

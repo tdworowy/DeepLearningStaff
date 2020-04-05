@@ -23,8 +23,8 @@ def read_config():
 def before_feature(context, feature):
     config = read_config()
     context.url = config['url']
-   # context.geckodriver_path = config['geckodriver_path']
-    context.chromdriver_path = config['chromdriver_path']
+    context.driver_path = config['driver_path']
+    context.browser = config['browser']
     create_dir(logs_path)
 
     context.feature_logger = TestsLogger()
@@ -43,7 +43,7 @@ def before_scenario(context, scenario):
     context.log_file = context.logs_dir_name + "\\%s_Log_%s.log" % (context.scenario_name, context.time_stump)
     context.scenario_logger.add_log_file(context.log_file)
 
-    context.web_driver_wrapper = WebDriverWrapper(executable_path=context.chromdriver_path )
+    context.web_driver_wrapper = WebDriverWrapper(executable_path=context.driver_path, browser=context.browser)
 
     context.scenario_logger.log().info("Scenario started: " + scenario.name)
 
@@ -63,6 +63,8 @@ def after_step(context, step):
     context.scenario_logger.log().info("Step status: " + str(step.status))
     if str(step.status) == "Status.failed":
         context.scenario_logger.log().error("STEP FAIL")
+        for entry in context.web_driver_wrapper.driver.get_log('browser'):
+            context.scenario_logger.log().info(entry)
 
 
 def after_feature(context, feature):

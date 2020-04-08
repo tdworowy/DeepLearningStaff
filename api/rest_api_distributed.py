@@ -9,7 +9,6 @@ from data.data_provider import data_sources
 from nats_wrapper.nats_wrapper import send_message
 from visualization.vizualization import plot
 
-
 logger = get_logger(__name__)
 
 
@@ -199,6 +198,7 @@ def get_plot_accuracy(name):
                            logger=logger,
                            config=read_config())
     history = history["History"]
+    history = json.loads(history)
     acc = list(history['acc'].values())
     val_acc = list(history['val_acc'].values())
     epochs = range(1, len(acc) + 1)
@@ -217,6 +217,7 @@ def get_plot_loss(name):
                            logger=logger,
                            config=read_config())
     history = history["History"]
+    history = json.loads(history)
     loss = list(history['loss'].values())
     val_loss = list(history['val_loss'].values())
     epochs = range(len(loss))

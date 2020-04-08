@@ -124,3 +124,25 @@ def test_health_check():
 
     assert get_networks_response.status_code is 200
     assert get_networks_response.json()["Message"] == {"health": "Live"}
+
+
+def test_get_plots():
+    end_point_train = f"{host}/network/train"
+    end_point_compile = f"{host}/network/compile"
+    end_point_loos_plt = f"{host}/network/plot/loss/{new_network_json['name']}"
+    end_point_accuracy_plt = f"{host}/network/plot/accuracy/{new_network_json['name']}"
+
+    requests.post(url=end_point_compile, json=compile_network_json,
+                  headers={"content-type": "application/json"})
+
+    requests.post(url=end_point_train, json=train_network_json,
+                  headers={"content-type": "application/json"})
+
+    loss_response = requests.get(url=end_point_loos_plt, json=train_network_json,
+                                 headers={"content-type": "application/json"})
+
+    acc_response = requests.get(url=end_point_accuracy_plt, json=train_network_json,
+                                headers={"content-type": "application/json"})
+
+    assert loss_response.status_code is 200
+    assert acc_response.status_code is 200

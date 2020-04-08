@@ -53,7 +53,7 @@ export class NetworksList extends React.Component<{},State> {
             this.state.networks.forEach(function (value) {
                 console.log(value) 
                 networks.push(<li id={value}>
-                                <label>{value}&nbsp;&nbsp;</label>
+                                <label>{value}</label>
                                 <button id='details' onClick={event => ReactDOM.render(<NetworkDetails params={value}/>, document.getElementById('root'))}>Details</button>
                                 <button id='delete' onClick={deleteNetworkHandler(value)}>Delete</button>
                               </li> )
@@ -65,7 +65,7 @@ export class NetworksList extends React.Component<{},State> {
     render() {
         return (
             <div>
-                <ul>
+                <ul title="Networks:">
                     {this.createNetworkList()}
                 </ul>
             </div>

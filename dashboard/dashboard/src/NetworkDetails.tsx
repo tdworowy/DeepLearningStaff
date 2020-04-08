@@ -105,16 +105,26 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
  
     compileForm() {
         return (
+        <div className="container">    
         <form onSubmit={this.compileNetworkHandler}>
-                    Network name:&nbsp;&nbsp;
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="name">Network name:</label>
+        </div>
+        <div className="col-75">    
                         <input
                         readOnly
                         name = 'name'
                         type = 'text'
                         defaultValue = {this.state.name}
                         />
-                    <br/>
-                    optimizer:&nbsp;&nbsp;
+        </div>
+        </div>
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="optimizer">Optimizer:</label>
+        </div>
+        <div className="col-75">  
                         <select
                         name = 'optimizer'
                         >
@@ -126,8 +136,13 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                         <option value='adamax'>Adamax</option> 
                         <option value='nadam'>Nadam</option>     
                         </select>
-                    <br/>
-                    loss:&nbsp;&nbsp;
+        </div>
+        </div>
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="loss">Loss:</label>
+        </div>
+        <div className="col-75">  
                         <select
                         name = 'loss'
                         >
@@ -149,9 +164,13 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                         <option value='is_categorical_crossentropy'>is_categorical_crossentropy</option>
                         <option value='is_categorical_crossentropy'>is_categorical_crossentropy</option>
                         </select>
-                    <br/>
-                    
-                    metrics:&nbsp;&nbsp;
+        </div>
+        </div>
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="metrics">Metrics:</label>
+        </div>
+        <div className="col-75">        
                         <select
                         name = 'metrics'
                         >
@@ -163,56 +182,91 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                         <option value='sparse_top_k_categorical_accuracy'>sparse_top_k_categorical_accuracy</option>
                         <option value='cosine_proximity'>cosine_proximity</option>                                
                         </select> 
-                    <br/>
+        </div>
+        </div>
                     <input id="compile" type="submit" value="Compile network"/>
         </form>
+        </div>
         )
     }
     
     trainForm() {
         return (
+        <div className="container">    
         <form onSubmit={this.trainNetworkHandler}>
-                    Network name:&nbsp;&nbsp;
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="name">Network name:</label>
+        </div>
+        <div className="col-75">   
                         <input
                         readOnly
                         name = 'name'
                         type = 'text'
                         defaultValue = {this.state.name}
                         />
-                    <br/>
-                    data_set:&nbsp;&nbsp;
+        </div>
+        </div>
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="data_set">Data set:</label>
+        </div>
+        <div className="col-75"> 
                         <select
                         name = 'data_set'
                         >
                        {this.createDataSources()} 
                     </select>    
-                    <br/>
-                    epochs:&nbsp;&nbsp;
+        </div>
+        </div>
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="epochs">Epochs:</label>
+        </div>
+        <div className="col-75"> 
                         <input
                         name = 'epochs'
                         type ='number'
                         />
-                    <br/>
-                    batch_size:&nbsp;&nbsp;
+        </div>
+        </div>
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="batch_size">Batch size:</label>
+        </div>
+        <div className="col-75"> 
                         <input
                         name = 'batch_size'
                         type ='number'
                         />
-                    <br/>
-                    input_shape:&nbsp;&nbsp;
+        </div>
+        </div>
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="input_shape">Input shape:</label>
+        </div>
+        <div className="col-75"> 
                         <input
                         name = 'input_shape'
                         type ='number'
                         />
-                    <br/>
-                    test_sample_size:&nbsp;&nbsp;
+        </div>
+        </div>
+        <div className="row">
+        <div className="col-25">
+        <label htmlFor ="test_sample_size">Test sample size:</label>
+        </div>
+        <div className="col-75"> 
+       
                         <input
                         name = 'test_sample_size'
                         type ='text'
                         />
-                    <br/>
+        </div>
+        </div>
                     <input id="train" type="submit" value="Train network"/>
         </form>
+        </div>
         )
     }
 
@@ -238,11 +292,11 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
         else {
             return (
                 <div>
-                     <iframe src= {this.getPlotAcc()}  width="100%" height="100%" /> 
-                     <iframe src= {this.getPlotLoss()}  width="100%" height="100%" />
+                     <iframe id="acc_frame" src= {this.getPlotAcc()}  /> 
+                     <iframe id="loss_frame" src= {this.getPlotLoss()} />
                 </div>
                 
-            ) //TODD make it prettier
+            ) 
         }
 
     }
@@ -251,7 +305,7 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
             <div>
                 {this.getForm()}
                 <br/>
-                <textarea id="network_details" rows={4} cols={50} value={JSON.stringify(this.getNetworkDetails())}></textarea>
+                <textarea id="network_details" rows={50} cols={50} value={JSON.stringify(this.getNetworkDetails())}></textarea>
             </div>
         )}
 }

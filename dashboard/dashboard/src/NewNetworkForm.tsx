@@ -84,22 +84,36 @@ export class NewNetwork extends React.Component {
       }
     render() {
       return (
-            <div>
+            <div className="container">
                 <form onSubmit={this.addLayerHandler}>
-                    Network name:&nbsp;&nbsp;
+                <div className="row">
+                <div className="col-25">
+                <label htmlFor ="name">Network name:</label>
+                </div> 
+                <div className="col-75">
                         <input
                         name = 'name'
                         type = 'text'
                         defaultValue = {this.getNetworkName()}
                         />
-                    <br/>
-                    units:&nbsp;&nbsp;
+                </div>
+                </div>
+                <div className="row">
+                <div className="col-25">
+                <label htmlFor ="units">Units:</label>
+                </div> 
+                <div className="col-75">
                         <input
                         name = 'units'
                         type = 'text'
                         />
-                    <br/>
-                    activation:&nbsp;&nbsp;
+                </div>
+                </div>
+                <div className="row">
+                <div className="col-25">
+                <label htmlFor ="activation">Activation:</label>
+                </div>
+                <div className="col-75">
                         <select
                         name = 'activation'
                         >
@@ -112,19 +126,26 @@ export class NewNetwork extends React.Component {
                         <option value='hard_sigmoid'>hard_sigmoid</option>
                         <option value='exponential'>exponential</option>
                         <option value='linear'>linear</option>
-                        </select>  
-                    <br/>
-                    input_shape:&nbsp;&nbsp;
+                        </select>
+               </div>
+               </div> 
+               <div className="row">
+               <div className="col-25"> 
+               <label htmlFor ="input_shape">Input_shape:</label>
+               </div> 
+               <div className="col-75">
                         <input
                         name = 'input_shape'
                         type ='text'
                         />
-                    <br/>
+                </div>
+                </div>      
                     <input id="add_layer" type="submit" value="Add Layer"/>
                 </form>
+                <br/>
                 <button id ="add_network_button" onClick ={this.addNetworkHandler}>Add new network</button>
                 <button id="clear_network_button" onClick ={this.clearNetworkHandler}>Clear network</button>
-                <br/>
+                <br/><br/>
                 <textarea id="new_layer_details" rows={4} cols={50} value={this.getTempNetworkDetails()}></textarea>
             </div>
         );

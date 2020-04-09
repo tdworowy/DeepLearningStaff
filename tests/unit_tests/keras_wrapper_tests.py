@@ -1,7 +1,7 @@
 import json
 import pytest
 from data.data_provider import get_keras_data_set
-from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
+from keras_wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 import os
 
 with open("../resources/new_network_json.json") as json_file:

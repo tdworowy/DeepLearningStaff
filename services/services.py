@@ -6,7 +6,7 @@ import uuid
 from _logging._logger import get_logger
 from data.data_provider import get_keras_data_set
 from data_base.mongo_wrapper import MongoWrapper
-from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder, ModelWrapper
+from keras_wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder, ModelWrapper
 
 
 def read_config():

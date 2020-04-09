@@ -6,7 +6,7 @@ from flask import Flask, jsonify, request
 from _logging._logger import get_logger
 from data.data_provider import get_keras_data_set, data_sources
 from visualization.vizualization import plot
-from wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
+from keras_wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
 
 logger = get_logger(__name__)
 

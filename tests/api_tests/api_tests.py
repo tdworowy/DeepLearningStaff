@@ -42,7 +42,7 @@ def test_get_networks():
     get_networks_response = requests.get(url=get_networks_end_point, headers={"content-type": "application/json"})
 
     assert get_networks_response.status_code is 200
-    assert get_networks_response.json()['Networks'] == [new_network_json['name']]
+    assert new_network_json['name'] in get_networks_response.json()['Networks']
 
 
 def test_compile_network():

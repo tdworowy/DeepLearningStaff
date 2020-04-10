@@ -128,13 +128,13 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                         <select
                         name = 'optimizer'
                         >
-                        <option value='sgd'>SGD</option>
-                        <option value='rmsprop'>rmsprop</option>     
-                        <option value='adagrad'>Adagrad</option>      
-                        <option value='adadelta'>Adadelta</option>
-                        <option value='adam'>Adam</option>
-                        <option value='adamax'>Adamax</option> 
-                        <option value='nadam'>Nadam</option>     
+                        <option value = 'sgd'>SGD</option>
+                        <option value = 'rmsprop'>rmsprop</option>     
+                        <option value = 'adagrad'>Adagrad</option>      
+                        <option value = 'adadelta'>Adadelta</option>
+                        <option value = 'adam'>Adam</option>
+                        <option value = 'adamax'>Adamax</option> 
+                        <option value = 'nadam'>Nadam</option>     
                         </select>
         </div>
         </div>
@@ -146,23 +146,23 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                         <select
                         name = 'loss'
                         >
-                        <option value='mean_squared_error'>mean_squared_error</option>
-                        <option value='mean_absolute_error'>mean_absolute_error</option>
-                        <option value='mean_absolute_percentage_error'>mean_absolute_percentage_error</option>
-                        <option value='mean_squared_logarithmic_error'>mean_squared_logarithmic_error</option>
-                        <option value='squared_hinge'>squared_hinge</option>
-                        <option value='hinge'>hinge</option>
-                        <option value='categorical_hinge'>categorical_hinge</option>
-                        <option value='logcosh'>logcosh</option>
-                        <option value='huber_loss'>huber_loss</option>
-                        <option value='categorical_crossentropy'>categorical_crossentropy</option>
-                        <option value='sparse_categorical_crossentropy'>sparse_categorical_crossentropy</option>
-                        <option value='binary_crossentropy'>binary_crossentropy</option>
-                        <option value='kullback_leibler_divergence'>kullback_leibler_divergence</option>
-                        <option value='poisson'>poisson</option>
-                        <option value='cosine_proximity'>cosine_proximity</option>
-                        <option value='is_categorical_crossentropy'>is_categorical_crossentropy</option>
-                        <option value='is_categorical_crossentropy'>is_categorical_crossentropy</option>
+                        <option value = 'mean_squared_error'>mean_squared_error</option>
+                        <option value = 'mean_absolute_error'>mean_absolute_error</option>
+                        <option value = 'mean_absolute_percentage_error'>mean_absolute_percentage_error</option>
+                        <option value = 'mean_squared_logarithmic_error'>mean_squared_logarithmic_error</option>
+                        <option value = 'squared_hinge'>squared_hinge</option>
+                        <option value = 'hinge'>hinge</option>
+                        <option value = 'categorical_hinge'>categorical_hinge</option>
+                        <option value = 'logcosh'>logcosh</option>
+                        <option value = 'huber_loss'>huber_loss</option>
+                        <option value = 'categorical_crossentropy'>categorical_crossentropy</option>
+                        <option value = 'sparse_categorical_crossentropy'>sparse_categorical_crossentropy</option>
+                        <option value = 'binary_crossentropy'>binary_crossentropy</option>
+                        <option value = 'kullback_leibler_divergence'>kullback_leibler_divergence</option>
+                        <option value = 'poisson'>poisson</option>
+                        <option value = 'cosine_proximity'>cosine_proximity</option>
+                        <option value = 'is_categorical_crossentropy'>is_categorical_crossentropy</option>
+                        <option value = 'is_categorical_crossentropy'>is_categorical_crossentropy</option>
                         </select>
         </div>
         </div>
@@ -174,13 +174,13 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
                         <select
                         name = 'metrics'
                         >
-                        <option value='acc'>accuracy</option>    
-                        <option value='binary_accuracy'>binary_accuracy</option>
-                        <option value='categorical_accuracy'>categorical_accuracy</option>   
-                        <option value='sparse_categorical_accuracy'>sparse_categorical_accuracy</option>
-                        <option value='top_k_categorical_accuracy'>top_k_categorical_accuracy</option>
-                        <option value='sparse_top_k_categorical_accuracy'>sparse_top_k_categorical_accuracy</option>
-                        <option value='cosine_proximity'>cosine_proximity</option>                                
+                        <option value = 'acc'>accuracy</option>    
+                        <option value = 'binary_accuracy'>binary_accuracy</option>
+                        <option value = 'categorical_accuracy'>categorical_accuracy</option>   
+                        <option value = 'sparse_categorical_accuracy'>sparse_categorical_accuracy</option>
+                        <option value = 'top_k_categorical_accuracy'>top_k_categorical_accuracy</option>
+                        <option value = 'sparse_top_k_categorical_accuracy'>sparse_top_k_categorical_accuracy</option>
+                        <option value = 'cosine_proximity'>cosine_proximity</option>                                
                         </select> 
         </div>
         </div>

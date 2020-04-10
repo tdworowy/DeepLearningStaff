@@ -1,7 +1,7 @@
 - REST api(flask)
 - graphql api 
 - keras wrapper
-- add some layer between api and wrapper (message broker? Queues?) (?)
+- add some layer between api and wrapper
 - front-end (graphs etc.)
 - documentation (generated)(python and typescript)
 - api documentation witch swagger
@@ -14,3 +14,5 @@
 - mobile app
 
 
+-------------------------
+add possibility to choose layer type

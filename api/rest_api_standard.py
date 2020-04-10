@@ -5,26 +5,11 @@ import yaml
 from flask import Flask, jsonify, request
 from _logging._logger import get_logger
 from data.data_provider import get_keras_data_set, data_sources
+from keras_wrapper.model_factory import build_model
 from visualization.vizualization import plot
-from keras_wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
+from keras_wrapper.keras_wrapper import KerasWrapper
 
 logger = get_logger(__name__)
-
-
-def build_model(values: json):
-    model = ModelBuilder().model()
-    for _layer in values['layers']:
-
-        layer = DenseLayerBuilder(). \
-            units(_layer['units']). \
-            activation(_layer['activation'])
-
-        if "input_shape" in _layer:
-            if _layer["input_shape"] != "":
-                layer = layer.input_shape(tuple(map(int, _layer['input_shape'].split(','))))
-
-        model = model.layer(layer.build())
-    return model.build()
 
 
 def prepare_response(message: json, status: int):

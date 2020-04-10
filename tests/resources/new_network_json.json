@@ -1,20 +1,24 @@
 {
-  "name": "test",
+  "name": "test_network_xdf",
   "layers": [
     {
+      "layer": "Dense",
       "units": 16,
       "activation": "relu",
       "input_shape": "10000"
     },
      {
+      "layer": "Dense",
       "units": 16,
       "activation": "relu"
     },
      {
+      "layer": "Dense",
       "units": 16,
       "activation": "relu"
     },
-     {
+   {
+      "layer": "Dense",
       "units": 1,
       "activation": "sigmoid"
     }

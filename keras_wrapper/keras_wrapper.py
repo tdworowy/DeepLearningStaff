@@ -1,7 +1,8 @@
 import json
+from os import path
 
 import pandas as pd
-from keras import models, layers, callbacks
+from keras import models, callbacks
 from _logging._logger import get_logger
 from datetime import datetime
 
@@ -31,7 +32,7 @@ class Singleton(type):
 
 class KerasWrapper(metaclass=Singleton):
     _callbacks = [
-        callbacks.TensorBoard(log_dir="../logs/tensor_board",
+        callbacks.TensorBoard(log_dir=path.join(path.dirname(path.realpath(__file__)), "..\logs\\tensor_board"),
                               histogram_freq=1,
                               embeddings_freq=1)
     ]
@@ -99,41 +100,4 @@ class KerasWrapper(metaclass=Singleton):
             return []
 
 
-class ModelBuilder:
-    def model(self):
-        self._model = models.Sequential()
-        return self
 
-    def layer(self, layer: layers):
-        self._model.add(layer)
-        return self
-
-    def build(self):
-        return self._model
-
-
-class DenseLayerBuilder:
-
-    def __init__(self):
-        self._input_shape = None
-
-    def units(self, units: int):
-        self._units = units
-        return self
-
-    def activation(self, activation: str):
-        self._activation = activation
-        return self
-
-    def input_shape(self, input_shape: tuple):
-        self._input_shape = input_shape
-        return self
-
-    def build(self):
-        if self._input_shape:
-            return layers.Dense(units=self._units,
-                                activation=self._activation,
-                                input_shape=self._input_shape)
-        else:
-            return layers.Dense(units=self._units,
-                                activation=self._activation)

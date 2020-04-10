@@ -1,8 +1,10 @@
 import json
 import pytest
 from data.data_provider import get_keras_data_set
-from keras_wrapper.keras_wrapper import KerasWrapper, ModelBuilder, DenseLayerBuilder
+from keras_wrapper.keras_wrapper import KerasWrapper
 import os
+
+from keras_wrapper.model_factory import build_model
 
 with open("../resources/new_network_json.json") as json_file:
     new_network_json = json.load(json_file)
@@ -12,21 +14,6 @@ with open("../resources/compile_network_json.json") as json_file:
 
 with open("../resources/train_network_json.json") as json_file:
     train_network_json = json.load(json_file)
-
-
-def build_model(values: json):
-    model = ModelBuilder().model()
-    for _layer in values['layers']:
-
-        layer = DenseLayerBuilder(). \
-            units(int(_layer['units'])). \
-            activation(_layer['activation'])
-
-        if "input_shape" in _layer:
-            layer = layer.input_shape(tuple(map(int, _layer['input_shape'].split(','))))
-
-        model = model.layer(layer.build())
-    return model.build()
 
 
 @pytest.fixture(autouse=True)

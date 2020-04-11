@@ -18,51 +18,66 @@ class ModelBuilder:
 
 class DenseLayerBuilder:
     def __init__(self):
-        self._input_shape = None
         self._layer = "Dense"
+        self.kwargs = {}
 
     def units(self, units: int):
-        self._units = units
+        self.kwargs['units'] = units
         return self
 
     def activation(self, activation: str):
-        self._activation = activation
+        self.kwargs['activation'] = activation
         return self
 
-    def input_shape(self, input_shape: tuple):
-        self._input_shape = input_shape
+    def input_shape(self, input_shape: str):
+        input_shape = tuple(map(int, input_shape.split(',')))
+        self.kwargs['input_shape'] = input_shape
         return self
 
     def build(self):
-        if self._input_shape:
-            return getattr(layers, self._layer)(units=self._units,
-                                                activation=self._activation,
-                                                input_shape=self._input_shape)
-        else:
-            return getattr(layers, self._layer)(units=self._units,
-                                                activation=self._activation)
+        return getattr(layers, self._layer)(**self.kwargs)
 
 
-def build_dense(_layer: json) -> DenseLayerBuilder:
-    layer = DenseLayerBuilder(). \
-        units(_layer['units']). \
-        activation(_layer['activation'])
+class Conv2DBuilder:
+    def __init__(self):
+        self._layer = "Conv2D"
+        self.kwargs = {}
 
-    if "input_shape" in _layer:
-        if _layer["input_shape"] != "":
-            layer = layer.input_shape(tuple(map(int, _layer['input_shape'].split(','))))
+    def filters(self, filters: int):
+        self.kwargs['filters'] = filters
+
+    def kernel_size(self, kernel_size: str):
+        kernel_size = tuple(map(int, kernel_size.split(',')))
+        self.kwargs['kernel_size'] = kernel_size
+
+    def activation(self, activation: str):
+        self.kwargs['activation'] = activation
+        return self
+
+    def input_shape(self, input_shape: str):
+        input_shape = tuple(map(int, input_shape.split(',')))
+        self.kwargs['input_shape'] = input_shape
+        return self
+
+    def build(self):
+        return getattr(layers, self._layer)(**self.kwargs)
+
+
+layer_types = {'Dense': DenseLayerBuilder,
+               'Conv2D': Conv2DBuilder}
+
+
+def build_layer(_layer: json):
+    layer = layer_types[_layer['layer']]()
+    for key in _layer.keys():
+        if key != 'layer':
+            getattr(layer, key)(_layer[key])
     return layer
-
-
-def layer_factory(layer_type: str):
-    if layer_type == "Dense":
-        return build_dense
 
 
 def build_model(values: json) -> models.Sequential:
     model = ModelBuilder().model()
     for _layer in values['layers']:
-        layer = layer_factory(_layer['layer'])(_layer)
-
+        layer = build_layer(_layer)
         model = model.layer(layer.build())
     return model.build()

@@ -63,8 +63,25 @@ class Conv2DBuilder:
         return getattr(layers, self._layer)(**self.kwargs)
 
 
+class MaxPooling2DBuilder:
+    def __init__(self):
+        self._layer = "MaxPooling2D"
+        self.kwargs = {}
+
+    def pool_size(self, pool_size: str):
+        pool_size = tuple(map(int, pool_size.split(',')))
+        self.kwargs['pool_size'] = pool_size
+
+    def strides(self, strides: int):
+        self.kwargs['strides'] = strides
+
+    def build(self):
+        return getattr(layers, self._layer)(**self.kwargs)
+
+
 layer_types = {'Dense': DenseLayerBuilder,
-               'Conv2D': Conv2DBuilder}
+               'Conv2D': Conv2DBuilder,
+               'MaxPooling2D': MaxPooling2DBuilder}
 
 
 def build_layer(_layer: json):

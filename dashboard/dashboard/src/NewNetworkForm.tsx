@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { newNetwrokEndPoint } from './Config';
-import { Interface } from 'readline';
 
 interface Layer {
 
@@ -62,6 +61,21 @@ class Network {
   layers?:Array<Layer>
 }
 
+function getActivation() {
+    return (
+        <select name = 'activation' >
+                <option value ='relu'>relu</option>
+                <option value ='softmax'>softmax</option>
+                <option value ='selu'>selu</option>
+                <option value ='softsign'>softsign</option>
+                <option value ='tanh'>tanh</option>
+                <option value ='sigmoid'>sigmoid</option>
+                <option value ='hard_sigmoid'>hard_sigmoid</option>
+                <option value ='exponential'>exponential</option>
+                <option value ='linear'>linear</option>
+        </select>
+    )
+}
 export class NewNetwork extends React.Component {
       constructor(props:Network) {
         super(props);
@@ -155,6 +169,7 @@ export class NewNetwork extends React.Component {
     layerTypeForm = () => {
         return (
             <form onSubmit={this.chooseLayerHandler}>
+            <label>Choose layer type</label>
             <div className="row">
             <div className="col-25">
             <label htmlFor ="Layer">Layer:</label>
@@ -191,6 +206,7 @@ export class NewNetwork extends React.Component {
     newDenseLayerForm  = ()  => {
        return (
             <form onSubmit={this.addDenseLayerHandler}>
+            <label>Add layer: Dense</label>
             <div className="row">
             <div className="col-25">
             <label htmlFor ="name">Network name:</label>
@@ -219,19 +235,7 @@ export class NewNetwork extends React.Component {
             <label htmlFor ="activation">Activation:</label>
             </div>
             <div className="col-75">
-                    <select
-                    name = 'activation'
-                    >
-                    <option value ='relu'>relu</option>
-                    <option value ='softmax'>softmax</option>
-                    <option value ='selu'>selu</option>
-                    <option value ='softsign'>softsign</option>
-                    <option value ='tanh'>tanh</option>
-                    <option value ='sigmoid'>sigmoid</option>
-                    <option value ='hard_sigmoid'>hard_sigmoid</option>
-                    <option value ='exponential'>exponential</option>
-                    <option value ='linear'>linear</option>
-                    </select>
+                    {getActivation()}
            </div>
            </div> 
            <div className="row">
@@ -252,6 +256,7 @@ export class NewNetwork extends React.Component {
     newConv2DLayerForm  = ()  => {
         return (
              <form onSubmit={this.addConv2DLayerHandler}>
+             <label>Add layer: Conv2D</label>
              <div className="row">
              <div className="col-25">
              <label htmlFor ="name">Network name:</label>
@@ -291,19 +296,7 @@ export class NewNetwork extends React.Component {
              <label htmlFor ="activation">Activation:</label>
              </div>
              <div className="col-75">
-                     <select
-                     name = 'activation'
-                     >
-                     <option value ='relu'>relu</option>
-                     <option value ='softmax'>softmax</option>
-                     <option value ='selu'>selu</option>
-                     <option value ='softsign'>softsign</option>
-                     <option value ='tanh'>tanh</option>
-                     <option value ='sigmoid'>sigmoid</option>
-                     <option value ='hard_sigmoid'>hard_sigmoid</option>
-                     <option value ='exponential'>exponential</option>
-                     <option value ='linear'>linear</option>
-                     </select>
+                 {getActivation()}
             </div>
             </div> 
             <div className="row">
@@ -324,6 +317,7 @@ export class NewNetwork extends React.Component {
      newMaxPooling2DLayerForm  = ()  => {
         return (
              <form onSubmit={this.addMaxPooling2DLayerHandler}>
+             <label>Add layer: MaxPooling2D</label>
              <div className="row">
              <div className="col-25">
              <label htmlFor ="name">Network name:</label>
@@ -362,29 +356,33 @@ export class NewNetwork extends React.Component {
              </form>
          )
      } 
-     chooseFrom(){ //TODO get ride off if else
+
+        forms:Map<String,Function> = new Map([
+            ['chooseLayer', this.layerTypeForm],
+            ['Dense', this.newDenseLayerForm],
+            ['Conv2D', this.newConv2DLayerForm],
+            ['MaxPooling2D', this.newMaxPooling2DLayerForm]
+     ])
+
+
+     chooseFrom(){
         if (typeof localStorage.layerName === 'undefined' || localStorage.layerName ===  'undefined') {  
-            return this.layerTypeForm()
+            return (this.forms.get('chooseLayer') as Function) () 
         }
-        else if (localStorage.layerName === 'Dense') {  
-            return this.newDenseLayerForm()
-        }
-        else if (localStorage.layerName === 'Conv2D') {  
-            return this.newConv2DLayerForm()
-        }
-        else if (localStorage.layerName === 'MaxPooling2D') {  
-            return this.newMaxPooling2DLayerForm()
-        }
+        else {
+            return (this.forms.get(localStorage.layerName) as Function) () 
+        } 
+
      }
      render() {
         return(
             <div className="container">
                 {this.chooseFrom()}
                 <br/>
-                <button id = "add_network_button" onClick ={this.addNetworkHandler}>Add new network</button>
-                <button id = "clear_network_button" onClick ={this.clearNetworkHandler}>Clear network</button>
+                    <button id = "add_network_button" onClick ={this.addNetworkHandler}>Add new network</button>
+                    <button id = "clear_network_button" onClick ={this.clearNetworkHandler}>Clear network</button>
                 <br/><br/>
-                <textarea id = "new_layer_details" rows={4} cols={50} value={this.getTempNetworkDetails()}></textarea>
+                    <textarea id = "new_layer_details" rows={4} cols={50} value={this.getTempNetworkDetails()}></textarea>
             </div>
         )
   } 

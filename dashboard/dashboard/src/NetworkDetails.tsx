@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { networkDetailsEndPoint,dataSetsEndPoint,compileNetwrokEndPoint,trainNetwrokEndPoint,plotAccEndPoint,plotLossEndPoint } from './Config';
+import { networkDetailsEndPoint, dataSetsEndPoint, 
+         compileNetwrokEndPoint, trainNetwrokEndPoint, 
+         plotAccEndPoint, plotLossEndPoint } from './Config';
 import { SyncRequestClient } from 'ts-sync-request/dist'
 import { Url } from 'url';
 

@@ -87,7 +87,7 @@ layer_types = {'Dense': DenseLayerBuilder,
 def build_layer(_layer: json):
     layer = layer_types[_layer['layer']]()
     for key in _layer.keys():
-        if key != 'layer':
+        if key != 'layer' and _layer[key] != "":
             getattr(layer, key)(_layer[key])
     return layer
 

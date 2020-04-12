@@ -15,13 +15,17 @@ def open_main_page(context):
     time.sleep(2)
 
 
-@when("Add layer {name} {units} {activation} {input_shape}")
-def add_layer(context, name, units, activation, input_shape):
+@when("Add layer {name} {layer} {units} {activation} {input_shape}")
+def add_layer(context, name, layer, units, activation, input_shape):
     context.layers.append(
-        Layer(int(units), activation, input_shape)
+        Layer(type=layer,
+              units=int(units),
+              activation=activation,
+              input_shape=input_shape)
     )
     context.name = name
     context.add_network_page. \
+        choose_layer_type(layer). \
         set_name(name). \
         set_units(units). \
         set_activation(activation). \

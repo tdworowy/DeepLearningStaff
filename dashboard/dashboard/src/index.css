@@ -41,7 +41,7 @@ ul[title]::before {
   box-sizing: border-box;
 }
 
-input[type=text], select, textarea#new_layer_details {
+input[type=text],input[type=number], select, textarea#new_layer_details {
   width: 100%; 
   padding: 12px;
   border: 1px solid #ccc;

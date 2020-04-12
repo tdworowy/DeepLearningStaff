@@ -12,12 +12,14 @@ from front_end_tests.webdriver_wapper.webdriver_wrapper import WebDriverWrapper
 class AddNetworkPage:
     network_name_input = (By.NAME, "name")
     network_units_input = (By.NAME, "units")
-    network_activation_input = (By.NAME, "activation")
+    network_activation_select = (By.NAME, "activation")
     network_input_shape_input = (By.NAME, "input_shape")
     add_layer_button = (By.ID, "add_layer")
     add_network_button = (By.ID, "add_network_button")
     clear_network_button = (By.ID, "clear_network_button")
     layers_details = (By.ID, "new_layer_details")
+    choose_layer_button = (By.ID, "choose_layer")
+    layer_select = (By.NAME, "layer")
 
     def __init__(self, url: str, logger: TestsLogger, web_driver_wrapper: WebDriverWrapper):
         self.logger = logger
@@ -43,7 +45,7 @@ class AddNetworkPage:
 
     def set_activation(self, activation: str) -> AddNetworkPage:
         self.logger.log().info(f"Set activation field: {activation}")
-        Select(self.web_driver_wrapper.driver.find_element(*AddNetworkPage.network_activation_input)) \
+        Select(self.web_driver_wrapper.driver.find_element(*AddNetworkPage.network_activation_select)) \
             .select_by_value(activation)
         return self
 
@@ -68,6 +70,14 @@ class AddNetworkPage:
     def clear_layers(self):
         self.logger.log().info(f"Clear layers")
         self.web_driver_wrapper.driver.find_element(*AddNetworkPage.clear_network_button) \
+            .click()
+        return self
+
+    def choose_layer_type(self, layer_type: str):
+        self.logger.log().info(f"Choose layer type: {layer_type}")
+        Select(self.web_driver_wrapper.driver.find_element(*AddNetworkPage.layer_select)) \
+            .select_by_value(layer_type)
+        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.choose_layer_button)\
             .click()
         return self
 
@@ -101,6 +111,7 @@ class AddNetworkPage:
     def _generate_output_json(name: str, layers: list) -> dict:
         return {"name": name, "layers": [
             {
+                "layer": layer.type,
                 "units": layer.units,
                 "activation": layer.activation,
                 "input_shape": layer.input_shape,

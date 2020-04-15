@@ -15,5 +15,7 @@ pipeline {
                              app = docker.build("nullpointerexeption/deep_dashboard")
                         }
             }
+        }
+        }
     }
 }

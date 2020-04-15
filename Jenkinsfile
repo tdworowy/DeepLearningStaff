@@ -12,7 +12,7 @@ pipeline {
                          sh "docker build -t nullpointerexeption/deep_node -f DockerFileNode ."
                          sh "docker build -t nullpointerexeption/deep_api -f DockerFileApi ."
                          dir("dashboard/dashboard") {
-                             app = docker.build("nullpointerexeption/deep_dashboard")
+                             sh "docker build -t nullpointerexeption/deep_dashboard ."
                         }
             }
         }

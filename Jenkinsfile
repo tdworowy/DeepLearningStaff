@@ -9,8 +9,8 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                         sh "docker build nullpointerexeption/deep_node -f DockerFileNode ."
-                         sh "docker build nullpointerexeption/deep_api -f DockerFileApi ."
+                         sh "docker build -t nullpointerexeption/deep_node -f DockerFileNode ."
+                         sh "docker build -t nullpointerexeption/deep_api -f DockerFileApi ."
                          dir("dashboard/dashboard") {
                              app = docker.build("nullpointerexeption/deep_dashboard")
                         }

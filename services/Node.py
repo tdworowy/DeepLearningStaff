@@ -41,8 +41,6 @@ def start_node(config: dict):
 
 
 if __name__ == "__main__":
-    nods_count = 1
     config = read_config()
-    for i in range(nods_count):
-        node_process = Process(target=start_node, args=(config,))
-        node_process.start()
+    start_node(config)
+

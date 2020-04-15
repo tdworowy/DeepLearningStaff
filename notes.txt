@@ -8,3 +8,6 @@ db.dropDatabase()  <- delete db
 
 tensorboard --logdir=<paths> <- run tensorboard
 
+kubernetes:
+sudo kubeadm init
+

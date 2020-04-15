@@ -6,6 +6,14 @@ pipeline {
                 git 'http://github.com/tdworowy/DeepLearningStaff.git'
             }
         }
+          stage("Run unit tests"){
+           steps{
+                dir("deep_learning_app"){
+                    sh "pip install -r requirements.txt"
+                     sh "pytest /tests/unit_tests/"
+                } 
+            }
+        }
         stage('Build Docker Images') {
             steps {
                 script {

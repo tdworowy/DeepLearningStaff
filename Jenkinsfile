@@ -9,20 +9,11 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    dir("services") {
-                        app = docker.build("nullpointerexeption/deep_node")
-                    }
-                     dir("services") {
-                        app = docker.build("nullpointerexeption/deep_node")
-                    }
-                     dir("api") {
-                        app = docker.build("nullpointerexeption/deep_api")
-                    }
-                     dir("dashboard/dashboard") {
-                        app = docker.build("nullpointerexeption/deep_dashboard")
-                    }
-                  }
-                }
+                         sh "docker build nullpointerexeption/deep_node -f DockerFileNode ."
+                         sh "docker build nullpointerexeption/deep_api -f DockerFileApi ."
+                         dir("dashboard/dashboard") {
+                             app = docker.build("nullpointerexeption/deep_dashboard")
+                        }
             }
     }
 }

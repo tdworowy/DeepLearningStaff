@@ -5,6 +5,7 @@ pipeline {
            steps{
                 git 'http://github.com/tdworowy/DeepLearningStaff.git'
             }
+        }
         stage('Build Docker Images') {
             steps {
                 script {
@@ -23,6 +24,5 @@ pipeline {
                   }
                 }
             }
-        }
-
+    }
 }

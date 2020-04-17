@@ -11,3 +11,7 @@ tensorboard --logdir=<paths> <- run tensorboard
 kubernetes:
 sudo kubeadm init
 
+
+docker kill $(docker ps -q)
+docker rm $(docker ps -a -q)
+docker system prune -a --volumes -f

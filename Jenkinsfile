@@ -14,7 +14,7 @@ pipeline {
         stage("Prepare env"){
            steps{
                script {
-                    sh "pip3 install -r requirements.txt"
+                    sh "pip3 install -r tests/requirements.txt"
                     sh "export PYTHONPATH=\$PYTHONPATH:\$(pwd)"
                }
             }

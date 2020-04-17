@@ -2,6 +2,6 @@
 FROM  tensorflow/tensorflow:latest
 COPY . .
 ENV PYTHONPATH $PWD
-RUN pip install -r requirements.txt
+RUN pip install -r services/requirements.txt
 EXPOSE 4222
 CMD ["python","-u", "services/Node.py"]

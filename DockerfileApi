@@ -1,7 +1,7 @@
 # Dockerfile
-FROM  tensorflow/tensorflow:latest
+FROM  python:latest
 COPY . .
 ENV PYTHONPATH $PWD
-RUN pip install -r requirements.txt
+RUN pip install -r api/requirements.txt
 EXPOSE 5000
 CMD ["python","-u", "api/main_distributed.py"]

@@ -42,10 +42,10 @@ pipeline {
                 script {
                          sh "mkdir ~/data"
                          sh "docker pull mongo && docker run -d -p 27017:27017 -v ~/data:/data/db mongo"
-                         sh "docker pull nats && docker run nats"
-                         sh "docker run nullpointerexeption/deep_node"
-                         sh "docker run nullpointerexeption/deep_api"
-                         sh "docker run nullpointerexeption/deep_dashboard"
+                         sh "docker pull nats && docker run -d nats"
+                         sh "docker run -d nullpointerexeption/deep_node "
+                         sh "docker run -d nullpointerexeption/deep_api"
+                         sh "docker run -d nullpointerexeption/deep_dashboard"
                         
                         }
                 }

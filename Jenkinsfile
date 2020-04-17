@@ -1,21 +1,27 @@
 pipeline {
     agent { label 'Slave_ubuntu'}
     stages {
+        stage("Clean Workspace"){
+           steps{
+               cleanWs()
+            }
+        }
         stage("Pull changes from git"){
            steps{
                 git 'http://github.com/tdworowy/DeepLearningStaff.git'
             }
         }
-      stage("Prepare env"){
+        stage("Prepare env"){
            steps{
                script {
+                    cleanWs()
                     sh "pip3 install -r requirements.txt"
                     sh "export PYTHONPATH=\$PYTHONPATH:\$(pwd)"
                }
             }
         }
-          stage("Run unit tests"){
-           steps{
+        stage("Run unit tests"){
+          steps{
                script {
                     sh "python3 -m pytest tests/unit_tests/"
                } 
@@ -53,14 +59,14 @@ pipeline {
                 }
             }
         }
-       stage("Run api tests"){
+        stage("Run api tests"){
            steps{
                 script {
                     sh "python3 -m pytest tests/api_tests/"
                 }
             }
         }
-      stage("Run front end tests"){
+        stage("Run front end tests"){
            steps{
                 script {
                     dir("tests"){
@@ -70,5 +76,14 @@ pipeline {
             }
         }
         
+    }
+    post {
+        always {
+             script {  
+                sh 'docker kill $(docker ps -q) &&
+                    docker rm $(docker ps -a -q)'
+               
+            }
+        }
     }
 }

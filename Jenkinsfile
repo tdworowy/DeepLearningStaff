@@ -1,11 +1,6 @@
 pipeline {
     agent { label 'Slave_ubuntu'}
     stages {
-        stage("Clean Workspace"){
-           steps{
-               cleanWs()
-            }
-        }
         stage("Pull changes from git"){
            steps{
                 git 'http://github.com/tdworowy/DeepLearningStaff.git'
@@ -79,7 +74,7 @@ pipeline {
     }
     post {
         always {
-             script {  
+             script {
                 sh 'docker kill $(docker ps -q) && docker rm $(docker ps -a -q)'
                
             }

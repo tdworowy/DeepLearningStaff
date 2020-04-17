@@ -40,7 +40,7 @@ pipeline {
         stage('Run containers') {
             steps {
                 script {
-                         sh "mkdir ~/data"
+                         sh "mkdir -p  ~/data"
                          sh "docker pull mongo && docker run -d -p 27017:27017 -v ~/data:/data/db mongo"
                          sh "docker pull nats && docker run -d nats"
                          sh "docker run -d nullpointerexeption/deep_node "

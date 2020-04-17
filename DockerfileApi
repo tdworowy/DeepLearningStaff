@@ -4,5 +4,5 @@ COPY . .
 ENV PYTHONPATH $PWD
 RUN pip install -r api/requirements.txt
 EXPOSE 5000
-CMD ["echo $PYTHONPATH"]
+RUN bash -c 'echo $PYTHONPATH'
 CMD ["python","-u", "api/main_distributed.py"]

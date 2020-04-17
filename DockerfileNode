@@ -1,5 +1,5 @@
 # Dockerfile
-FROM  tensorflow/tensorflow:latest
+FROM  tensorflow/tensorflow:tag-py3
 COPY . .
 ENV PYTHONPATH $PWD
 RUN pip install -r services/requirements.txt

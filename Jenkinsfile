@@ -16,9 +16,8 @@ pipeline {
           stage("Run unit tests"){
            steps{
                script {
-                dir("deep_learning_app"){
-                    sh "pip3 install -r requirements.txt"
-                    sh "python3 -m pytest tests/unit_tests"
+                dir("tests"){
+                    sh "python3 -m pytest /unit_tests"
                 } 
             }
            }
@@ -50,8 +49,8 @@ pipeline {
         stage("Run integration tests"){
            steps{
                 script {               
-                    dir("deep_learning_app"){
-                        sh "python3 -m pytest tests/integration_tests"
+                    dir("tests"){
+                        sh "python3 -m pytest /integration_tests"
                     } 
                 }
             }
@@ -59,8 +58,8 @@ pipeline {
        stage("Run api tests"){
            steps{
                 script {
-                    dir("deep_learning_app"){
-                        sh "python3 -m pytest tests/api_tests"
+                    dir("tests"){
+                        sh "python3 -m pytest /api_tests"
                     } 
                 }
             }
@@ -68,7 +67,7 @@ pipeline {
       stage("Run front end tests"){
            steps{
                 script {
-                    dir("deep_learning_app/tests"){
+                    dir("tests"){
                         sh "./run_front_end_tests.sh"
                     } 
                 }

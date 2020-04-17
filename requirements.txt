@@ -9,3 +9,4 @@ mpld3
 pymongo
 selenium
 behave
+tensorflow

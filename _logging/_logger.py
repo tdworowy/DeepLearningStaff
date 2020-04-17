@@ -1,8 +1,10 @@
 import logging
 import sys
-from os import path
+from os import path,mkdir
 
 logs_path = path.join(path.dirname(path.realpath(__file__)), "../logs")
+if not path.isdir(logs_path):
+    mkdir(logs_path)
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',

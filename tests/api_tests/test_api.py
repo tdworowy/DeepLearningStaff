@@ -1,15 +1,18 @@
 import json
+from os import path
+
 import pytest
 import requests
 import yaml
 
-with open("../resources/new_network_json.json") as json_file:
+current_dir = path.join(path.dirname(path.realpath(__file__)))
+with open(path.join(current_dir, "../resources/new_network_json.json")) as json_file:
     new_network_json = json.load(json_file)
 
-with open("../resources/compile_network_json.json") as json_file:
+with open(path.join(current_dir,"../resources/compile_network_json.json")) as json_file:
     compile_network_json = json.load(json_file)
 
-with open("../resources/train_network_json.json") as json_file:
+with open(path.join(current_dir,"../resources/train_network_json.json")) as json_file:
     train_network_json = json.load(json_file)
 
 

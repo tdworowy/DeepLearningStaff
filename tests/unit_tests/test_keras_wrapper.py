@@ -1,4 +1,6 @@
 import json
+from os import path
+
 import pytest
 from data.data_provider import get_keras_data_set
 from keras_wrapper.keras_wrapper import KerasWrapper
@@ -6,13 +8,14 @@ import os
 
 from keras_wrapper.model_factory import build_model
 
-with open("../resources/new_network_json.json") as json_file:
+current_dir = path.join(path.dirname(path.realpath(__file__)))
+with open(path.join(current_dir, "../resources/new_network_json.json")) as json_file:
     new_network_json = json.load(json_file)
 
-with open("../resources/compile_network_json.json") as json_file:
+with open(path.join(current_dir,"../resources/compile_network_json.json")) as json_file:
     compile_network_json = json.load(json_file)
 
-with open("../resources/train_network_json.json") as json_file:
+with open(path.join(current_dir,"../resources/train_network_json.json")) as json_file:
     train_network_json = json.load(json_file)
 
 

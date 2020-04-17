@@ -46,7 +46,7 @@ pipeline {
                          sh "docker run -d nullpointerexeption/deep_node "
                          sh "docker run -d nullpointerexeption/deep_api"
                          sh "docker run -d nullpointerexeption/deep_dashboard"
-                        
+
                         }
                 }
             }
@@ -79,7 +79,7 @@ pipeline {
     post {
         always {
              script {
-                sh 'docker kill $(docker ps -q) && docker rm $(docker ps -a -q)'
+                sh 'docker kill $(docker ps -q)'
                
             }
         }

@@ -1,3 +1,5 @@
+from os import path
+
 import pytest
 import yaml
 
@@ -5,7 +7,8 @@ from data_base.mongo_wrapper import MongoWrapper
 
 
 def read_config():
-    with open('../../config.yaml') as file:
+    current_dir = path.join(path.dirname(path.realpath(__file__)))
+    with open(path.join(current_dir, '../../config.yaml')) as file:
         return yaml.safe_load(file)
 
 

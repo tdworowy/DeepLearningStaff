@@ -6,20 +6,19 @@ pipeline {
                 git 'http://github.com/tdworowy/DeepLearningStaff.git'
             }
         }
-      stage("Install requirements"){
+      stage("Prepare env"){
            steps{
                script {
                     sh "pip3 install -r requirements.txt"
+                    sh "export PYTHONPATH=$PYTHONPATH:$(pwd)"
                }
             }
         }
           stage("Run unit tests"){
            steps{
                script {
-                dir("tests"){
-                    sh "python3 -m pytest /unit_tests/"
-                } 
-            }
+                    sh "python3 -m pytest tests/unit_tests/"
+               } 
            }
         }
         stage('Build Docker Images') {
@@ -33,7 +32,7 @@ pipeline {
                 }
             }
         }
-        stage('Build containers') {
+        stage('Run containers') {
             steps {
                 script {
                          sh "mkdir ~/data"
@@ -49,18 +48,15 @@ pipeline {
         stage("Run integration tests"){
            steps{
                 script {               
-                    dir("tests"){
-                        sh "python3 -m pytest /integration_tests/"
-                    } 
+                    sh "python3 -m pytest tests/integration_tests/"
+                    
                 }
             }
         }
        stage("Run api tests"){
            steps{
                 script {
-                    dir("tests"){
-                        sh "python3 -m pytest /api_tests/"
-                    } 
+                    sh "python3 -m pytest tests/api_tests/"
                 }
             }
         }

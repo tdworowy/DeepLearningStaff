@@ -10,7 +10,7 @@ pipeline {
            steps{
                script {
                     sh "pip3 install -r requirements.txt"
-                    sh "export PYTHONPATH=$PYTHONPATH:$(pwd)"
+                    sh "export PYTHONPATH=\$PYTHONPATH:$(pwd)"
                }
             }
         }

@@ -31,11 +31,7 @@ class Singleton(type):
 
 
 class KerasWrapper(metaclass=Singleton):
-    _callbacks = [
-        callbacks.TensorBoard(log_dir=path.join(path.dirname(path.realpath(__file__)), "..\logs\\tensor_board"),
-                              histogram_freq=1,
-                              embeddings_freq=1)
-    ]
+
 
     def __init__(self, _models: dict = None):
         if _models:
@@ -62,8 +58,7 @@ class KerasWrapper(metaclass=Singleton):
         history = self.get_model(model_name).model.fit(train_data, train_labels,
                                                        epochs=epochs,
                                                        batch_size=batch_size,
-                                                       validation_data=(val_data, val_labels),
-                                                       callbacks=KerasWrapper._callbacks)
+                                                       validation_data=(val_data, val_labels))
         self.get_model(model_name).trained = True
         self.get_model(model_name).history_json = pd.DataFrame.from_dict(history.history).to_json()
         self.get_model(model_name).update_time_stamp = datetime.now()

@@ -1,6 +1,6 @@
 import logging
 import sys
-from os import path,mkdir
+from os import path, mkdir
 
 logs_path = path.join(path.dirname(path.realpath(__file__)), "../logs")
 if not path.isdir(logs_path):

@@ -1,5 +1,7 @@
 import time
 import uuid
+from os import path
+
 import yaml
 import asyncio
 from nats_wrapper.nats_wrapper import call_service, send_message
@@ -8,7 +10,8 @@ from threading import Thread
 
 
 def read_config():
-    with open('../config.yaml') as file:
+    current_dir = path.join(path.dirname(path.realpath(__file__)))
+    with open(path.join(current_dir, '../config.yaml')) as file:
         return yaml.safe_load(file)
 
 
@@ -42,4 +45,3 @@ def start_node(config: dict):
 if __name__ == "__main__":
     config = read_config()
     start_node(config)
-

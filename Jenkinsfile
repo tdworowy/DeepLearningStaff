@@ -17,7 +17,7 @@ pipeline {
            steps{
                script {
                 dir("tests"){
-                    sh "python3 -m pytest /unit_tests"
+                    sh "python3 -m pytest unit_tests/"
                 } 
             }
            }
@@ -50,7 +50,7 @@ pipeline {
            steps{
                 script {               
                     dir("tests"){
-                        sh "python3 -m pytest /integration_tests"
+                        sh "python3 -m pytest integration_tests/"
                     } 
                 }
             }
@@ -59,7 +59,7 @@ pipeline {
            steps{
                 script {
                     dir("tests"){
-                        sh "python3 -m pytest /api_tests"
+                        sh "python3 -m pytest api_tests/"
                     } 
                 }
             }

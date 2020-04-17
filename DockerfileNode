@@ -4,4 +4,5 @@ COPY . .
 ENV PYTHONPATH $PWD
 RUN pip install -r services/requirements.txt
 EXPOSE 4222
+CMD ["echo $PYTHONPATH"]
 CMD ["python","-u", "services/Node.py"]

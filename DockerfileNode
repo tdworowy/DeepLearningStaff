@@ -1,7 +1,7 @@
 # Dockerfile
 FROM  tensorflow/tensorflow:latest-py3
-COPY . .
-ENV PYTHONPATH $PWD
+COPY . app
+ENV PYTHONPATH $PWD/app
 RUN pip install -r services/requirements.txt
 EXPOSE 4222
 CMD ["python","-u", "services/Node.py"]

@@ -1,3 +1,5 @@
 requests
 flask
 mpld3
+matplotlib
+mpld3

@@ -1,6 +1,11 @@
 pipeline {
     agent { label 'Slave_ubuntu'}
     stages {
+        stage("Clean Workspace"){
+           steps{
+               cleanWs()
+            }
+        }
         stage("Pull changes from git"){
            steps{
                 git 'http://github.com/tdworowy/DeepLearningStaff.git'
@@ -9,7 +14,6 @@ pipeline {
         stage("Prepare env"){
            steps{
                script {
-                    cleanWs()
                     sh "pip3 install -r requirements.txt"
                     sh "export PYTHONPATH=\$PYTHONPATH:\$(pwd)"
                }

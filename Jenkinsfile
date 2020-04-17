@@ -80,8 +80,7 @@ pipeline {
     post {
         always {
              script {  
-                sh 'docker kill $(docker ps -q) &&
-                    docker rm $(docker ps -a -q)'
+                sh 'docker kill $(docker ps -q) && docker rm $(docker ps -a -q)'
                
             }
         }

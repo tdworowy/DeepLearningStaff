@@ -3,4 +3,4 @@ numpy
 keras
 pytest
 pymongo
-tensorflow
+asyncio-nats-client

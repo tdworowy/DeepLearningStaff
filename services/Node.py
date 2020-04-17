@@ -4,7 +4,6 @@ import yaml
 import asyncio
 from nats_wrapper.nats_wrapper import call_service, send_message
 from _logging._logger import get_logger
-from multiprocessing import Process
 from threading import Thread
 
 

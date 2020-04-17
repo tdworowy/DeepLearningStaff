@@ -2,7 +2,7 @@
 FROM python:latest
 COPY . .
 ENV PYTHONPATH $PWD
-RUN apt-get install python-dev
+RUN apt-get install python3-dev
 RUN pip install -r requirements.txt
 EXPOSE 5000
 CMD ["python","-u", "api/main_distributed.py"]

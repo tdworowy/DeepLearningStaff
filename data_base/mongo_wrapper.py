@@ -20,7 +20,8 @@ def catch_exception(func):
 
 class MongoWrapper:
     @catch_exception
-    def __init__(self, url: str, data_base: str, collection: str):
+    def __init__(self, mongo_host: str,mongo_port: str, data_base: str, collection: str):
+        url = f"mongodb://{mongo_host}:{mongo_port}/"
         self.client = pymongo.MongoClient(url, serverSelectionTimeoutMS=5000)
         self.db = self.client[data_base]
         self.collection = self.db[collection]

@@ -30,12 +30,14 @@ def start_node(config: dict):
 
     logger = get_logger("Node_" + str(uuid.uuid4()))
     loop = asyncio.new_event_loop()
-    loop.run_until_complete(call_service(nats_port=config.get('nats_port'),
-                                         service_topic=config.get('service_topic'),
-                                         response_topic=config.get('response_topic'),
-                                         loop=loop,
-                                         logger=logger,
-                                         services=services))
+    loop.run_until_complete(call_service(
+        nats_host=config.get('nats_host'),
+        nats_port=config.get('nats_port'),
+        service_topic=config.get('service_topic'),
+        response_topic=config.get('response_topic'),
+        loop=loop,
+        logger=logger,
+        services=services))
 
     thread = Thread(target=synchronize, args=(logger,))
     thread.start()

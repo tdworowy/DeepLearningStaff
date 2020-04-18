@@ -6,10 +6,10 @@ from threading import Thread
 from nats.aio.client import Client as NATS
 
 
-async def call_service(nats_port: str, service_topic: str, services, response_topic, logger, loop):
+async def call_service(nats_host: str, nats_port: str, service_topic: str, services, response_topic, logger, loop):
     nc = NATS()
 
-    await nc.connect(servers=[f"nats://127.0.0.1:{nats_port}"], loop=loop)
+    await nc.connect(servers=[f"nats://{nats_host}:{nats_port}"], loop=loop)
 
     async def message_handler(msg):
         try:
@@ -29,10 +29,10 @@ async def call_service(nats_port: str, service_topic: str, services, response_to
 def send_message(service_name: str, data: json, logger, config):
     responses = Queue()
 
-    async def call_service(nats_port: str, service_topic: str, response_topic: str, loop):
+    async def call_service(nats_host: str, nats_port: str, service_topic: str, response_topic: str, loop):
         nc = NATS()
 
-        await nc.connect(servers=[f"nats://127.0.0.1:{nats_port}"], loop=loop)
+        await nc.connect(servers=[f"nats://{nats_host}:{nats_port}"], loop=loop)
         message = {'service_name': service_name, 'data': data}
 
         async def message_handler(msg):
@@ -51,10 +51,12 @@ def send_message(service_name: str, data: json, logger, config):
         await nc.publish(service_topic, json.dumps(message).encode())
 
     loop = asyncio.new_event_loop()
-    loop.run_until_complete(call_service(nats_port=config.get('nats_port'),
-                                         service_topic=config.get('service_topic'),
-                                         response_topic=config.get('response_topic'),
-                                         loop=loop))
+    loop.run_until_complete(call_service(
+        nats_host=config.get('nats_host'),
+        nats_port=config.get('nats_port'),
+        service_topic=config.get('service_topic'),
+        response_topic=config.get('response_topic'),
+        loop=loop))
 
     Thread(target=loop.run_forever).start()  # might not be the best solution
 

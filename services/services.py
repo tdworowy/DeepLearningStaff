@@ -22,7 +22,8 @@ config = read_config()
 logger = get_logger(__name__)
 keras_wrapper = KerasWrapper()
 mongo_wrapper = MongoWrapper(
-    url=config.get('mong_url'),
+    mongo_host=config.get('mong_host'),
+    mongo_port=config.get('mong_port'),
     data_base=config.get('mongo_base'),
     collection=config.get('mongo_collection')
 )

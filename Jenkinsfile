@@ -19,6 +19,14 @@ pipeline {
                }
             }
         }
+        stage("Update config"){
+           steps{
+                script {
+                    def ip = sh "hostname -I | awk '{print \$1}'"
+                    sh "python3 update_config $ip"
+                }
+            }
+        }
         stage("Run unit tests"){
           steps{
                script {
@@ -43,9 +51,9 @@ pipeline {
                          sh "mkdir -p ~/data"
                          sh "docker pull mongo && docker run -d -p 27017:27017 -v ~/data:/data/db mongo"
                          sh "docker pull nats && docker run -d -p 4222:4222 -p 8222:8222 nats"
-                         sh "docker run -d --name node nullpointerexeption/deep_node"
-                         sh "docker run -d --name api -p 5000:5000 nullpointerexeption/deep_api"
-                         sh "docker run -d --name dashboard -p 3000:3000 nullpointerexeption/deep_dashboard"
+                         sh "docker run -d nullpointerexeption/deep_node"
+                         sh "docker run -d -p 5000:5000 nullpointerexeption/deep_api"
+                         sh "docker run -d -p 3000:3000 nullpointerexeption/deep_dashboard"
 
                         }
                 }

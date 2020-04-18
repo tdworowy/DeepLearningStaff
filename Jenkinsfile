@@ -31,9 +31,6 @@ pipeline {
           steps{
                script {
                     sh "python3 -m pytest tests/unit_tests/ --html=unit_tests_report.html --self-contained-html"
-                    archiveArtifacts artifacts: 'unit_tests_report.html', followSymlinks: false
-                    
-                    
                    
                } 
            }
@@ -66,7 +63,6 @@ pipeline {
            steps{
                 script {               
                     sh "python3 -m pytest tests/integration_tests/ --html=integration_tests_report.html --self-contained-html"
-                    archiveArtifacts artifacts: 'integration_tests_report.html', followSymlinks: false
                     
                 }
             }
@@ -75,7 +71,6 @@ pipeline {
            steps{
                 script {
                     sh "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html"
-                    archiveArtifacts artifacts: 'api_test_report.html', followSymlinks: false
                   
                 }
             }
@@ -94,6 +89,9 @@ pipeline {
     post {
         always {
              script {
+                archiveArtifacts artifacts: 'unit_tests_report.html', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'integration_tests_report.html', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'api_test_report.html', followSymlinks: false, allowEmptyArchive: true
                 sh 'docker kill $(docker ps -q)'
                // sh 'docker rm $(docker ps -a -q)'
                

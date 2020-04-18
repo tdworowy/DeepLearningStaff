@@ -1,4 +1,3 @@
-def networkName = "docker_network"
 pipeline {
     agent { label 'Slave_ubuntu'}
     stages {
@@ -43,11 +42,11 @@ pipeline {
             steps {
                 script {
                          sh "mkdir -p ~/data"
-                         sh "docker pull mongo && docker run -d -p 27017:27017 -v ~/data:/data/db mongo -net ${networkName} img"
-                         sh "docker pull nats && docker run -d nats -net ${networkName} img"
-                         sh "docker run -d --name node nullpointerexeption/deep_node -net ${networkName} img"
-                         sh "docker run -d --name api -p 5000:5000 nullpointerexeption/deep_api -net ${networkName} img"
-                         sh "docker run -d --name dashboard -p 3000:3000 nullpointerexeption/deep_dashboard -net ${networkName} img"
+                         sh "docker pull mongo && docker run -d -p 27017:27017 -v ~/data:/data/db mongo"
+                         sh "docker pull nats && docker run -d -p 4222:4222 -p 8222:8222 nats"
+                         sh "docker run -d --name node nullpointerexeption/deep_node"
+                         sh "docker run -d --name api -p 5000:5000 nullpointerexeption/deep_api"
+                         sh "docker run -d --name dashboard -p 3000:3000 nullpointerexeption/deep_dashboard"
 
                         }
                 }

@@ -1,6 +1,6 @@
 # Dockerfile
 FROM node:latest
 COPY . .
-EXPOSE 3000
+WORKDIR "/dashboard"
 RUN npm install
 CMD [ "npm", "start" ]

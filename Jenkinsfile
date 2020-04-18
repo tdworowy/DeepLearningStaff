@@ -30,15 +30,9 @@ pipeline {
         stage("Run unit tests"){
           steps{
                script {
-                    sh "python3 -m pytest tests/unit_tests/ --html=unnit_tests_report.html --alluredir=allure_dir"
+                    sh "python3 -m pytest tests/unit_tests/ --html=unit_tests_report.html --self-contained-html"
+                    archiveArtifacts artifacts: 'unit_tests_report.html', followSymlinks: false
                     
-                   allure([
-                    includeProperties: false,
-                    jdk: '',
-                    properties: [],
-                    reportBuildPolicy: 'ALWAYS',
-                    results: [[path: 'allure_dir']]
-                    ])
                     
                    
                } 
@@ -71,14 +65,8 @@ pipeline {
         stage("Run integration tests"){
            steps{
                 script {               
-                    sh "python3 -m pytest tests/integration_tests/ --html=integration_tests_report.html --alluredir=allure_dir"
-                    allure([
-                        includeProperties: false,
-                        jdk: '',
-                        properties: [],
-                        reportBuildPolicy: 'ALWAYS',
-                        results: [[path: 'allure_dir']]
-                        ])
+                    sh "python3 -m pytest tests/integration_tests/ --html=integration_tests_report.html --self-contained-html"
+                    archiveArtifacts artifacts: 'integration_tests_report.html', followSymlinks: false
                     
                 }
             }
@@ -86,14 +74,9 @@ pipeline {
         stage("Run api tests"){
            steps{
                 script {
-                    sh "python3 -m pytest tests/api_tests/ --html=report.html --alluredir=allure_dir"
-                    allure([
-                        includeProperties: false,
-                        jdk: '',
-                        properties: [],
-                        reportBuildPolicy: 'ALWAYS',
-                        results: [[path: 'allure_dir']]
-                        ])
+                    sh "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html"
+                    archiveArtifacts artifacts: 'api_test_report.html', followSymlinks: false
+                  
                 }
             }
         }
@@ -102,14 +85,6 @@ pipeline {
                 script {
                     dir("tests/front_end_tests"){
                         sh "behave -f allure_behave.formatter:AllureFormatter -o allure_dir"
-                        allure([
-                            includeProperties: false,
-                            jdk: '',
-                            properties: [],
-                            reportBuildPolicy: 'ALWAYS',
-                            results: [[path: 'allure_dir']]
-                            ])
-                      
                     } 
                 }
             }

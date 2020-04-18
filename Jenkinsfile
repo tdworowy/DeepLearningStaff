@@ -22,8 +22,8 @@ pipeline {
         stage("Update config"){
            steps{
                 script {
-                    def ip = sh "hostname -I | awk '{print \$1}'"
-                    sh "python3 update_config $ip"
+                    def ip = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true)
+                    sh "python3 update_config.py $ip"
                 }
             }
         }

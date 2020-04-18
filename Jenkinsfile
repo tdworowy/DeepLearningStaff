@@ -30,7 +30,8 @@ pipeline {
         stage("Run unit tests"){
           steps{
                script {
-                    sh "python3 -m pytest tests/unit_tests/"
+                    sh "python3 -m pytest tests/unit_tests/ --alluredir=allure_dir ./tests"
+                    sh "allure serve allure_dir"
                } 
            }
         }
@@ -61,7 +62,8 @@ pipeline {
         stage("Run integration tests"){
            steps{
                 script {               
-                    sh "python3 -m pytest tests/integration_tests/"
+                    sh "python3 -m pytest tests/integration_tests/ --html=report.html --alluredir=allure_dir ./tests"
+                    sh "allure serve allure_dir"
                     
                 }
             }
@@ -69,15 +71,17 @@ pipeline {
         stage("Run api tests"){
            steps{
                 script {
-                    sh "python3 -m pytest tests/api_tests/"
+                    sh "python3 -m pytest tests/api_tests/ --html=report.html --alluredir=allure_dir ./tests"
+                    sh "allure serve allure_dir"
                 }
             }
         }
         stage("Run front end tests"){
            steps{
                 script {
-                    dir("tests"){
-                        sh "./run_front_end_tests.sh"
+                    dir("tests/front_end_tests"){
+                        sh "behave -f allure_behave.formatter:AllureFormatter -o allure_dir ./features"
+                        sh "allure serve allure_dir"
                     } 
                 }
             }

@@ -6,6 +6,9 @@ requests
 keras
 flask
 pytest
+pytest-html
+allure-pytest
+allure-behave
 mpld3
 pymongo
 selenium

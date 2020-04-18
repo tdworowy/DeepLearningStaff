@@ -105,9 +105,8 @@ def test_get_network_training_history():
     get_history_response = requests.get(url=end_point_get_history,
                                         headers={"content-type": "application/json"})
 
-    print(get_history_response)
     assert get_history_response.status_code is 200
-    assert get_history_response.json()["History"] is not {}
+    assert get_history_response.json()["History"] is not {}, get_history_response
 
 
 def test_get_network_details():

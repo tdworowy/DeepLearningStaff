@@ -60,6 +60,6 @@ def send_message(service_name: str, data: json, logger, config):
 
     Thread(target=loop.run_forever).start()  # might not be the best solution
 
-    response = responses.get(timeout=600)
+    response = responses.get(timeout=900)
     loop.stop()
     return response

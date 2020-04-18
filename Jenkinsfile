@@ -16,7 +16,6 @@ pipeline {
                script {
                     sh "pip3 install -r tests/requirements.txt"
                     sh "export PYTHONPATH=\$PYTHONPATH:\$(pwd)"
-                    sh "docker network create ${networkName}"
                }
             }
         }

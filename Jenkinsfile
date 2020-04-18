@@ -31,7 +31,16 @@ pipeline {
           steps{
                script {
                     sh "python3 -m pytest tests/unit_tests/ --html=unnit_tests_report.html --alluredir=allure_dir"
-                    allure includeProperties: false, jdk: '', results: [[path: 'allure_dir']]
+                    
+                    allure config: [
+                        commandline: 'Maven_Allure',
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'allure_dir']]
+                    ]
+                    
                    
                } 
            }
@@ -64,7 +73,14 @@ pipeline {
            steps{
                 script {               
                     sh "python3 -m pytest tests/integration_tests/ --html=integration_tests_report.html --alluredir=allure_dir"
-                    allure includeProperties: false, jdk: '', results: [[path: 'allure_dir']]
+                    allure config: [
+                        commandline: 'Maven_Allure',
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'allure_dir']]
+                    ]
                  
                     
                 }
@@ -74,7 +90,14 @@ pipeline {
            steps{
                 script {
                     sh "python3 -m pytest tests/api_tests/ --html=report.html --alluredir=allure_dir"
-                    allure includeProperties: false, jdk: '', results: [[path: 'allure_dir']]
+                    allure config: [
+                        commandline: 'Maven_Allure',
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'allure_dir']]
+                    ]
                 }
             }
         }
@@ -83,7 +106,14 @@ pipeline {
                 script {
                     dir("tests/front_end_tests"){
                         sh "behave -f allure_behave.formatter:AllureFormatter -o allure_dir"
-                        allure includeProperties: false, jdk: '', results: [[path: 'allure_dir']]
+                            allure config: [
+                            commandline: 'Maven_Allure',
+                            includeProperties: false,
+                            jdk: '',
+                            properties: [],
+                            reportBuildPolicy: 'ALWAYS',
+                            results: [[path: 'allure_dir']]
+                       ]
                       
                     } 
                 }

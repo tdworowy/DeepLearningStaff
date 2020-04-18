@@ -11,6 +11,7 @@ tensorboard --logdir=<paths> <- run tensorboard
 kubernetes:
 sudo kubeadm init
 
+ENTRYPOINT ["tail", "-f", "/dev/null"] <- in dockerfile, keep container running
 
 docker kill $(docker ps -q)
 docker rm $(docker ps -a -q)

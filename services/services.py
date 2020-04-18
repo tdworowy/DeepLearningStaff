@@ -1,4 +1,5 @@
 import json
+from os import path
 
 import yaml
 from keras.engine.saving import load_model
@@ -11,7 +12,8 @@ from keras_wrapper.model_factory import build_model
 
 
 def read_config():
-    with open('../config.yaml') as file:
+    current_dir = path.join(path.dirname(path.realpath(__file__)))
+    with open(path.join(current_dir, '../config.yaml'))as file:
         return yaml.safe_load(file)
 
 
@@ -26,7 +28,6 @@ mongo_wrapper = MongoWrapper(
 )
 services = {}
 test_data_dict = {}
-
 
 
 def health_check_service(*args) -> str:

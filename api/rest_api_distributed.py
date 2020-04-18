@@ -1,4 +1,5 @@
 import json
+from os import path
 
 import mpld3
 import yaml
@@ -253,5 +254,6 @@ def get_app():
 
 
 def read_config():
-    with open('../config.yaml') as file:
+    current_dir = path.join(path.dirname(path.realpath(__file__)))
+    with open(path.join(current_dir,'../config.yaml')) as file:
         return yaml.safe_load(file)

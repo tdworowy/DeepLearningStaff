@@ -255,5 +255,5 @@ def get_app():
 
 def read_config():
     current_dir = path.join(path.dirname(path.realpath(__file__)))
-    with open(path.join(current_dir,'../config.yaml')) as file:
+    with open(path.join(current_dir, '../config.yaml')) as file:
         return yaml.safe_load(file)

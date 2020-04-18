@@ -23,7 +23,7 @@ def read_config():
 
 
 config = read_config()
-host = f"http://{config.get('host')}:{config.get('port')}"
+host = f"http://{config.get('test_host')}:{config.get('port')}"
 
 
 @pytest.fixture(autouse=True)

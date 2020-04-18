@@ -37,12 +37,6 @@ class TestsLogger:
     def log(self):
         return self.logger
 
-
-def create_dir(name):
-    if not os.path.exists(name):
-        os.makedirs(name)
-
-
 def take_screenshot(driver, path, file):
     driver.save_screenshot(os.path.join(path, file.replace(' ', '_') + '.png'))
 

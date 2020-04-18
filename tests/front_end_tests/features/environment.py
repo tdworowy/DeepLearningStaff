@@ -10,7 +10,7 @@ BEHAVE_DEBUG = True
 logs_path = "logs"
 
 
-def create_dir(name):
+def create_dir(name:str):
     if not os.path.exists(name):
         os.makedirs(name)
 

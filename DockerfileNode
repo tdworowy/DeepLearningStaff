@@ -3,5 +3,4 @@ FROM  tensorflow/tensorflow:latest-py3
 COPY . App
 ENV PYTHONPATH $PWD/App
 RUN pip install -r App/services/requirements.txt
-EXPOSE 4222
 CMD ["python", "App/services/Node.py"]

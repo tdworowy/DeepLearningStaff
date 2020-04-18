@@ -4,5 +4,4 @@ COPY . App
 ENV PYTHONPATH $PWD/App
 RUN pip install -r App/api/requirements.txt
 EXPOSE 5000
-#ENTRYPOINT ["tail", "-f", "/dev/null"]
 CMD ["python", "App/api/main_distributed.py"]

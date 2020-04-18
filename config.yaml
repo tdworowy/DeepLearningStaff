@@ -1,4 +1,4 @@
-flask_host: 0.0.0.0
+flask_host: "0.0.0.0"
 port: 5000
 test_host: "localhost"
 mongo_host: "localhost"

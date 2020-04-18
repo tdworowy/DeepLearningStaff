@@ -18,7 +18,8 @@ config = read_config()
 @pytest.fixture(autouse=True)
 def mongo_wrapper():
     return MongoWrapper(
-        url=config.get('mong_url'),
+        mongo_host=config.get('mongo_host'),
+        mongo_port=config.get('mongo_port'),
         data_base="Test_Base",
         collection="Test_Collection"
     )

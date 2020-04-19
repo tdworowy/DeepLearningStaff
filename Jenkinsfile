@@ -55,15 +55,20 @@ pipeline {
                          sh "docker run -d nullpointerexeption/deep_node"
                          sh "docker run -d -p 5000:5000 nullpointerexeption/deep_api"
                          sh "docker run -d -p 3000:3000 nullpointerexeption/deep_dashboard"
-
-                        }
+                       }
+                }
+        }
+        stage("Run containers monitoring"){
+           steps{
+                script {               
+                    sh "python3 monitore_containers_logs.py nullpointerexeption/deep_node nullpointerexeption/deep_api nullpointerexeption/deep_dashboard"
                 }
             }
+        }
         stage("Run integration tests"){
            steps{
                 script {               
                     sh "python3 -m pytest tests/integration_tests/ --html=integration_tests_report.html --self-contained-html"
-                    
                 }
             }
         }
@@ -92,6 +97,9 @@ pipeline {
                 archiveArtifacts artifacts: 'unit_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'integration_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'api_test_report.html', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'nullpointerexeption_deep_node.log', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'nullpointerexeption_deep_api.log', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'nullpointerexeption_deep_dashboard.log', followSymlinks: false, allowEmptyArchive: true
                 sh 'docker kill $(docker ps -q)'
                // sh 'docker rm $(docker ps -a -q)'
                

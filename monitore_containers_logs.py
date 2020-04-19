@@ -2,5 +2,5 @@ import subprocess
 import sys
 
 if __name__ == "__main__":
-    for arg in sys.argv[1:]:
-        subprocess.Popen([f"docker logs -f {arg} > {arg.replace('/','_')}.log"], shell=True)
+    for container_name in sys.argv[1].split("\n"):
+        subprocess.Popen([f"docker logs -f {container_name} > {container_name}.log"], shell=True)

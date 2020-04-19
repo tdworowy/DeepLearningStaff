@@ -101,8 +101,8 @@ pipeline {
                 archiveArtifacts artifacts: 'nullpointerexeption_deep_node.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'nullpointerexeption_deep_api.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'nullpointerexeption_deep_dashboard.log', followSymlinks: false, allowEmptyArchive: true
-                sh 'docker kill $(docker ps -q)'
-                sh 'docker rm $(docker ps -a -q)'
+                //sh 'docker kill $(docker ps -q)'
+                //sh 'docker rm $(docker ps -a -q)'
                
             }
         }

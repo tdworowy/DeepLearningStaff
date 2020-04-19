@@ -62,7 +62,7 @@ pipeline {
            steps{
                 script {
                     def containers = sh(script: "docker ps --format '{{.Names}}'", returnStdout: true)
-                    sh "python3 monitore_containers_logs.py containers"
+                    sh "python3 monitore_containers_logs.py $containers"
                 }
             }
         }

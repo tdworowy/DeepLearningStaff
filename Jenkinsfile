@@ -99,11 +99,13 @@ pipeline {
                 archiveArtifacts artifacts: 'unit_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'integration_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'api_test_report.html', followSymlinks: false, allowEmptyArchive: true
-                archiveArtifacts artifacts: 'nullpointerexeption_deep_node.log', followSymlinks: false, allowEmptyArchive: true
-                archiveArtifacts artifacts: 'nullpointerexeption_deep_api.log', followSymlinks: false, allowEmptyArchive: true
-                archiveArtifacts artifacts: 'nullpointerexeption_deep_dashboard.log', followSymlinks: false, allowEmptyArchive: true
-                //sh 'docker kill $(docker ps -q)'
-                //sh 'docker rm $(docker ps -a -q)'
+                archiveArtifacts artifacts: 'mongo_db.log', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'nats.log', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'node.log', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'api.log', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'dashboard.log', followSymlinks: false, allowEmptyArchive: true
+                sh 'docker kill $(docker ps -q)'
+                sh 'docker rm $(docker ps -a -q)'
                
             }
         }

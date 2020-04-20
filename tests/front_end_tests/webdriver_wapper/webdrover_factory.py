@@ -8,17 +8,18 @@ from typing import Callable
 systems = {"Windows": "_win.exe", "Linux": "_lin"}
 
 
-def chromedriver(executable_path: str) -> webdriver.Chrome:
+def chromedriver() -> webdriver.Chrome:
     system = platform.system()
-    executable_path = executable_path + systems[system]
+    current_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+    executable_path = os.path.join(current_dir, f"../chromedriver/chromedriver_{systems[system]}")
+
     assert os.path.isfile(executable_path), f"File {executable_path} don't exist"
 
     DesiredCapabilities.CHROME['goog:loggingPrefs'] = {'browser': 'ALL'}
     return webdriver.Chrome(executable_path=executable_path)
 
 
-drivers = {}
-drivers['chrome'] = chromedriver
+drivers = {'chrome': chromedriver}
 
 
 def get_driver(browser: str) -> Callable:

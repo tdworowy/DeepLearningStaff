@@ -5,7 +5,7 @@ from selenium.webdriver import DesiredCapabilities
 import platform
 
 
-systems = {"Windows": "_win.exe", "Linux": "_lin"}
+systems = {"Windows": "win.exe", "Linux": "lin"}
 
 
 def chromedriver() -> webdriver.Chrome:

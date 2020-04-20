@@ -1,8 +1,7 @@
-import sys
-
-if sys.version_info[1] == 7:
+try:
     from __future__ import annotations
-
+except Exception:
+    pass
 
 import json
 

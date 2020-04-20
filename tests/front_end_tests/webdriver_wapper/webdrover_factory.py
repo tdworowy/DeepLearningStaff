@@ -11,7 +11,7 @@ systems = {"Windows": "win.exe", "Linux": "lin"}
 def chromedriver() -> webdriver.Chrome:
     system = platform.system()
     current_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)))
-    executable_path = os.path.join(current_dir, f"../chromedriver/chromedriver_{systems[system]}")
+    executable_path = os.path.join(current_dir, f"../../chromedriver/chromedriver_{systems[system]}")
 
     assert os.path.isfile(executable_path), f"File {executable_path} don't exist"
 

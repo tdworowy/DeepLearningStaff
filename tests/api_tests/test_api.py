@@ -1,4 +1,5 @@
 import json
+import time
 from os import path
 
 import pytest
@@ -34,6 +35,7 @@ def add_new_network():
                                          headers={"content-type": "application/json"})
     yield new_network_response
     requests.delete(url=delete_network_end_point, json={'name': new_network_json['name']})
+    time.sleep(10)
 
 
 def test_add_network(add_new_network):

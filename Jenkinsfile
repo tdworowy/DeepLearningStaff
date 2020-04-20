@@ -86,7 +86,7 @@ pipeline {
            steps{
                 script {
                     dir("tests/front_end_tests"){
-                        def front_tests_statu = sh(script: "behave -f allure_behave.formatter:AllureFormatter -o allure_dir", returnStatus: true)
+                        def front_tests_statu = sh(script: "python3 -m behave -f allure_behave.formatter:AllureFormatter -o allure_dir", returnStatus: true)
                     } 
                 }
             }

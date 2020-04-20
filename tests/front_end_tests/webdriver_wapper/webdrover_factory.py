@@ -3,7 +3,7 @@ import os
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 import platform
-from typing import Callable
+
 
 systems = {"Windows": "_win.exe", "Linux": "_lin"}
 
@@ -22,5 +22,5 @@ def chromedriver() -> webdriver.Chrome:
 drivers = {'chrome': chromedriver}
 
 
-def get_driver(browser: str) -> Callable:
-    return drivers[browser]
+def get_driver(browser: str) -> webdriver:
+    return drivers[browser]()

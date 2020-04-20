@@ -5,8 +5,8 @@ from front_end_tests.webdriver_wapper.webdrover_factory import get_driver
 
 
 class WebDriverWrapper:
-    def __init__(self, browser: str, executable_path: str):
-        self.driver = get_driver(browser)(executable_path)
+    def __init__(self, browser: str):
+        self.driver = get_driver(browser)
 
     def open_page(self, server: str):
         self.driver.get(server)

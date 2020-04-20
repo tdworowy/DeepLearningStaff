@@ -9,7 +9,6 @@ from front_end_tests.webdriver_wapper.webdrover_factory import get_driver
 
 class WebDriverWrapper:
     def __init__(self, browser: str, executable_path: str):
-        assert os.path.isfile(executable_path), f"File {executable_path} don't exist"
         self.driver = get_driver(browser)(executable_path)
 
     def open_page(self, server: str):

@@ -2,7 +2,7 @@ import json
 import string
 import time
 from os import path
-from random import random
+from random import choice
 
 import pytest
 import requests
@@ -28,7 +28,7 @@ def read_config():
 config = read_config()
 host = f"http://{config.get('test_host')}:{config.get('port')}"
 
-random_string = lambda length: ''.join([random.choice(string.ascii_letters + string.digits) for n in range(length)])
+random_string = lambda length: ''.join([choice(string.ascii_letters + string.digits) for n in range(length)])
 
 
 @pytest.fixture(autouse=True)

@@ -82,7 +82,8 @@ pipeline {
         stage("Run api tests"){
            steps{
                 script {
-                    def api_tests_status = sh(script: "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html --reruns 3", returnStatus: true)
+                    sh "chmod 777 tests/chromedriver/*"
+                    def api_tests_status = sh(script: "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html --reruns ", returnStatus: true)
                     if(api_tests_status !=0) {
                         unstable('api tests failed!')
                     } 

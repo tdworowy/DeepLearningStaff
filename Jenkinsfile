@@ -31,7 +31,9 @@ pipeline {
           steps{
                script {
                     def unit_test_status = sh(script: "python3 -m pytest tests/unit_tests/ --html=unit_tests_report.html --self-contained-html", returnStatus: true)
-                   
+                    if(unit_test_status !=0) {
+                        currentBuild.result = "UNSTABLE"
+                    }                   
                } 
            }
         }
@@ -71,6 +73,9 @@ pipeline {
            steps{
                 script {               
                    def integration_tests_status = sh(script: "python3 -m pytest tests/integration_tests/ --html=integration_tests_report.html --self-contained-html", returnStatus: true)
+                   if(integration_tests_status !=0) {
+                        currentBuild.result = "UNSTABLE"
+                   } 
                 }
             }
         }
@@ -78,6 +83,9 @@ pipeline {
            steps{
                 script {
                     def api_tests_status = sh(script: "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html --reruns 2", returnStatus: true)
+                    if(api_tests_status !=0) {
+                        currentBuild.result = "UNSTABLE"
+                    } 
                   
                 }
             }
@@ -85,13 +93,18 @@ pipeline {
         stage("Run front end tests"){
            steps{
                 script {
-                    dir("tests/front_end_tests"){
-                        def front_tests_statu = sh(script: "python3 -m behave -f allure_behave.formatter:AllureFormatter -o allure_dir", returnStatus: true)
+                    dir("tests"){
+                        sh "export PYTHONPATH=\$PYTHONPATH:\$(pwd)"
+                        dir("front_end_tests"){
+                            def front_tests_status = sh(script: "python3 -m behave -f allure_behave.formatter:AllureFormatter -o allure_dir", returnStatus: true)
+                            if(front_tests_status !=0) {
+                                currentBuild.result = "UNSTABLE"
+                            } 
+                        }
                     } 
                 }
             }
         }
-        
     }
     post {
         always {
@@ -99,6 +112,7 @@ pipeline {
                 archiveArtifacts artifacts: 'unit_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'integration_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'api_test_report.html', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'tests/front_end_tests/logs/**/*', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'mongo_db.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'nats.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'node.log', followSymlinks: false, allowEmptyArchive: true

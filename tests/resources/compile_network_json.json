@@ -1,5 +1,5 @@
 {
-  "name": "test_network_xdf",
+  "name": "test_network_",
   "optimizer":"rmsprop",
   "loss":"binary_crossentropy",
   "metrics":["acc"]

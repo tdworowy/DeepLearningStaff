@@ -1,5 +1,5 @@
 {
-  "name": "test_network_xdf",
+  "name": "test_network_",
   "data_set": "imdb",
   "epochs": "10",
   "batch_size": "512",

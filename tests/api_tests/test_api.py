@@ -1,6 +1,8 @@
 import json
+import string
 import time
 from os import path
+from random import random
 
 import pytest
 import requests
@@ -26,13 +28,23 @@ def read_config():
 config = read_config()
 host = f"http://{config.get('test_host')}:{config.get('port')}"
 
+random_string = lambda length: ''.join([random.choice(string.ascii_letters + string.digits) for n in range(length)])
+
 
 @pytest.fixture(autouse=True)
 def add_new_network():
     new_network_end_point = f"{host}/network/new"
     delete_network_end_point = f"{host}/network/delete"
+
+    random_name = new_network_json['name'] + random_string(5)
+
+    new_network_json['name'] = random_name
+    compile_network_json['name'] = random_name
+    train_network_json['name'] = random_name
+
     new_network_response = requests.post(url=new_network_end_point, json=new_network_json,
                                          headers={"content-type": "application/json"})
+
     yield new_network_response
     requests.delete(url=delete_network_end_point, json={'name': new_network_json['name']})
     time.sleep(15)

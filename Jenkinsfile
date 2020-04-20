@@ -95,13 +95,12 @@ pipeline {
                 script {
                     dir("tests"){
                         sh "export PYTHONPATH=\$PYTHONPATH:\$(pwd)"
-                        dir("front_end_tests"){
-                            def front_tests_status = sh(script: "python3 -m behave -f allure_behave.formatter:AllureFormatter -o allure_dir", returnStatus: true)
+                            def front_tests_status = sh(script: "export PYTHONPATH=\$PYTHONPATH:\$(pwd) && cd front_end_tests && python3 -m behave -f allure_behave.formatter:AllureFormatter -o allure_dir", returnStatus: true)
                             if(front_tests_status !=0) {
                                 unstable('front end tests failed!')
                                 
                             } 
-                        }
+                        
                     } 
                 }
             }

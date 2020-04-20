@@ -1,4 +1,8 @@
-from __future__ import annotations
+import sys
+
+if sys.version_info[1] == 7:
+    from __future__ import annotations
+
 
 import json
 

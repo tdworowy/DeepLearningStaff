@@ -15,4 +15,3 @@ pymongo
 selenium
 behave
 tensorflow
-dataclasses

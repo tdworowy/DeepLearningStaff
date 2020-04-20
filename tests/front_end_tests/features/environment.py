@@ -23,7 +23,6 @@ def read_config():
 def before_feature(context, feature):
     config = read_config()
     context.url = config['url']
-    context.driver_path = config['driver_path']
     context.browser = config['browser']
     create_dir(logs_path)
 
@@ -43,7 +42,7 @@ def before_scenario(context, scenario):
     context.log_file = context.logs_dir_name + "\\%s_Log_%s.log" % (context.scenario_name, context.time_stump)
     context.scenario_logger.add_log_file(context.log_file)
 
-    context.web_driver_wrapper = WebDriverWrapper(executable_path=context.driver_path, browser=context.browser)
+    context.web_driver_wrapper = WebDriverWrapper(browser=context.browser)
 
     context.scenario_logger.log().info("Scenario started: " + scenario.name)
 

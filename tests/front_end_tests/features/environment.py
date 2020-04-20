@@ -3,8 +3,8 @@ import time
 
 import yaml
 
-from front_end_tests._tests_logging._logger import TestsLogger, take_screenshot
-from front_end_tests.webdriver_wapper.webdriver_wrapper import WebDriverWrapper
+from _tests_logging._logger import TestsLogger, take_screenshot
+from webdriver_wapper.webdriver_wrapper import WebDriverWrapper
 
 BEHAVE_DEBUG = True
 logs_path = "logs"

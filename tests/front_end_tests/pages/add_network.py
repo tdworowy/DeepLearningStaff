@@ -1,7 +1,4 @@
-try:
-    from __future__ import annotations
-except Exception:
-    pass
+from __future__ import annotations
 
 import json
 

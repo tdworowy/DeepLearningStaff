@@ -30,7 +30,7 @@ pipeline {
         stage("Run unit tests"){
           steps{
                script {
-                    sh "python3 -m pytest tests/unit_tests/ --html=unit_tests_report.html --self-contained-html"
+                    def unit_test_status = sh(script: "python3 -m pytest tests/unit_tests/ --html=unit_tests_report.html --self-contained-html", returnStatus: true)
                    
                } 
            }
@@ -70,14 +70,14 @@ pipeline {
         stage("Run integration tests"){
            steps{
                 script {               
-                    sh "python3 -m pytest tests/integration_tests/ --html=integration_tests_report.html --self-contained-html"
+                   def integration_tests_status = sh(script: "python3 -m pytest tests/integration_tests/ --html=integration_tests_report.html --self-contained-html", returnStatus: true)
                 }
             }
         }
         stage("Run api tests"){
            steps{
                 script {
-                    sh "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html --reruns 2"
+                    def api_tests_status = sh(script: "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html --reruns 2", returnStatus: true)
                   
                 }
             }
@@ -86,7 +86,7 @@ pipeline {
            steps{
                 script {
                     dir("tests/front_end_tests"){
-                        sh "behave -f allure_behave.formatter:AllureFormatter -o allure_dir"
+                        def front_tests_statu = sh(script: "behave -f allure_behave.formatter:AllureFormatter -o allure_dir", returnStatus: true)
                     } 
                 }
             }

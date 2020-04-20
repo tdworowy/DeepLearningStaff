@@ -9,6 +9,7 @@ pytest
 pytest-html
 allure-pytest
 allure-behave
+pytest-rerunfailures
 mpld3
 pymongo
 selenium

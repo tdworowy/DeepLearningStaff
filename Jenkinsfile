@@ -77,7 +77,7 @@ pipeline {
         stage("Run api tests"){
            steps{
                 script {
-                    sh "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html"
+                    sh "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html --reruns 2"
                   
                 }
             }

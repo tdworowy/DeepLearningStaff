@@ -46,7 +46,7 @@ def add_new_network():
                                          headers={"content-type": "application/json"})
 
     yield new_network_response
-    requests.delete(url=delete_network_end_point, json={'name': new_network_json['name']})
+    requests.delete(url=delete_network_end_point, json={'name': random_name})
     time.sleep(15)
 
 

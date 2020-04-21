@@ -27,6 +27,22 @@ pipeline {
                 }
             }
         }
+        stage("Static code analize"){
+           steps{
+               script {
+                    sh "python3 -m prospector --output-format json >> prospector.json"
+                    
+               }
+            }
+        }
+          stage("Static security analize"){
+           steps{
+               script {
+                    sh "python3 -m bandit -r -v -f html -o bandit.html"
+                    
+               }
+            }
+        }
         stage("Run unit tests"){
           steps{
                script {
@@ -121,6 +137,10 @@ pipeline {
                 archiveArtifacts artifacts: 'node.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'api.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'dashboard.log', followSymlinks: false, allowEmptyArchive: true
+
+                archiveArtifacts artifacts: 'prospector.json', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'bandit.json', followSymlinks: false, allowEmptyArchive: true
+                
                 
                 sh 'docker kill $(docker ps -q)'
                 sh 'docker rm $(docker ps -a -q)'

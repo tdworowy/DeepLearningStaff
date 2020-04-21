@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 import platform
 
+from selenium.webdriver.chrome.options import Options
 
 systems = {"Windows": "win.exe", "Linux": "lin"}
 
@@ -16,7 +17,13 @@ def chromedriver() -> webdriver.Chrome:
     assert os.path.isfile(executable_path), f"File {executable_path} don't exist"
 
     DesiredCapabilities.CHROME['goog:loggingPrefs'] = {'browser': 'ALL'}
-    return webdriver.Chrome(executable_path=executable_path)
+
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+
+    return webdriver.Chrome(executable_path=executable_path, options=chrome_options)
 
 
 drivers = {'chrome': chromedriver}

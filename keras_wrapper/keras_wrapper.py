@@ -1,8 +1,7 @@
 import json
-from os import path
 
 import pandas as pd
-from keras import models, callbacks
+from keras import models
 from _logging._logger import get_logger
 from datetime import datetime
 
@@ -31,7 +30,6 @@ class Singleton(type):
 
 
 class KerasWrapper(metaclass=Singleton):
-
 
     def __init__(self, _models: dict = None):
         if _models:
@@ -93,6 +91,3 @@ class KerasWrapper(metaclass=Singleton):
             return [model.name for model in list(self.models.values()) if model.deleted]
         else:
             return []
-
-
-

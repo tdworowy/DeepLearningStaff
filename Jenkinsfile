@@ -139,7 +139,7 @@ pipeline {
                 archiveArtifacts artifacts: 'dashboard.log', followSymlinks: false, allowEmptyArchive: true
 
                 archiveArtifacts artifacts: 'prospector.json', followSymlinks: false, allowEmptyArchive: true
-                archiveArtifacts artifacts: 'bandit.json', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'bandit.html', followSymlinks: false, allowEmptyArchive: true
                 
                 
                 sh 'docker kill $(docker ps -q)'

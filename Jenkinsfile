@@ -30,15 +30,15 @@ pipeline {
         stage("Static code analize"){
            steps{
                script {
-                    sh(script: "python3 -m prospector --output-format json > prospector.json", returnStdout: true)
-                    
+                    sh(script: "python3 -m prospector --output-format json > prospector.json", returnStatus: true)
+                  
                }
             }
         }
           stage("Static security analize"){
            steps{
                script {
-                    sh(script: "python3 -m bandit -r . -v -f html -o bandit.html", returnStdout: true)
+                    sh(script: "python3 -m bandit -r . -v -f html -o bandit.html", returnStatus: true)
                     
                }
             }

@@ -82,7 +82,6 @@ pipeline {
         stage("Run api tests"){
            steps{
                 script {
-                    sh "chmod 777 tests/chromedriver/*"
                     def api_tests_status = sh(script: "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html --reruns ", returnStatus: true)
                     if(api_tests_status !=0) {
                         unstable('api tests failed!')
@@ -95,6 +94,7 @@ pipeline {
            steps{
                 script {
                     dir("tests"){
+                        sh "chmod 777 chromedriver/*"
                         sh "export PYTHONPATH=\$PYTHONPATH:\$(pwd)"
                             def front_tests_status = sh(script: "export PYTHONPATH=\$PYTHONPATH:\$(pwd) && cd front_end_tests && python3 -m behave -f allure_behave.formatter:AllureFormatter -o allure_dir", returnStatus: true)
                             if(front_tests_status !=0) {

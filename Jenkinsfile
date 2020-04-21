@@ -53,7 +53,7 @@ pipeline {
                 script {
                          sh "mkdir -p ~/data"
                          sh "docker pull mongo && docker run -d -p 27017:27017 --name mongo_db -v ~/data:/data/db mongo"
-                         sh "docker pull nats && docker run -d -p 4222:4222 -p 8222:8222 --name nats nats"
+                         sh "docker pull nats && docker run -d -p 4222:4222 -p 8222:8222 --name nats nats --V"
                          sh "docker run -d --name node nullpointerexeption/deep_node"
                          sh "docker run -d -p 5000:5000 --name api nullpointerexeption/deep_api"
                          sh "docker run -d -p 3000:3000 --name dashboard nullpointerexeption/deep_dashboard"
@@ -82,7 +82,7 @@ pipeline {
         stage("Run api tests"){
            steps{
                 script {
-                    def api_tests_status = sh(script: "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html --reruns ", returnStatus: true)
+                    def api_tests_status = sh(script: "python3 -m pytest tests/api_tests/ --html=api_test_report.html --self-contained-html --reruns 3", returnStatus: true)
                     if(api_tests_status !=0) {
                         unstable('api tests failed!')
                     } 
@@ -113,12 +113,15 @@ pipeline {
                 archiveArtifacts artifacts: 'unit_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'integration_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'api_test_report.html', followSymlinks: false, allowEmptyArchive: true
+                
                 archiveArtifacts artifacts: 'tests/front_end_tests/logs/**/*', followSymlinks: false, allowEmptyArchive: true
+                
                 archiveArtifacts artifacts: 'mongo_db.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'nats.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'node.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'api.log', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'dashboard.log', followSymlinks: false, allowEmptyArchive: true
+                
                 sh 'docker kill $(docker ps -q)'
                 sh 'docker rm $(docker ps -a -q)'
                

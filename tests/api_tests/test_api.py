@@ -36,7 +36,7 @@ def add_new_network():
     new_network_end_point = f"{host}/network/new"
     delete_network_end_point = f"{host}/network/delete"
 
-    random_name = new_network_json['name'] + random_string(5)
+    random_name = f"test_network_{random_string(5)}"
 
     new_network_json['name'] = random_name
     compile_network_json['name'] = random_name

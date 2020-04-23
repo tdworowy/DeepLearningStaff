@@ -47,7 +47,6 @@ def add_new_network():
 
     yield new_network_response
     requests.delete(url=delete_network_end_point, json={'name': random_name})
-    time.sleep(15)
 
 
 def test_add_network(add_new_network):

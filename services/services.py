@@ -28,7 +28,7 @@ mongo_wrapper = MongoWrapper(
     collection=config.get('mongo_collection')
 )
 services = {}
-test_data_dict = {}
+data_dict = {}
 
 
 def health_check_service(*args) -> str:
@@ -58,11 +58,14 @@ def compile_network(values: json) -> str:
 def train_network(values: json) -> str:
     (train_data, train_labels), \
     (val_data, val_labels), \
-    (test_data, test_labels) = get_keras_data_set(values["data_set"],
+    (test_data, test_labels) = get_keras_data_set(values['data_set'],
                                                   int(values['input_shape']),
                                                   int(values['test_sample_size']))
 
-    test_data_dict[values['name']] = (test_data, test_labels)
+    data_dict['data_set'] = values['data_set']
+    data_dict['input_shape'] = values['input_shape']
+    data_dict['test_sample_size'] = values['test_sample_size']
+
     keras_wrapper.train(model_name=values["name"],
                         train_data=train_data,
                         train_labels=train_labels,
@@ -101,9 +104,15 @@ def delete_network(values: json) -> str:
 
 
 def evaluate_network(values: json) -> str:
+    (train_data, train_labels), \
+    (val_data, val_labels), \
+    (test_data, test_labels) = get_keras_data_set(data_dict["data_set"],
+                                                  int(data_dict['input_shape']),
+                                                  int(data_dict['test_sample_size']))
+
     test_loss, test_acc = keras_wrapper.evaluate(model_name=values['name'],
-                                                 test_data=test_data_dict[values['name']][0],
-                                                 test_labels=test_data_dict[values['name']][1])
+                                                 test_data=test_data,
+                                                 test_labels=test_labels)
     response = {
         "Test_accuracy": test_acc,
         "Test_loss": test_loss

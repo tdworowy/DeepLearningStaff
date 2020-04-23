@@ -26,7 +26,7 @@ async def call_service(nats_host: str, nats_port: str, service_topic: str, servi
     sid = await nc.subscribe(service_topic, cb=message_handler)
 
 
-def send_message(service_name: str, data: json, logger, config):
+def send_message(service_name: str, data: json, logger, config, response: bool = True):
     responses = Queue()
 
     async def call_service(nats_host: str, nats_port: str, service_topic: str, response_topic: str, loop):
@@ -47,7 +47,8 @@ def send_message(service_name: str, data: json, logger, config):
                 logger.error(f"Exception in service {data['service_name']}: {ex}")
                 logger.error(f"Type: {type} Value: {value} Traceback: {traceback}")
 
-        sid = await nc.subscribe(response_topic, cb=message_handler)
+        if response:
+            sid = await nc.subscribe(response_topic, cb=message_handler)
         await nc.publish(service_topic, json.dumps(message).encode())
 
     loop = asyncio.new_event_loop()
@@ -59,7 +60,7 @@ def send_message(service_name: str, data: json, logger, config):
         loop=loop))
 
     Thread(target=loop.run_forever).start()  # might not be the best solution
-
-    response = responses.get(timeout=900)
-    loop.stop()
-    return response
+    if response:
+        response = responses.get(timeout=900)
+        loop.stop()
+        return response

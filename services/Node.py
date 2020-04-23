@@ -20,7 +20,8 @@ def synchronize(logger):
         send_message(service_name="synchronize_data",
                      data="",
                      logger=logger,
-                     config=read_config())
+                     config=read_config(),
+                     response=False)
         time.sleep(10)
 
 

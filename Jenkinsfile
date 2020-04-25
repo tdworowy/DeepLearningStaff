@@ -43,11 +43,12 @@ pipeline {
                }
             }
         }
-         stage("Static security analize frontend"){
+         stage("Static code analize frontend"){
            steps{
                script {
                    dir("dashboard/dashboard") {
                      sh(script: "npm install", returnStatus: true)
+                     sh(script: "npm install typescript -g", returnStatus: true)
                      sh(script: "npm install tslint -g", returnStatus: true)
                      sh(script: "npm audit fix", returnStatus: true)
                      sh(script: "tslint -o tslint.txt './*.ts'", returnStatus: true)

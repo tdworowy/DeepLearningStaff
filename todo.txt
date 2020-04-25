@@ -24,3 +24,7 @@ kubernetes:
  - dashboard
  - nats
  - mongodb
+
+CI:
+ - typescript static analise
+ - run  npm audit fix (?)

@@ -27,7 +27,7 @@ pipeline {
                 }
             }
         }
-        stage("Static code analize"){
+        stage("Static code analize backend"){
            steps{
                script {
                     sh(script: "python3 -m prospector --output-format json > prospector.json", returnStatus: true)
@@ -35,11 +35,22 @@ pipeline {
                }
             }
         }
-          stage("Static security analize"){
+        stage("Static security analize backend"){
            steps{
                script {
                     sh(script: "python3 -m bandit -r . -v -f html -o bandit.html", returnStatus: true)
                     
+               }
+            }
+        }
+         stage("Static security analize frontend"){
+           steps{
+               script {
+                   dir("dashboard/dashboard") {
+                     sh(script: "npm install", returnStatus: true)
+                     sh(script: "npm audit fix", returnStatus: true)
+                     sh(script: "npm tslint -o tslint.txt './*.ts'", returnStatus: true)
+                   }
                }
             }
         }
@@ -129,6 +140,8 @@ pipeline {
                 archiveArtifacts artifacts: 'unit_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'integration_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'api_test_report.html', followSymlinks: false, allowEmptyArchive: true
+
+                 archiveArtifacts artifacts: 'dashboard/dashboard/tslint.txt', followSymlinks: false, allowEmptyArchive: true
                 
                 archiveArtifacts artifacts: 'tests/front_end_tests/logs/**/*', followSymlinks: false, allowEmptyArchive: true
                 

@@ -4,7 +4,7 @@ from os import path
 import mpld3
 import yaml
 from flask import Flask, request, make_response
-from flask_restplus import Api, fields, Resource
+from flask_restx import Api, fields, Resource
 
 from _logging._logger import get_logger
 from data.data_provider import data_sources

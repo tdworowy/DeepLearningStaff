@@ -26,7 +26,7 @@ def start_node(config: dict):
     logger = get_logger("Node_" + str(uuid.uuid4()))
     loop = asyncio.new_event_loop()
 
-    async def run(config):  # DON't work, maybe need to revert
+    async def run(config):
         await asyncio.gather(
             call_service(
                 nats_host=config.get('nats_host'),

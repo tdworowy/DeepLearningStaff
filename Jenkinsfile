@@ -49,7 +49,7 @@ pipeline {
                    dir("dashboard/dashboard") {
                      sh(script: "npm install", returnStatus: true)
                      sh(script: "npm audit fix", returnStatus: true)
-                     sh(script: "npm tslint -o tslint.txt './*.ts'", returnStatus: true)
+                     sh(script: "tslint -o tslint.txt './*.ts'", returnStatus: true)
                    }
                }
             }

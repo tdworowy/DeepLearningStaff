@@ -25,6 +25,6 @@ kubernetes:
  - nats
  - mongodb
 
-CI:
- - typescript static analise
- - run  npm audit fix (?)
+frontend:
+ - display network status on network lists
+ - display layers in network details

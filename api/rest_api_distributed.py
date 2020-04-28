@@ -70,7 +70,7 @@ class CompileNetwork(Resource):
     @api.expect(compile_network_fields, validate=True)
     def post(self):
         values = request.get_json()
-        networks = send_message(service_name="get_networks",
+        networks = send_message(service_name="get_networks_names",
                                 data="",
                                 logger=logger,
                                 config=read_config())
@@ -103,7 +103,7 @@ class TrainNetwork(Resource):
     @api.expect(train_network_fields, validate=True)
     def post(self):
         values = request.get_json()
-        networks = send_message(service_name="get_networks",
+        networks = send_message(service_name="get_networks_names",
                                 data="",
                                 logger=logger,
                                 config=read_config())
@@ -142,7 +142,7 @@ class DeleteNetwork(Resource):
     @api.expect(delete_network_fields, validate=True)
     def delete(self):
         values = request.get_json()
-        networks = send_message(service_name="get_networks",
+        networks = send_message(service_name="get_networks_names",
                                 data="",
                                 logger=logger,
                                 config=read_config())
@@ -170,7 +170,7 @@ class EvaluateNetwork(Resource):
     @api.expect(evaluate_network_fields, validate=True)
     def post(self):
         values = request.get_json()
-        networks = send_message(service_name="get_networks",
+        networks = send_message(service_name="get_networks_names",
                                 data="",
                                 logger=logger,
                                 config=read_config())

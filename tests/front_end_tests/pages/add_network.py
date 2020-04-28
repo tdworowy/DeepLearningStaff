@@ -96,14 +96,14 @@ class AddNetworkPage:
         self.logger.log().info(f"Check if networks f{names} exists")
         for name in names:
             try:
-                self.web_driver_wrapper.wait_for_element(By.XPATH, f'//*[@id="{name}"]/label')
+                self.web_driver_wrapper.wait_for_element(By.XPATH, f'//*[@id="{name}"]/td/label')
             except TimeoutException:
                 self.logger.log().info(f"Network {name} not found")
                 raise AssertionError(f"Network {name} not found")
 
     def delete_network(self, name: str):
         self.logger.log().info(f"Delete network {name}")
-        delete_button = (By.XPATH, f'//*[@id="{name}"]/button[@id="delete"]')
+        delete_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="delete"]')
         self.web_driver_wrapper.wait_for_element(*delete_button)
         self.web_driver_wrapper.driver.find_element(*delete_button).click()
 

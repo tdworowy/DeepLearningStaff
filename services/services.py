@@ -85,6 +85,12 @@ def get_networks(*args) -> str:
     return json.dumps(response)
 
 
+def get_networks_names(*args) -> str:
+    response = keras_wrapper.get_models_names()
+    response = {"Networks": response}
+    return json.dumps(response)
+
+
 def get_network_details(values: json) -> str:
     name = values["name"]
     model = keras_wrapper.get_model(name)
@@ -186,6 +192,7 @@ services["health_check"] = health_check_service
 services["new_network"] = new_network_service
 services["compile_network"] = compile_network
 services["get_networks"] = get_networks
+services["get_networks_names"] = get_networks_names
 services["get_network_details"] = get_network_details
 services["train_network"] = train_network
 services["delete_network"] = delete_network

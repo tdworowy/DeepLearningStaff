@@ -83,8 +83,8 @@ pipeline {
                          sh "mkdir -p data"
                          sh "docker pull mongo && docker run -d -p 27017:27017 --name mongo_db -v data:/data/db mongo"
                          sh "docker pull nats && docker run -d -p 4222:4222 -p 8222:8222 --name nats nats -V"
-                         sh "docker run -d --name node nullpointerexeption/deep_node"
-                         sh "docker run -d -p 5000:5000 --name api nullpointerexeption/deep_api"
+                         sh "docker run -d --name node -e logs_port=4001 nullpointerexeption/deep_node"
+                         sh "docker run -d -p 5000:5000 --name api -e logs_port=4002 nullpointerexeption/deep_api"
                          sh "docker run -d -p 3000:3000 --name dashboard nullpointerexeption/deep_dashboard"
                        }
                 }

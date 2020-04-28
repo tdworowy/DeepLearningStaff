@@ -1,3 +1,4 @@
+import sys
 from os import path
 
 import yaml
@@ -50,4 +51,9 @@ def read_config():
 
 if __name__ == '__main__':
     config = read_config()
-    get_app().run(host=config.get('flask_host'), port=config.get('log_api_port'), threaded=False, debug=True)
+    if  len(sys.argv) ==1:
+        port = config.get('log_api_port')
+    else:
+        port = sys.argv[1]
+
+    get_app().run(host=config.get('flask_host'), port=port, threaded=False, debug=True)

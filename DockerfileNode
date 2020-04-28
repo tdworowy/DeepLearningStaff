@@ -1,7 +1,8 @@
 # Dockerfile
+ENV logs_port
 FROM  tensorflow/tensorflow:latest-py3
 COPY . App
 ENV PYTHONPATH $PWD/App
 RUN pip install -r App/services/requirements.txt
-CMD ["python", "App/monitoring/logs_api.py",". &"]
+CMD ["python", "App/monitoring/logs_api.py" $logs_port, ". &"]
 CMD ["python", "App/services/Node.py"]

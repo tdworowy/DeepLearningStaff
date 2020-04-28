@@ -1,6 +1,6 @@
 # Dockerfile
-ENV logs_port 4002
 FROM  tensorflow/tensorflow:latest-py3
+ENV logs_port 4002
 COPY . App
 ENV PYTHONPATH $PWD/App
 RUN pip install -r App/services/requirements.txt

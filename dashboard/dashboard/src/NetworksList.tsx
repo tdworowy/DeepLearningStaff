@@ -27,7 +27,12 @@ function deleteNetworkHandler(name:string) {
             });
         }
 }
-type State = { networks: Array<string> };
+interface networkData {
+    name:string
+    compiled:boolean
+    trained:boolean
+}
+type State = { networks: Array<networkData> };
 export class NetworksList extends React.Component<{},State> {
     timer:any 
     
@@ -51,12 +56,14 @@ export class NetworksList extends React.Component<{},State> {
         let networks:Array<JSX.Element> = []
         if ( this.state.networks.length > 0) {
             this.state.networks.forEach(function (value) {
-                console.log(value) 
-                networks.push(<li id={value}>
-                                <label>{value}</label>
-                                <button id='details' onClick={event => ReactDOM.render(<NetworkDetails params={value}/>, document.getElementById('root'))}>Details</button>
-                                <button id='delete' onClick={deleteNetworkHandler(value)}>Delete</button>
-                              </li> )
+                console.log(value)
+                networks.push(<tr id={value.name}>
+                                <td><label>{value.name}</label></td>
+                                <td><button id = 'details' onClick={event => ReactDOM.render(<NetworkDetails params={value.name}/>, document.getElementById('root'))}>Details</button></td>
+                                <td><button id = 'delete' onClick={deleteNetworkHandler(value.name)}>Delete</button></td>
+                                <td id={String(value.compiled)}><label>{String(value.compiled)}</label></td>
+                                <td id={String(value.trained)}><label>{String(value.trained)}</label></td>
+                              </tr> )
             })
         }
         return networks
@@ -65,9 +72,16 @@ export class NetworksList extends React.Component<{},State> {
     render() {
         return (
             <div>
-                <ul title="Networks:">
+                <table  title="Networks:">
+                <tr>
+                    <th>Network name</th>
+                    <th>Details</th>
+                    <th>Delete</th>
+                    <th>Compiled</th>
+                    <th>Trained</th>
+                </tr>
                     {this.createNetworkList()}
-                </ul>
+                </table >
             </div>
         )}
 }

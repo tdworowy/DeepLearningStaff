@@ -80,7 +80,7 @@ def train_network(values: json) -> str:
 
 
 def get_networks(*args) -> str:
-    response = keras_wrapper.get_models_names()
+    response = keras_wrapper.get_models_names_and_statuses()
     response = {"Networks": response}
     return json.dumps(response)
 

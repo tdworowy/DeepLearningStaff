@@ -15,7 +15,7 @@
 
 
 -------------------------
-add possibility to choose layer type
+
 
 kubernetes:
 5 pods:
@@ -28,3 +28,11 @@ kubernetes:
 frontend:
  - display network status on network lists
  - display layers in network details
+
+other:
+ - clear logs and temp files
+ - node data synchronisation may cause memory leak
+ - probably wont work for more nodes yet
+ - expose logs(and metrics?) by new small api
+tests:
+ - extend front end tests

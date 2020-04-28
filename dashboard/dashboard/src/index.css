@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #DCDCDC;
 }
 
 code {
@@ -102,4 +103,21 @@ button {
   content: "";
   display: table;
   clear: both;
+}
+table, th, td {
+  border: 3px solid black;
+}
+table {
+  margin-left:auto; 
+  margin-right:auto;
+}
+
+tr {
+  background-color: #cce5ff;
+}
+td#false {
+  background-color: #8B0000;
+}
+td#true {
+  background-color: #006400;
 }

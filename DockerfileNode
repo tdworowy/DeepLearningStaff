@@ -1,5 +1,5 @@
 # Dockerfile
-ENV logs_port
+ENV logs_port 4002
 FROM  tensorflow/tensorflow:latest-py3
 COPY . App
 ENV PYTHONPATH $PWD/App

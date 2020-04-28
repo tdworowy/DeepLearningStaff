@@ -143,7 +143,7 @@ pipeline {
                 archiveArtifacts artifacts: 'integration_tests_report.html', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'api_test_report.html', followSymlinks: false, allowEmptyArchive: true
 
-                 archiveArtifacts artifacts: 'dashboard/dashboard/tslint.txt', followSymlinks: false, allowEmptyArchive: true
+                archiveArtifacts artifacts: 'dashboard/dashboard/tslint.txt', followSymlinks: false, allowEmptyArchive: true
                 
                 archiveArtifacts artifacts: 'tests/front_end_tests/logs/**/*', followSymlinks: false, allowEmptyArchive: true
                 
@@ -155,8 +155,7 @@ pipeline {
 
                 archiveArtifacts artifacts: 'prospector.json', followSymlinks: false, allowEmptyArchive: true
                 archiveArtifacts artifacts: 'bandit.html', followSymlinks: false, allowEmptyArchive: true
-                
-                
+
                 sh 'docker kill $(docker ps -q)'
                 sh 'docker rm $(docker ps -a -q)'
                

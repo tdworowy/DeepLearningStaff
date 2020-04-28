@@ -3,4 +3,5 @@ FROM  python:latest
 COPY . App
 ENV PYTHONPATH $PWD/App
 RUN pip install -r App/api/requirements.txt
+CMD ["python", "App/monitoring/logs_api.py",". &"]
 CMD ["python", "App/api/main_distributed.py"]

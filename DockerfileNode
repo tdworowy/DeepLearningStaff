@@ -3,4 +3,5 @@ FROM  tensorflow/tensorflow:latest-py3
 COPY . App
 ENV PYTHONPATH $PWD/App
 RUN pip install -r App/services/requirements.txt
+CMD ["python", "App/monitoring/logs_api.py",". &"]
 CMD ["python", "App/services/Node.py"]

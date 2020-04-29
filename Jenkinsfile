@@ -51,7 +51,7 @@ pipeline {
                      sh(script: "sudo npm install typescript -g", returnStatus: true)
                      sh(script: "sudo npm install tslint -g", returnStatus: true)
                      sh(script: "npm audit fix", returnStatus: true)
-                     sh(script: "tslint -o tslint.txt './*.ts'", returnStatus: true)
+                     sh(script: "tslint -o tslint.txt './**/*.ts'", returnStatus: true)
                    }
                }
             }

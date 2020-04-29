@@ -9,9 +9,14 @@ from front_end_tests._tests_logging._logger import TestsLogger
 from front_end_tests.webdriver_wapper.webdriver_wrapper import WebDriverWrapper
 
 
+# TODO rewrite to better support multiple layers types
 class AddNetworkPage:
     network_name_input = (By.NAME, "name")
     network_units_input = (By.NAME, "units")
+    network_filter_input = (By.NAME, "filters")
+    network_kernel_size_input = (By.NAME, "kernel_size")
+    network_pool_size_input = (By.NAME, "pool_size")
+    network_strides_input = (By.NAME, "strides")
     network_activation_select = (By.NAME, "activation")
     network_input_shape_input = (By.NAME, "input_shape")
     add_layer_button = (By.ID, "add_layer")
@@ -41,6 +46,30 @@ class AddNetworkPage:
         self.logger.log().info(f"Set units field: {units}")
         self.web_driver_wrapper.driver.find_element(*AddNetworkPage.network_units_input) \
             .send_keys(units)
+        return self
+
+    def set_filters(self, filters: str) -> AddNetworkPage:
+        self.logger.log().info(f"Set filters field: {filters}")
+        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.network_filter_input) \
+            .send_keys(filters)
+        return self
+
+    def set_kernel_size(self, kernel_size: str) -> AddNetworkPage:
+        self.logger.log().info(f"Set kernel_size field: {kernel_size}")
+        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.network_kernel_size_input) \
+            .send_keys(kernel_size)
+        return self
+
+    def set_pool_size(self, pool_size: str) -> AddNetworkPage:
+        self.logger.log().info(f"Set pool_size field: {pool_size}")
+        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.network_pool_size_input) \
+            .send_keys(pool_size)
+        return self
+
+    def set_strides(self, strides: str) -> AddNetworkPage:
+        self.logger.log().info(f"Set strides field: {strides}")
+        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.network_strides_input) \
+            .send_keys(strides)
         return self
 
     def set_activation(self, activation: str) -> AddNetworkPage:
@@ -77,7 +106,7 @@ class AddNetworkPage:
         self.logger.log().info(f"Choose layer type: {layer_type}")
         Select(self.web_driver_wrapper.driver.find_element(*AddNetworkPage.layer_select)) \
             .select_by_value(layer_type)
-        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.choose_layer_button)\
+        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.choose_layer_button) \
             .click()
         return self
 

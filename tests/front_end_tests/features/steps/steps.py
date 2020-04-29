@@ -1,7 +1,45 @@
+import json
+
 from behave import given, when, then
 import time
-from front_end_tests.data_classes.layer import Layer
+from front_end_tests.data_classes.layer import layer
 from front_end_tests.pages.add_network import AddNetworkPage
+
+
+def add_dense(add_network_page: AddNetworkPage, name: str, type: str, units: int, activation: str, input_shape: int):
+    add_network_page. \
+        choose_layer_type(type). \
+        set_name(name). \
+        set_units(units). \
+        set_activation(activation). \
+        set_input_shape(input_shape). \
+        click_add_layer_button()
+
+
+def add_conv2d(add_network_page: AddNetworkPage, name: str, type: str, filters: str, kernel_size: str, activation: str,
+               input_shape: int):
+    add_network_page. \
+        choose_layer_type(type). \
+        set_name(name). \
+        set_filters(filters). \
+        set_kernel_size(kernel_size). \
+        set_activation(activation). \
+        set_input_shape(input_shape). \
+        click_add_layer_button()
+
+
+def add_max_pooling2d(add_network_page: AddNetworkPage, name: str, type: str, pool_size: str, strides: str):
+    add_network_page. \
+        choose_layer_type(type). \
+        set_name(name). \
+        set_pool_size(pool_size). \
+        set_strides(strides). \
+        click_add_layer_button()
+
+
+add_functions = {"Dense": add_dense,
+                 "Conv2D": add_conv2d,
+                 "MaxPooling2D": add_max_pooling2d}
 
 
 @given("Add network page is opened")
@@ -15,22 +53,19 @@ def open_main_page(context):
     time.sleep(2)
 
 
-@when("Add layer {name} {layer} {units} {activation} {input_shape}")
-def add_layer(context, name, layer, units, activation, input_shape):
+@when("Add layer {network_json}")
+def add_layer(context, network_json):
+    values = json.loads(network_json)
+
+    layer_type = values["layer"]["type"]
     context.layers.append(
-        Layer(type=layer,
-              units=int(units),
-              activation=activation,
-              input_shape=input_shape)
+        layer(layer_type)(**values["layer"])
     )
-    context.name = name
-    context.add_network_page. \
-        choose_layer_type(layer). \
-        set_name(name). \
-        set_units(units). \
-        set_activation(activation). \
-        set_input_shape(input_shape). \
-        click_add_layer_button()
+
+    context.name = values["name"]
+    add_functions[layer_type](add_network_page=context.add_network_page,
+                              name=values["name"],
+                              **values["layer"])
     time.sleep(2)
 
 

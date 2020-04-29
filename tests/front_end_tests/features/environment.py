@@ -52,14 +52,14 @@ def before_step(context, step):
 
 
 def after_scenario(context, scenario):
-    context.scenario_logger.log().info("Test Finished: " + context.scenario_name)
-    context.scenario_logger.log().info("Scenario status: " + str(scenario.status))
+    context.scenario_logger.log().info(f"Test Finished: {context.scenario_name}")
+    context.scenario_logger.log().info(f"Scenario status: {str(scenario.status)}")
     context.web_driver_wrapper.tear_down()
 
 
 def after_step(context, step):
     take_screenshot(context.web_driver_wrapper.driver, context.logs_dir_name, "%s" % step.name)
-    context.scenario_logger.log().info("Step status: " + str(step.status))
+    context.scenario_logger.log().info(f"Step status:{str(step.status)}")
     if str(step.status) == "Status.failed":
         context.scenario_logger.log().error("STEP FAIL")
         for entry in context.web_driver_wrapper.driver.get_log('browser'):
@@ -67,5 +67,5 @@ def after_step(context, step):
 
 
 def after_feature(context, feature):
-    context.feature_logger.log().info("Feature Finished: " + feature.name)
-    context.feature_logger.log().info("Feature status: " + str(feature.status))
+    context.feature_logger.log().info(f"Feature Finished: {feature.name}" )
+    context.feature_logger.log().info(f"Feature status: {str(feature.status)}" )

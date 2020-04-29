@@ -10,3 +10,4 @@ dist
 *.hdf5
 logs
 geckodriver
+allure_dir

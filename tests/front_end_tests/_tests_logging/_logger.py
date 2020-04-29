@@ -1,7 +1,9 @@
-import os
-import time
 import logging
+import os
+import string
+import time
 from importlib import reload
+from random import choice
 
 
 class TestsLogger:
@@ -37,8 +39,15 @@ class TestsLogger:
     def log(self):
         return self.logger
 
+
+random_string = lambda length: ''.join([choice(string.ascii_letters + string.digits) for n in range(length)])
+
+
 def take_screenshot(driver, path, file):
-    driver.save_screenshot(os.path.join(path, file.replace(' ', '_') + '.png'))
+    forbidden_characters = ["{", "}", " ", ",", ";", "(", ")", '"', '"', ":"]
+    for character in forbidden_characters:
+        file = file.replace(character, "_")
+    driver.save_screenshot(os.path.join(path, f"{file}_{random_string(5)}_.png"))
 
 
 def get_millis():

@@ -6,7 +6,7 @@ show dbs <- display data bases
 use <db name>
 db.dropDatabase()  <- delete db
 
-tensorboard --logdir=<paths> <- run tensorboard
+tensorboard --logdir=<paths> <- run tensorboarddocker system prune -a --volumes -f
 
 kubernetes:
 sudo kubeadm init
@@ -15,6 +15,6 @@ ENTRYPOINT ["tail", "-f", "/dev/null"] <- in dockerfile, keep container running
 
 docker kill $(docker ps -q)
 docker rm $(docker ps -a -q)
-docker system prune -a --volumes -f
+
 
 docker exec -it [container-id] bash

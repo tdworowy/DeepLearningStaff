@@ -23,7 +23,7 @@ def chrome_options_windows(executable_path: str):
 
 chrome_options = {
     "Windows": chrome_options_windows,
-    "Linux": chrome_options_windows
+    "Linux": chrome_options_linux
 }
 
 

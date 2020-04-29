@@ -9,7 +9,7 @@ from front_end_tests._tests_logging._logger import TestsLogger
 from front_end_tests.webdriver_wapper.webdriver_wrapper import WebDriverWrapper
 
 
-# TODO rewrite to better support multiple layers types
+# TODO rewrite to better support multiple layers types (add sub page for each layer ?)
 class AddNetworkPage:
     network_name_input = (By.NAME, "name")
     network_units_input = (By.NAME, "units")

@@ -33,6 +33,6 @@ other:
  - clear logs and temp files
  - node data synchronisation may cause memory leak
  - probably wont work for more nodes yet
- - expose logs(and metrics?) by new small api
+ - better handle backend errors
 tests:
  - extend front end tests

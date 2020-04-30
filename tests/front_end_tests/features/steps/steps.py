@@ -4,8 +4,10 @@ from behave import given, when, then
 import time
 from front_end_tests.data_classes.layer import get_layer
 from front_end_tests.pages.add_network import AddNetworkPage
+from front_end_tests.data_classes.layer import MaxPooling2DLayer, DenseLayer, Conv2DLayer
+from front_end_tests.pages.compile_network_page import CompileNetworkPage
 
-from front_end_tests.data_classes.layer import MaxPooling2DLayer,DenseLayer,Conv2DLayer
+from front_end_tests.pages.train_network_page import TrainNetworkPage
 
 
 def add_dense(add_network_page: AddNetworkPage, name: str, layer: DenseLayer):
@@ -31,7 +33,7 @@ def add_conv2d(add_network_page: AddNetworkPage, name: str, layer: Conv2DLayer):
     add_network_page.click_add_layer_button()
 
 
-def add_max_pooling2d(add_network_page: AddNetworkPage, name: str,layer: MaxPooling2DLayer):
+def add_max_pooling2d(add_network_page: AddNetworkPage, name: str, layer: MaxPooling2DLayer):
     add_network_page. \
         choose_layer_type(layer.type). \
         set_name(name). \
@@ -41,9 +43,27 @@ def add_max_pooling2d(add_network_page: AddNetworkPage, name: str,layer: MaxPool
     add_network_page.click_add_layer_button()
 
 
-add_functions = {"Dense": add_dense,
-                 "Conv2D": add_conv2d,
-                 "MaxPooling2D": add_max_pooling2d}
+def compile_network(compile_network_page: CompileNetworkPage, compile_data: dict):
+    compile_network_page. \
+        set_optimizer(compile_data['optimizer']). \
+        set_loss(compile_data['loss']). \
+        set_metrics(compile_data['metrics']). \
+        click_compile_network_button()
+
+
+def train_network(train_network_page: TrainNetworkPage, train_data: dict):
+    train_network_page. \
+        set_data_set(train_data['dat_set']). \
+        set_epochs(train_data['epochs']). \
+        set_batch_size(train_data['batch_size']). \
+        set_input_shape(train_data['input_shape']). \
+        set_test_sample_size(train_data['test_sample_size']). \
+        click_train_network_button()
+
+
+add_layer_functions = {"Dense": add_dense,
+                       "Conv2D": add_conv2d,
+                       "MaxPooling2D": add_max_pooling2d}
 
 
 @given("Add network page is opened")
@@ -62,22 +82,43 @@ def add_layer(context, network_json):
     values = json.loads(network_json)
 
     layer_type = values["layer"]["type"]
-
     layer = get_layer(layer_type)(**values["layer"])
 
     context.layers.append(layer)
 
     context.name = values["name"]
-    add_functions[layer_type](add_network_page=context.add_network_page,
-                              name=values["name"],
-                              layer=layer)
-    time.sleep(2)
+    add_layer_functions[layer_type](add_network_page=context.add_network_page,
+                                    name=values["name"],
+                                    layer=layer)
+    time.sleep(5)
 
 
 @when("Post network")
 def post_network(context):
     context.add_network_page.click_add_network_button()
     context.networks.append(context.name)
+    time.sleep(5)
+
+
+@when("Compile network {network_json}")
+def compile_network_step(context, network_json):
+    values = json.loads(network_json)
+
+    name = values["name"]
+    context.compile_network_page = context.add_network_page.click_details_network(name=name,
+                                                                                  next_page_type="compile")
+    compile_network(context.compile_network_page, values['data'])
+    time.sleep(2)
+
+
+@when("Train network {network_json}")
+def train_network_step(context, network_json):
+    values = json.loads(network_json)
+
+    name = values["name"]
+    context.train_network_page = context.add_network_page.click_details_network(name=name,
+                                                                                next_page_type="train")
+    train_network(context.train_network_page, values['data'])
     time.sleep(2)
 
 
@@ -86,6 +127,16 @@ def check_layers(context):
     context.add_network_page.assert_layer(expected_name=context.name,
                                           expected_layers=context.layers
                                           )
+
+
+@then("Check if network is compiled")
+def check_if_network_is_compiled(context):
+    context.compile_network_page.check_if_network_is_compiled(context.networks)
+
+
+@then("Check if network is trained")
+def check_if_network_is_trained(context):
+    context.train_network_page.check_if_network_is_trained(context.networks)
 
 
 @then("Check if network exist")
@@ -102,4 +153,4 @@ def check_layers(context):
 def delete_network(context):
     for network in context.networks:
         context.add_network_page.delete_network(network)
-    time.sleep(2)
+        time.sleep(2)

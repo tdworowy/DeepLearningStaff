@@ -61,8 +61,8 @@ export class NetworksList extends React.Component<{},State> {
                                 <td><label>{value.name}</label></td>
                                 <td><button id = 'details' onClick={event => ReactDOM.render(<NetworkDetails params={value.name}/>, document.getElementById('root'))}>Details</button></td>
                                 <td><button id = 'delete' onClick={deleteNetworkHandler(value.name)}>Delete</button></td>
-                                <td id={String(value.compiled)}><label>{String(value.compiled)}</label></td>
-                                <td id={String(value.trained)}><label>{String(value.trained)}</label></td>
+                                <td id={String(value.compiled)}><label id="compiled">{String(value.compiled)}</label></td>
+                                <td id={String(value.trained)}><label id="trained">{String(value.trained)}</label></td>
                               </tr> )
             })
         }

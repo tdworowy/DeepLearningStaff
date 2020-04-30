@@ -9,6 +9,9 @@ from front_end_tests._tests_logging._logger import TestsLogger
 from front_end_tests.webdriver_wapper.webdriver_wrapper import WebDriverWrapper
 
 from front_end_tests.pages.add_layer_page_factory import AddLayerPageFactory
+from front_end_tests.pages.compile_network_page import CompileNetworkPage
+from front_end_tests.pages.train_network_page import TrainNetworkPage
+from front_end_tests.pages.training_report_page import TrainingReportPage
 
 
 class AddNetworkPage:
@@ -18,6 +21,12 @@ class AddNetworkPage:
     layers_details = (By.ID, "new_layer_details")
     choose_layer_button = (By.ID, "choose_layer")
     layer_select = (By.NAME, "layer")
+
+    next_pages = {
+        "compile": CompileNetworkPage,
+        "train": TrainNetworkPage,
+        "training_report": TrainingReportPage,
+    }
 
     def __init__(self, url: str, logger: TestsLogger, web_driver_wrapper: WebDriverWrapper):
         self.logger = logger
@@ -77,7 +86,7 @@ class AddNetworkPage:
         self.logger.log().info(f"actual: {actual_value} expected: {expected_value}")
         assert actual_value == expected_value, f"{actual_value} is not equal to {expected_value}"
 
-    def check_networks_lists(self, names: str):
+    def check_networks_lists(self, names: list):
         self.logger.log().info(f"Check if networks f{names} exists")
         for name in names:
             try:
@@ -91,3 +100,13 @@ class AddNetworkPage:
         delete_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="delete"]')
         self.web_driver_wrapper.wait_for_element(*delete_button)
         self.web_driver_wrapper.driver.find_element(*delete_button).click()
+
+    def click_details_network(self, name: str, next_page_type: str):
+        self.logger.log().info(f"Details network {name}")
+        delete_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="details"]')
+        self.web_driver_wrapper.wait_for_element(*delete_button)
+        self.web_driver_wrapper.driver.find_element(*delete_button).click()
+        return AddNetworkPage.next_pages[next_page_type](
+            logger=self.logger,
+            web_driver_wrapper=self.web_driver_wrapper
+        )

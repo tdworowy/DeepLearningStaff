@@ -15,7 +15,7 @@ Feature: Train Network
 
     Examples: Input
     |NetworkJson1|NetworkJson2|NetworkJson3|CompileJson|TrainJson|
-    |{"name":"Test_network_train", "layer":{"type":"Dense", "units":16, "activation":"relu","input_shape":"10000"}}|{"name":"Test_network_train", "layer":{"type":"Dense", "units":16, "activation":"relu","input_shape":"10000"}}|{"name":"Test_network_train", "layer":{"type":"Dense", "units":1, "activation":"sigmoid","input_shape":"10000"}}|{"name":"Test_network_train", "data":{"optimizer":"rmsprop", "loss":"binary_crossentropy", "metrics":"acc"}}|{"name":"Test_network_train", "data":{"dat_set":"imdb", "epochs":10, "batch_size":512,"input_shape":10000,"test_sample_size":10000}}|
+    |{"name":"Test_network_train", "layer":{"type":"Dense", "units":16, "activation":"relu","input_shape":"1000"}}|{"name":"Test_network_train", "layer":{"type":"Dense", "units":16, "activation":"relu","input_shape":"1000"}}|{"name":"Test_network_train", "layer":{"type":"Dense", "units":1, "activation":"sigmoid","input_shape":"1000"}}|{"name":"Test_network_train", "data":{"optimizer":"rmsprop", "loss":"binary_crossentropy", "metrics":"acc"}}|{"name":"Test_network_train", "data":{"dat_set":"imdb", "epochs":10, "batch_size":512,"input_shape":1000,"test_sample_size":1000}}|
 
 
 

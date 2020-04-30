@@ -111,7 +111,7 @@ pipeline {
         stage("Run api tests"){
            steps{
                 script {
-                    def api_tests_status = sh(script: "python3 -m pytest tests/api_tests/ --log-cli-level --html=api_test_report.html --self-contained-html --reruns 3", returnStatus: true)
+                    def api_tests_status = sh(script: "python3 -m pytest tests/api_tests/ -v --html=api_test_report.html --self-contained-html --reruns 3", returnStatus: true)
                     if(api_tests_status !=0) {
                         unstable('api tests failed!')
                     } 

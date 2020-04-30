@@ -2,39 +2,43 @@ import json
 
 from behave import given, when, then
 import time
-from front_end_tests.data_classes.layer import layer
+from front_end_tests.data_classes.layer import get_layer
 from front_end_tests.pages.add_network import AddNetworkPage
 
+from front_end_tests.data_classes.layer import MaxPooling2DLayer,DenseLayer,Conv2DLayer
 
-def add_dense(add_network_page: AddNetworkPage, name: str, type: str, units: int, activation: str, input_shape: int):
+
+def add_dense(add_network_page: AddNetworkPage, name: str, layer: DenseLayer):
     add_network_page. \
-        choose_layer_type(type). \
+        choose_layer_type(layer.type). \
         set_name(name). \
-        set_units(units). \
-        set_activation(activation). \
-        set_input_shape(input_shape). \
-        click_add_layer_button()
+        set_units(layer.units). \
+        set_activation(layer.activation). \
+        set_input_shape(layer.input_shape)
+
+    add_network_page.click_add_layer_button()
 
 
-def add_conv2d(add_network_page: AddNetworkPage, name: str, type: str, filters: str, kernel_size: str, activation: str,
-               input_shape: int):
+def add_conv2d(add_network_page: AddNetworkPage, name: str, layer: Conv2DLayer):
     add_network_page. \
-        choose_layer_type(type). \
+        choose_layer_type(layer.type). \
         set_name(name). \
-        set_filters(filters). \
-        set_kernel_size(kernel_size). \
-        set_activation(activation). \
-        set_input_shape(input_shape). \
-        click_add_layer_button()
+        set_filters(layer.filters). \
+        set_kernel_size(layer.kernel_size). \
+        set_activation(layer.activation). \
+        set_input_shape(layer.input_shape)
+
+    add_network_page.click_add_layer_button()
 
 
-def add_max_pooling2d(add_network_page: AddNetworkPage, name: str, type: str, pool_size: str, strides: str):
+def add_max_pooling2d(add_network_page: AddNetworkPage, name: str,layer: MaxPooling2DLayer):
     add_network_page. \
-        choose_layer_type(type). \
+        choose_layer_type(layer.type). \
         set_name(name). \
-        set_pool_size(pool_size). \
-        set_strides(strides). \
-        click_add_layer_button()
+        set_pool_size(layer.pool_size). \
+        set_strides(layer.strides)
+
+    add_network_page.click_add_layer_button()
 
 
 add_functions = {"Dense": add_dense,
@@ -58,14 +62,15 @@ def add_layer(context, network_json):
     values = json.loads(network_json)
 
     layer_type = values["layer"]["type"]
-    context.layers.append(
-        layer(layer_type)(**values["layer"])
-    )
+
+    layer = get_layer(layer_type)(**values["layer"])
+
+    context.layers.append(layer)
 
     context.name = values["name"]
     add_functions[layer_type](add_network_page=context.add_network_page,
                               name=values["name"],
-                              **values["layer"])
+                              layer=layer)
     time.sleep(2)
 
 

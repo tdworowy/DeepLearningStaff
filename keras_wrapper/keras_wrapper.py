@@ -98,3 +98,6 @@ class KerasWrapper(metaclass=Singleton):
             return [model.name for model in list(self.models.values()) if model.deleted]
         else:
             return []
+
+    def remove_model(self, name: str):
+        del self.models[name]

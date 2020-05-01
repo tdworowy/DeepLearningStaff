@@ -177,6 +177,7 @@ def synchronize_data(*args):
             mongo_wrapper.replace(data)
     for network_name in keras_wrapper.get_deleted_models_names():
         mongo_wrapper.delete(network_name)
+        keras_wrapper.remove_model(network_name)
 
     all_networks = mongo_wrapper.get_all()
     for network in all_networks:

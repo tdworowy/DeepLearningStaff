@@ -7,7 +7,8 @@
 - api documentation witch swagger
 - dockerize it
 - jenkins pipeline
-- unit tests 
+- unit tests
+- infrastructure tests (?) (https://testinfra.readthedocs.io/en/latest/)
 - selenium (use selenoid) front-end tests
 - api tests
 - desktop app 

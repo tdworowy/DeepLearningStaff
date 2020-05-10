@@ -35,7 +35,8 @@ other:
  - probably wont work for more nodes yet
  - better handle backend errors
  - try use Numba JIT (in data utils ?)
- - use terafrom(or something else) to set-up linuks VM (jenkins slave)
+ - use terraform(or something else, pulumi) to set-up linux VM (jenkins slave)
+ - use docker compose
 
 tests:
  - extend front end tests

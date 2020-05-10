@@ -9,8 +9,8 @@ After that:
 * docker build -t deep_node -f DockerfileNode . (do it from main project directory)
 * docker build -t deep_api -f DockerfileApi .  (do it from main project directory)
 * docker build -t deep_dashboard . (do it from dashboard project directory)
-* docker pull mongo && docker run -d -p 27017:27017 --name mongo_db -v data:/data/db mongo
-* docker pull nats && docker run -d -p 4222:4222 -p 8222:8222 --name nats -V
+* docker run -d -p 27017:27017 --name mongo_db -v data:/data/db mongo
+* docker run -d -p 4222:4222 -p 8222:8222 --name nats nats -V
 * docker run -d -p 4001:4001 -e logs_port=4001 --name node deep_node <- it is possible to run multiple nods
 * docker run -d -p 5000:5000 -p 4002:4002 -e logs_port=4002 --name api deep_api
 * docker run -d -p 3000:3000 --name dashboard deep_dashboard

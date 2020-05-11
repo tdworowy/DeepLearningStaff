@@ -38,6 +38,10 @@ other:
  - use terraform(or something else, pulumi) to set-up linux VM (jenkins slave)
  - use docker compose
 
+data:
+ - upload files witch appi
+ - send them somewhere (some docker image) to make it available for nodes
+
 tests:
  - extend front end tests
     

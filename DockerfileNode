@@ -3,6 +3,7 @@ FROM  tensorflow/tensorflow:latest-py3
 ENV logs_port 4002
 COPY . App
 ENV PYTHONPATH $PWD/App
+RUN pip install --upgrade pip
 RUN pip install -r App/services/requirements.txt
 CMD ["python", "App/monitoring/logs_api.py $logs_port", ". &"]
 CMD ["python", "App/services/Node.py"]

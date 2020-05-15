@@ -40,7 +40,7 @@ other:
 
 data:
  - upload files witch appi
- - send them somewhere (some docker image) to make it available for nodes
+ - send them somewhere (some docker image) to make it available for nodes (worst case solution - S3 bucket)
 
 tests:
  - extend front end tests

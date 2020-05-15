@@ -40,7 +40,13 @@ other:
 
 data:
  - upload files witch appi
- - send them somewhere (some docker image) to make it available for nodes (worst case solution - S3 bucket)
+ Process:
+  1. Upload data using API
+    a). save file (inside api container)
+    b). call service that update data_sets dictionary (need to synchronize it across nodes)
+  2. when node want to use data
+   a) if file exist will use it
+   b) if file not exist will call api that will send required files
 
 tests:
  - extend front end tests

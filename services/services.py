@@ -5,7 +5,7 @@ import yaml
 from keras.engine.saving import load_model
 import uuid
 from _logging._logger import get_logger
-from data.data_provider import get_keras_data_set
+from data.data_provider import get_keras_data_set, data_sources, add_data_set_from_file
 from data_base.mongo_wrapper import MongoWrapper
 from keras_wrapper.keras_wrapper import KerasWrapper, ModelWrapper
 from keras_wrapper.model_factory import build_model
@@ -133,6 +133,19 @@ def get_network_history(values: json) -> str:
     return json.dumps(response)
 
 
+def get_data_sources(*args) -> str:
+    response = data_sources()
+    response = {"Dat_Sources": response}
+    return json.dumps(response)
+
+
+def add_data_source(values: json) -> str:
+    data_source = values["file_name"]
+    add_data_set_from_file(data_source)
+    response = {f"Dat Source {data_source} added"}
+    return json.dumps(response)
+
+
 def model_to_json(network_name: str) -> dict:
     keras_wrapper.serialize_model(model_name=network_name,
                                   path=f'{network_name}.hdf5')
@@ -200,6 +213,8 @@ services["delete_network"] = delete_network
 services["evaluate_network"] = evaluate_network
 services["get_network_history"] = get_network_history
 services["synchronize_data"] = synchronize_data
+services["get_data_sources"] = get_data_sources
+services["add_data_source"] = add_data_source
 
 
 def get_services():

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { newNetwrokEndPoint } from './Config';
+import { newNetwrokEndPoint,UploadDataSourceEndPoint } from './Config';
 
 interface Layer {
 
@@ -55,6 +55,14 @@ async function postNetwork(data:any) {
         })
     return await response.json()
 }
+async function uploadFile(name:any,file:any) {
+    const response = await fetch(UploadDataSourceEndPoint+name, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: file
+        })
+    return await response.json()
+}
 
 class Network { 
    name?: string |File |null
@@ -81,7 +89,10 @@ export class NewNetwork extends React.Component {
         super(props);
   
     }
-  
+    onSelectFileHandler = (event:any) => {
+        const data = new FormData(event.target)
+        uploadFile(data.get("file_name"), data.get("data_source"))
+    }
     addNetworkHandler = (event:any) => {
         console.log(`POST:${localStorage.globalState}`) 
         postNetwork(localStorage.globalState)
@@ -383,6 +394,22 @@ export class NewNetwork extends React.Component {
                     <button id = "clear_network_button" onClick ={this.clearNetworkHandler}>Clear network</button>
                 <br/><br/>
                     <textarea id = "new_layer_details" rows={4} cols={50} value={this.getTempNetworkDetails()}></textarea>
+                    <form onSubmit={this.onSelectFileHandler}>
+                        <label htmlFor="dat_source">Upload custom data set file:</label>
+                        <input type="file" id="dat_source" name="data_source"></input>
+                        <div className="row">
+                        <div className="col-25">
+                        <label htmlFor ="file_name">File name:</label>
+                        </div> 
+                        <div className="col-75">
+                                <input
+                                name = 'file_name'
+                                type = 'text'
+                                />
+                        </div>
+                        </div>
+                        <input id="upload" type="submit" value="Upload file"/>
+                    </form> 
             </div>
         )
   } 

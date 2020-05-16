@@ -2,12 +2,12 @@ import json
 from os import path
 
 import mpld3
+import werkzeug
 import yaml
-from flask import Flask, request, make_response
-from flask_restx import Api, fields, Resource
+from flask import Flask, request, make_response, send_from_directory, current_app
+from flask_restx import Api, fields, Resource, reqparse
 
 from _logging._logger import get_logger
-from data.data_provider import data_sources
 from nats_wrapper.nats_wrapper import send_message
 from visualization.vizualization import plot
 
@@ -278,9 +278,36 @@ class PlotLoss(Resource):
 class DataSources(Resource):
     @api.doc()
     def get(self):
-        response = data_sources()
-        response = {"Dat_Sources": response}
+        response = send_message(service_name="get_data_sources",
+                                data={''},
+                                logger=logger,
+                                config=read_config())
         return prepare_response(response, 200)
+
+
+@api.route('/upload-data-sources-file/<string:name>')  # TODO don't work
+class DataSourcesUpload(Resource):
+    @api.doc()
+    def post(self, name):
+        parse = reqparse.RequestParser()
+        parse.add_argument('file', type=werkzeug.datastructures.FileStorage)
+        args = parse.parse_args()
+        data_file = args['file']
+        data_file.save(name)
+
+        response = send_message(service_name="add_data_sources",
+                                data={'name': name},
+                                logger=logger,
+                                config=read_config())
+        return prepare_response(response, 200)
+
+
+@api.route('/download-data-sources-file/<string:name>')
+class DataSourcesUpload(Resource):
+    @api.doc()
+    def post(self, name):
+        uploads = current_app.root_path
+        return send_from_directory(directory=uploads, filename=name)
 
 
 @api.route('/healthCheck')

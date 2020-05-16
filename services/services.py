@@ -135,7 +135,7 @@ def get_network_history(values: json) -> str:
 
 def get_data_sources(*args) -> str:
     response = data_sources()
-    response = {"Dat_Sources": response}
+    response = {"Data_Sources": response}
     return json.dumps(response)
 
 

@@ -279,7 +279,7 @@ class DataSources(Resource):
     @api.doc()
     def get(self):
         response = send_message(service_name="get_data_sources",
-                                data={''},
+                                data="",
                                 logger=logger,
                                 config=read_config())
         return prepare_response(response, 200)
@@ -303,7 +303,7 @@ class DataSourcesUpload(Resource):
 
 
 @api.route('/download-data-sources-file/<string:name>')
-class DataSourcesUpload(Resource):
+class DataSourcesDownload(Resource):
     @api.doc()
     def post(self, name):
         uploads = current_app.root_path

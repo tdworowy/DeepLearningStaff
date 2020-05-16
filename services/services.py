@@ -5,7 +5,7 @@ import yaml
 from keras.engine.saving import load_model
 import uuid
 from _logging._logger import get_logger
-from data.data_provider import get_keras_data_set, data_sources, add_data_set_from_file
+from data_provider.data_provider import get_keras_data_set, data_sources, add_data_set_from_file
 from data_base.mongo_wrapper import MongoWrapper
 from keras_wrapper.keras_wrapper import KerasWrapper, ModelWrapper
 from keras_wrapper.model_factory import build_model

@@ -4,7 +4,7 @@ import mpld3
 import yaml
 from flask import Flask, jsonify, request
 from _logging._logger import get_logger
-from data.data_provider import get_keras_data_set, data_sources
+from data_provider.data_provider import get_keras_data_set, data_sources
 from keras_wrapper.model_factory import build_model
 from visualization.vizualization import plot
 from keras_wrapper.keras_wrapper import KerasWrapper

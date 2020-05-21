@@ -95,14 +95,14 @@ class AddNetworkPage:
                 self.logger.log().info(f"Network {name} not found")
                 raise AssertionError(f"Network {name} not found")
 
-    def delete_network(self, name: str):
+    def click_delete_network(self, name: str):
         self.logger.log().info(f"Delete network {name}")
 
         delete_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="delete"]')
         self.web_driver_wrapper.wait_for_element(*delete_button)
         self.web_driver_wrapper.driver.find_element(*delete_button).click()
 
-    def click_details_network(self, name: str, next_page_type: str):
+    def click_network_details(self, name: str, next_page_type: str):
         self.logger.log().info(f"Details network {name}")
 
         details_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="details"]')

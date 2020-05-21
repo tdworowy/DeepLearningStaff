@@ -105,7 +105,7 @@ def compile_network_step(context, network_json):
     values = json.loads(network_json)
 
     name = values["name"]
-    context.compile_network_page = context.add_network_page.click_details_network(name=name,
+    context.compile_network_page = context.add_network_page.click_network_details(name=name,
                                                                                   next_page_type="compile")
     compile_network(context.compile_network_page, values['data'])
     time.sleep(2)
@@ -116,7 +116,7 @@ def train_network_step(context, network_json):
     values = json.loads(network_json)
 
     name = values["name"]
-    context.train_network_page = context.add_network_page.click_details_network(name=name,
+    context.train_network_page = context.add_network_page.click_network_details(name=name,
                                                                                 next_page_type="train")
     train_network(context.train_network_page, values['data'])
     time.sleep(2)
@@ -152,5 +152,5 @@ def check_layers(context):
 @then("Delete network")
 def delete_network(context):
     for network in context.networks:
-        context.add_network_page.delete_network(network)
+        context.add_network_page.click_delete_network(network)
         time.sleep(2)

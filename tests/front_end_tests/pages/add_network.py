@@ -97,15 +97,18 @@ class AddNetworkPage:
 
     def delete_network(self, name: str):
         self.logger.log().info(f"Delete network {name}")
+
         delete_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="delete"]')
         self.web_driver_wrapper.wait_for_element(*delete_button)
         self.web_driver_wrapper.driver.find_element(*delete_button).click()
 
     def click_details_network(self, name: str, next_page_type: str):
         self.logger.log().info(f"Details network {name}")
-        delete_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="details"]')
-        self.web_driver_wrapper.wait_for_element(*delete_button)
-        self.web_driver_wrapper.driver.find_element(*delete_button).click()
+
+        details_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="details"]')
+        self.web_driver_wrapper.wait_for_element(*details_button)
+        self.web_driver_wrapper.driver.find_element(*details_button).click()
+
         return AddNetworkPage.next_pages[next_page_type](
             logger=self.logger,
             web_driver_wrapper=self.web_driver_wrapper

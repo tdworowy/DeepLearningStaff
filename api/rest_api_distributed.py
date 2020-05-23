@@ -296,7 +296,6 @@ class DataSourcesUpload(Resource):
     @api.doc()
     def post(self, name: str, file_extension: str):
         args = upload_parser.parse_args()
-        print(args)
         uploaded_file = args['file']
         file_name = f"{name}.{file_extension}"
         uploaded_file.save(f"{name}.{file_extension}")

@@ -285,18 +285,24 @@ class DataSources(Resource):
         return prepare_response(response, 200)
 
 
-@api.route('/upload-data-sources-file/<string:name>')  # TODO don't work
+upload_parser = api.parser()
+upload_parser.add_argument('file', location='files',
+                           type=werkzeug.FileStorage, required=True)
+
+
+@api.route('/upload-data-sources-file/<string:name>/<string:file_extension>')
 class DataSourcesUpload(Resource):
+    @api.expect(upload_parser, validate=False)
     @api.doc()
-    def post(self, name):
-        parse = reqparse.RequestParser()
-        parse.add_argument('file', type=werkzeug.datastructures.FileStorage)
-        args = parse.parse_args()
-        data_file = args['file']
-        data_file.save(name)
+    def post(self, name: str, file_extension: str):
+        args = upload_parser.parse_args()
+        print(args)
+        uploaded_file = args['file']
+        file_name = f"{name}.{file_extension}"
+        uploaded_file.save(f"{name}.{file_extension}")
 
         response = send_message(service_name="add_data_sources",
-                                data={'name': name},
+                                data={'file_name': file_name},
                                 logger=logger,
                                 config=read_config())
         return prepare_response(response, 200)
@@ -305,7 +311,7 @@ class DataSourcesUpload(Resource):
 @api.route('/download-data-sources-file/<string:name>')
 class DataSourcesDownload(Resource):
     @api.doc()
-    def post(self, name):
+    def get(self, name):
         uploads = current_app.root_path
         return send_from_directory(directory=uploads, filename=name)
 

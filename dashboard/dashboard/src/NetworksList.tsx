@@ -73,6 +73,7 @@ export class NetworksList extends React.Component<{},State> {
         return (
             <div>
                 <table  title="Networks:">
+                <tbody>
                 <tr>
                     <th>Network name</th>
                     <th>Details</th>
@@ -81,6 +82,7 @@ export class NetworksList extends React.Component<{},State> {
                     <th>Trained</th>
                 </tr>
                     {this.createNetworkList()}
+                </tbody>
                 </table >
             </div>
         )}

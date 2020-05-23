@@ -18,3 +18,5 @@ docker rm $(docker ps -a -q)
 docker system prune -a --volumes -f
 
 docker exec -it [container-id] bash
+
+docker logs -f

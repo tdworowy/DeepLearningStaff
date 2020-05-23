@@ -2,10 +2,10 @@ import json
 from os import path
 
 import mpld3
-import werkzeug
+from werkzeug.datastructures import FileStorage
 import yaml
 from flask import Flask, request, make_response, send_from_directory, current_app
-from flask_restx import Api, fields, Resource, reqparse
+from flask_restx import Api, fields, Resource
 
 from _logging._logger import get_logger
 from nats_wrapper.nats_wrapper import send_message
@@ -287,7 +287,7 @@ class DataSources(Resource):
 
 upload_parser = api.parser()
 upload_parser.add_argument('file', location='files',
-                           type=werkzeug.FileStorage, required=True)
+                           type=FileStorage, required=True)
 
 
 @api.route('/upload-data-sources-file/<string:name>/<string:file_extension>')

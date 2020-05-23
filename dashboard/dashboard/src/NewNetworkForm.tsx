@@ -58,7 +58,7 @@ async function postNetwork(data:any) {
 async function uploadFile(name:any,file_extentiom:any,file:any) { //TODO don't work fron front-end (works from swagger)
     const response = await fetch(`${UploadDataSourceEndPoint}/${name}/${file_extentiom}`, {
         method: 'POST',
-        headers: {'Content-Type': 'Content-Type: multipart/form-data'},
+        headers: {'Content-Type': 'multipart/form-data'},
         body: file
         })
     return await response.json()

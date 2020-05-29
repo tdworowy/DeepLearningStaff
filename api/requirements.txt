@@ -5,3 +5,4 @@ flask
 flask_restx
 matplotlib
 mpld3
+werkzeug

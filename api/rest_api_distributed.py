@@ -19,7 +19,7 @@ def prepare_response(message: json, status: int):
     return message, status
 
 
-api = Api()
+api = Api(title='Deep learning API', default="DeepLearning")
 app = Flask(__name__)
 api.init_app(app)
 
@@ -300,7 +300,7 @@ class DataSourcesUpload(Resource):
         file_name = f"{name}.{file_extension}"
         uploaded_file.save(f"{name}.{file_extension}")
 
-        response = send_message(service_name="add_data_sources",
+        response = send_message(service_name="add_data_source",
                                 data={'file_name': file_name},
                                 logger=logger,
                                 config=read_config())

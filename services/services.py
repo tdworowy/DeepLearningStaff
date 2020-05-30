@@ -142,7 +142,7 @@ def get_data_sources(*args) -> str:
 def add_data_source(values: json) -> str:
     data_source = values["file_name"]
     add_data_set_from_file(data_source)
-    response = {f"Dat Source {data_source} added"}
+    response = {"Message": f"Data Source {data_source} added"}
     return json.dumps(response)
 
 

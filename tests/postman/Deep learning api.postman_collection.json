@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"test\",\r\n  \"layers\": [\r\n    {\r\n      \"units\": 16,\r\n      \"activation\": \"relu\",\r\n      \"input_shape\": \"10000\"\r\n    },\r\n     {\r\n      \"units\": 16,\r\n      \"activation\": \"relu\"\r\n    },\r\n     {\r\n      \"units\": 16,\r\n      \"activation\": \"relu\"\r\n    },\r\n     {\r\n      \"units\": 1,\r\n      \"activation\": \"sigmoid\"\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"name\": \"test\",\r\n  \"layers\": [\r\n    {\r\n      \"layer\": \"Dense\",\r\n      \"units\": 16,\r\n      \"activation\": \"relu\",\r\n      \"input_shape\": \"10000\"\r\n    },\r\n     {\r\n      \"layer\": \"Dense\",\t\r\n      \"units\": 16,\r\n      \"activation\": \"relu\"\r\n    },\r\n     {\r\n      \"layer\": \"Dense\",\r\n      \"units\": 16,\r\n      \"activation\": \"relu\"\r\n    },\r\n     {\r\n      \"layer\": \"Dense\",\r\n      \"units\": 1,\r\n      \"activation\": \"sigmoid\"\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -89,7 +89,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"test\",\r\n  \"data_set\": \"imdb\",\r\n  \"epochs\": 10,\r\n  \"batch_size\": 512,\r\n  \"input_shape\": 10000,\r\n  \"test_sample_size\": 10000\r\n}",
+					"raw": "{\r\n  \"name\": \"test\",\r\n  \"data_set\": \"imdb\",\r\n  \"epochs\": \"10\",\r\n  \"batch_size\": \"512\",\r\n  \"input_shape\": \"10000\",\r\n  \"test_sample_size\": \"10000\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,6 +105,50 @@
 					"path": [
 						"network",
 						"train"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload_data_source (don't work)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"value": "",
+							"contentType": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "file",
+							"value": "",
+							"contentType": "f",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/upload-data-sources-file/test/jpg",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"upload-data-sources-file",
+						"test",
+						"jpg"
 					]
 				}
 			},

@@ -32,11 +32,12 @@ frontend:
 other:
  - clear logs and temp files
  - node data synchronisation may cause memory leak
- - probably wont work for more nodes yet
+ - probably won't work for more nodes yet
  - better handle backend errors
  - try use Numba JIT (in data utils ?)
  - use terraform(or something else, pulumi) to set-up linux VM (jenkins slave)
  - use docker compose
+ - import/export model
 
 data:
  - upload files witch appi
@@ -47,7 +48,3 @@ data:
   2. when node want to use data
    a) if file exist will use it
    b) if file not exist will call api that will send required files
-
-tests:
- - extend front end tests
-    

@@ -75,6 +75,8 @@ def add_data_set_from_file(file_name: str):
 
 
 def get_file_data_set(file_name: str, size: int, test_set_size: int):
+    """File should be pickle"""
+    assert ".pickle" in file_name
     if not path.exists(file_name):
         config = read_config()
         url = f"http://{config.get('api_host')}:{config.get('port')}/download-data-sources-file/{file_name}"

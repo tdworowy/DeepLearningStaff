@@ -1,13 +1,11 @@
 import json
-import os
 from os import path
 
-import flask
 import mpld3
-from werkzeug.datastructures import FileStorage
 import yaml
 from flask import Flask, request, make_response, send_from_directory, current_app, send_file
 from flask_restx import Api, fields, Resource
+from werkzeug.datastructures import FileStorage
 
 from _logging._logger import get_logger
 from data_base.mongo_wrapper import MongoWrapper

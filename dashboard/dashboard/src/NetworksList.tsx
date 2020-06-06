@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { networksEndPoint,deleteNetworkEndPoint } from './Config';
+import { networksEndPoint,deleteNetworkEndPoint,ExportNetworkEndPoint } from './Config';
 import { NetworkDetails } from './NetworkDetails';
 import ReactDOM from 'react-dom';
 
@@ -9,6 +9,13 @@ async function getNetworks() {
         headers: { 'Content-Type': 'application/json'}
         })
     return await response.json()
+}
+async function exportNetwork(name:string) {
+    const response = await fetch(ExportNetworkEndPoint+name, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/octet-stream '}
+        })
+    return await response.blob()
 }
 async function deleteNetwork(name:string|File|null) {
     const response = await fetch(deleteNetworkEndPoint, {
@@ -24,6 +31,27 @@ function deleteNetworkHandler(name:string) {
         deleteNetwork(name)
             .then((data) => {
                 console.log(`Response:${JSON.stringify(data)}`)
+            });
+        }
+}
+function exportNetworkHandler(name:string) {
+    return () => { 
+        console.log(`Export:${name}`) 
+        exportNetwork(name)
+            .then((data) => {
+                const fileName = name+".hdf5"
+                console.log(`Download:${fileName}`)
+                
+                const objectUrl: string = URL.createObjectURL(data);
+                const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
+
+                a.href = objectUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();        
+
+                document.body.removeChild(a);
+                URL.revokeObjectURL(objectUrl);
             });
         }
 }
@@ -61,6 +89,7 @@ export class NetworksList extends React.Component<{},State> {
                                 <td><label>{value.name}</label></td>
                                 <td><button id = 'details' onClick={event => ReactDOM.render(<NetworkDetails params={value.name}/>, document.getElementById('root'))}>Details</button></td>
                                 <td><button id = 'delete' onClick={deleteNetworkHandler(value.name)}>Delete</button></td>
+                                <td><button id = 'export' onClick={exportNetworkHandler(value.name)}>Export</button></td>
                                 <td id={String(value.compiled)}><label id="compiled">{String(value.compiled)}</label></td>
                                 <td id={String(value.trained)}><label id="trained">{String(value.trained)}</label></td>
                               </tr> )
@@ -78,6 +107,7 @@ export class NetworksList extends React.Component<{},State> {
                     <th>Network name</th>
                     <th>Details</th>
                     <th>Delete</th>
+                    <th>Export</th>
                     <th>Compiled</th>
                     <th>Trained</th>
                 </tr>

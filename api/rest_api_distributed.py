@@ -1,13 +1,16 @@
 import json
+import os
 from os import path
 
+import flask
 import mpld3
 from werkzeug.datastructures import FileStorage
 import yaml
-from flask import Flask, request, make_response, send_from_directory, current_app
+from flask import Flask, request, make_response, send_from_directory, current_app, send_file
 from flask_restx import Api, fields, Resource
 
 from _logging._logger import get_logger
+from data_base.mongo_wrapper import MongoWrapper
 from nats_wrapper.nats_wrapper import send_message
 from visualization.vizualization import plot
 
@@ -217,6 +220,33 @@ class NetworkDetails(Resource):
                                 logger=logger,
                                 config=read_config())
         return prepare_response(response, 200)
+
+
+def create_mongo(config) -> MongoWrapper:
+    return MongoWrapper(
+        mongo_host=config.get('mongo_host'),
+        mongo_port=config.get('mongo_port'),
+        data_base=config.get('mongo_base'),
+        collection=config.get('mongo_collection')
+    )
+
+
+def generate_hdf5_file(file_name: str, file_bytes: bytes):
+    with open(file_name, 'wb') as file:
+        file.write(file_bytes)
+
+
+@api.route('/network/export/<string:name>')
+class NetworkExports(Resource):
+    @api.doc()
+    def get(self, name: str):
+        file_name = f"{name}.hdf5"
+
+        mongo_wrapper = create_mongo(read_config())
+        data = mongo_wrapper.get_by_name(name)
+        generate_hdf5_file(file_name, data["model"])
+
+        return send_file(file_name, attachment_filename=file_name)
 
 
 @api.route('/network/history/<string:name>')

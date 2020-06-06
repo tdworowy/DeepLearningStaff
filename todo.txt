@@ -1,9 +1,9 @@
-- REST api(flask)
+- REST api (flask)
 - graphql api 
 - keras wrapper
 - add some layer between api and wrapper
-- front-end (graphs etc.)
-- documentation (generated)(python and typescript)
+- web front-end (graphs etc.)
+- documentation (generated) (python and typescript)
 - api documentation witch swagger
 - dockerize it
 - jenkins pipeline
@@ -11,9 +11,8 @@
 - infrastructure tests (?) (https://testinfra.readthedocs.io/en/latest/)
 - selenium (use selenoid) front-end tests
 - api tests
-- desktop app 
+- desktop app (pythonqt)
 - mobile app
-
 
 -------------------------
 
@@ -35,7 +34,7 @@ other:
  - probably won't work for more nodes yet
  - better handle backend errors
  - try use Numba JIT (in data utils ?)
- - use terraform(or something else, pulumi) to set-up linux VM (jenkins slave)
+ - use terraform (or something else, pulumi) to set-up linux VM (jenkins slave)
  - use docker compose
  - import/export model
 
@@ -43,8 +42,8 @@ data:
  - upload files witch appi
  Process:
   1. Upload data using API
-    a). save file (inside api container)
-    b). call service that update data_sets dictionary (need to synchronize it across nodes)
+        a). save file (inside api container)
+        b). call service that update data_sets dictionary (need to synchronize it across nodes)
   2. when node want to use data
-   a) if file exist will use it
-   b) if file not exist will call api that will send required files
+        a) if file exist will use it
+        b) if file not exist will call api that will send required files

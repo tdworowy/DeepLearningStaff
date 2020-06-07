@@ -1,7 +1,9 @@
+requests
 pandas
 pyyaml
 numpy
 keras
-pytest
 pymongo
+flask
+flask_restx
 asyncio-nats-client

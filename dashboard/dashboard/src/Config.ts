@@ -8,3 +8,5 @@ export const trainNetwrokEndPoint =`${host}/network/train`
 export const deleteNetworkEndPoint = `${host}/network/delete`
 export const plotAccEndPoint = `${host}/network/plot/accuracy/`
 export const plotLossEndPoint = `${host}/network/plot/loss/`
+export const UploadDataSourceEndPoint = `${host}/upload-data-sources-file`
+export const ExportNetworkEndPoint = `${host}/network/export/`

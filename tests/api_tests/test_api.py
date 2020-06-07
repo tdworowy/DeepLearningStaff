@@ -59,7 +59,15 @@ def test_get_networks():
     get_networks_response = requests.get(url=get_networks_end_point, headers={"content-type": "application/json"})
 
     assert get_networks_response.status_code is 200
-    assert new_network_json['name'] in get_networks_response.json()['Networks']
+    assert {'name': new_network_json["name"], 'compiled': False, 'trained': False} in get_networks_response.json()[
+        'Networks']
+
+
+def test_get_data_sources():
+    get_data_sources_end_point = f"{host}/data-sources"
+    get_networks_response = requests.get(url=get_data_sources_end_point, headers={"content-type": "application/json"})
+
+    assert get_networks_response.status_code is 200
 
 
 def test_compile_network():

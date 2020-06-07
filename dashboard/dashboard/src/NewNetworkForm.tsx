@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { newNetwrokEndPoint } from './Config';
+import { newNetwrokEndPoint,UploadDataSourceEndPoint } from './Config';
 
 interface Layer {
 
@@ -55,6 +55,14 @@ async function postNetwork(data:any) {
         })
     return await response.json()
 }
+async function uploadFile(name:any,file_extentiom:any,file:any) { //TODO don't work fron front-end (works from swagger)
+    const response = await fetch(`${UploadDataSourceEndPoint}/${name}/${file_extentiom}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'multipart/form-data','accept': 'application/json'},
+        body: {"file": file} as any //file
+        })
+    return await response.json()
+}
 
 class Network { 
    name?: string |File |null
@@ -81,7 +89,15 @@ export class NewNetwork extends React.Component {
         super(props);
   
     }
-  
+    uploadFileHandler = (event:any) => {
+        const data = new FormData(event.target)
+        const file_name = (data.get("file_name") || '')?.toString()
+        const file = data.get("data_source") 
+        console.log(file)
+       
+        const file_data = file_name.split(".")
+        uploadFile(file_data[0],file_data[1], file)
+    }
     addNetworkHandler = (event:any) => {
         console.log(`POST:${localStorage.globalState}`) 
         postNetwork(localStorage.globalState)
@@ -374,6 +390,26 @@ export class NewNetwork extends React.Component {
         } 
 
      }
+     uploadFile() {
+         return(
+            <form onSubmit={this.uploadFileHandler}>
+            <label htmlFor="data_source">Upload custom data set file:</label>
+            <input type="file" id="data_source" name="data_source"></input>
+            <div className="row">
+            <div className="col-25">
+            <label htmlFor ="file_name">File name:</label>
+            </div> 
+            <div className="col-75">
+                    <input
+                    name = 'file_name'
+                    type = 'text'
+                    />
+            </div>
+            </div>
+            <input id="upload" type="submit" value="Upload file"/>
+        </form> 
+         )
+     }
      render() {
         return(
             <div className="container">
@@ -382,7 +418,8 @@ export class NewNetwork extends React.Component {
                     <button id = "add_network_button" onClick ={this.addNetworkHandler}>Add new network</button>
                     <button id = "clear_network_button" onClick ={this.clearNetworkHandler}>Clear network</button>
                 <br/><br/>
-                    <textarea id = "new_layer_details" rows={4} cols={50} value={this.getTempNetworkDetails()}></textarea>
+                    <textarea id = "new_layer_details" rows={4} cols={50} value={this.getTempNetworkDetails()} readOnly></textarea>
+                    {this.uploadFile()}
             </div>
         )
   } 

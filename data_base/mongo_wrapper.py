@@ -10,7 +10,7 @@ def catch_exception(func):
         try:
             func_name = func.__name__
             res = func(*args, **kwrgs)
-            logger.debug(f"Method {func_name} executed correctly.")
+            logger.debug(f"Method {func_name} executed correctly. Method args: {args} {kwrgs}")
             return res
         except Exception as ex:
             logger.error(f"Mongo DB exception {ex}")

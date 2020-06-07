@@ -2,7 +2,7 @@ import json
 from os import path
 
 import pytest
-from data.data_provider import get_keras_data_set
+from data_provider.data_provider import get_keras_data_set
 from keras_wrapper.keras_wrapper import KerasWrapper
 import os
 

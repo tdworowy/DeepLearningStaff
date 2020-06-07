@@ -87,7 +87,7 @@ export class NetworkDetails extends React.Component<ViewProperties,State> {
         var data:any = getDataSetsSync()
         if(data.Dat_Sources !== "") {
                console.log(`Response:${JSON.stringify(data)}`)
-               dat_sources = data.Dat_Sources
+               dat_sources = data.Data_Sources
             }
        return dat_sources
     }    

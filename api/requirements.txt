@@ -2,5 +2,7 @@ pyyaml
 asyncio-nats-client
 requests
 flask
+flask_restx
 matplotlib
 mpld3
+werkzeug

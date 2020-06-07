@@ -5,7 +5,7 @@ import yaml
 from keras.engine.saving import load_model
 import uuid
 from _logging._logger import get_logger
-from data.data_provider import get_keras_data_set
+from data_provider.data_provider import get_keras_data_set, data_sources, add_data_set_from_file
 from data_base.mongo_wrapper import MongoWrapper
 from keras_wrapper.keras_wrapper import KerasWrapper, ModelWrapper
 from keras_wrapper.model_factory import build_model
@@ -80,6 +80,12 @@ def train_network(values: json) -> str:
 
 
 def get_networks(*args) -> str:
+    response = keras_wrapper.get_models_names_and_statuses()
+    response = {"Networks": response}
+    return json.dumps(response)
+
+
+def get_networks_names(*args) -> str:
     response = keras_wrapper.get_models_names()
     response = {"Networks": response}
     return json.dumps(response)
@@ -127,6 +133,19 @@ def get_network_history(values: json) -> str:
     return json.dumps(response)
 
 
+def get_data_sources(*args) -> str:
+    response = data_sources()
+    response = {"Data_Sources": response}
+    return json.dumps(response)
+
+
+def add_data_source(values: json) -> str:
+    data_source = values["file_name"]
+    add_data_set_from_file(data_source)
+    response = {"Message": f"Data Source {data_source} added"}
+    return json.dumps(response)
+
+
 def model_to_json(network_name: str) -> dict:
     keras_wrapper.serialize_model(model_name=network_name,
                                   path=f'{network_name}.hdf5')
@@ -171,6 +190,7 @@ def synchronize_data(*args):
             mongo_wrapper.replace(data)
     for network_name in keras_wrapper.get_deleted_models_names():
         mongo_wrapper.delete(network_name)
+        keras_wrapper.remove_model(network_name)
 
     all_networks = mongo_wrapper.get_all()
     for network in all_networks:
@@ -186,12 +206,15 @@ services["health_check"] = health_check_service
 services["new_network"] = new_network_service
 services["compile_network"] = compile_network
 services["get_networks"] = get_networks
+services["get_networks_names"] = get_networks_names
 services["get_network_details"] = get_network_details
 services["train_network"] = train_network
 services["delete_network"] = delete_network
 services["evaluate_network"] = evaluate_network
 services["get_network_history"] = get_network_history
 services["synchronize_data"] = synchronize_data
+services["get_data_sources"] = get_data_sources
+services["add_data_source"] = add_data_source
 
 
 def get_services():

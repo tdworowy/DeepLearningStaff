@@ -77,6 +77,13 @@ class KerasWrapper(metaclass=Singleton):
         else:
             return []
 
+    def get_models_names_and_statuses(self) -> list:
+        if self.models:
+            return [{"name": model.name, "compiled": model.compiled, "trained": model.trained} for model in
+                    list(self.models.values()) if not model.deleted]
+        else:
+            return []
+
     def get_models(self) -> list or None:
         if self.models:
             return [model for model in list(self.models.values()) if not model.deleted]
@@ -91,3 +98,6 @@ class KerasWrapper(metaclass=Singleton):
             return [model.name for model in list(self.models.values()) if model.deleted]
         else:
             return []
+
+    def remove_model(self, name: str):
+        del self.models[name]

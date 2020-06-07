@@ -1,6 +1,9 @@
 # Dockerfile
 FROM  python:latest
+ENV logs_port 4001
 COPY . App
 ENV PYTHONPATH $PWD/App
+RUN pip install --upgrade pip
 RUN pip install -r App/api/requirements.txt
+CMD ["python", "App/monitoring/logs_api.py $logs_port", ". &"]
 CMD ["python", "App/api/main_distributed.py"]

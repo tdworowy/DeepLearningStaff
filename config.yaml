@@ -1,6 +1,8 @@
 flask_host: "0.0.0.0"
 port: 5000
+log_api_port: 4000
 test_host: "localhost"
+api_host: "localhost"
 mongo_host: "localhost"
 nats_host: "localhost"
 nats_port: "4222"

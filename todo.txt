@@ -11,19 +11,10 @@
 - infrastructure tests (?) (https://testinfra.readthedocs.io/en/latest/)
 - selenium (use selenoid) front-end tests
 - api tests
-- desktop app (pythonqt)
-- mobile app
+- desktop app (pythonqt, pyqt5, pyqtgraph)
+- mobile app (kotlin)
 
 -------------------------
-
-kubernetes:
-5 pods:
- - node
- - api
- - dashboard
- - nats
- - mongodb
-
 frontend:
  - display layers info (more readable) in network details
  - back button

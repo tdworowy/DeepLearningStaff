@@ -1,0 +1,29 @@
+version: "0.1"
+services:
+  mongo_db:
+    image: "mongo"
+    ports:
+    - "27017:27017"
+    volumes:
+       - "data:/data/db mongo"
+  nats:
+     image: "nats"
+     ports:
+       - "4222:4222"
+       - "8222:8222"
+  node:
+    image: "nullpointerexeption/deep_node"
+    ports:
+      - "4001:4001"
+    environment:
+     - logs_port=4001
+  api:
+    image: "nullpointerexeption/deep_api"
+    ports:
+    -  "4002:4002"
+    environment:
+      - logs_port=4002
+  dashboard:
+    image: "nullpointerexeption/deep_dashboard"
+    ports:
+    - "3000:3000"

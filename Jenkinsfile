@@ -20,14 +20,14 @@ pipeline {
                }
             }
         }
-        stage("Update config"){
-           steps{
-                script {
-                    def ip = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true)
-                    sh "python3 update_config.py $ip"
-                }
-            }
-        }
+        // stage("Update config"){
+        //    steps{
+        //         script {
+        //             def ip = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true)
+        //             sh "python3 update_config.py $ip"
+        //         }
+        //     }
+        // }
         stage("Static code analize backend"){
            steps{
                script {
@@ -82,11 +82,12 @@ pipeline {
             steps {
                 script {
                          sh "mkdir -p data"
-                         sh "docker run -d -p 27017:27017 --name mongo_db -v data:/data/db mongo"
-                         sh "docker run -d -p 4222:4222 -p 8222:8222 --name nats nats -V"
-                         sh "docker run -d -p 4001:4001 -e logs_port=4001 --name node nullpointerexeption/deep_node"
-                         sh "docker run -d -p 5000:5000 -p 4002:4002 -e logs_port=4002 --name api nullpointerexeption/deep_api"
-                         sh "docker run -d -p 3000:3000 --name dashboard nullpointerexeption/deep_dashboard"
+                         sh "docker-compose up"
+                        //  sh "docker run -d -p 27017:27017 --name mongo_db -v data:/data/db mongo"
+                        //  sh "docker run -d -p 4222:4222 -p 8222:8222 --name nats nats -V"
+                        //  sh "docker run -d -p 4001:4001 -e logs_port=4001 --name node nullpointerexeption/deep_node"
+                        //  sh "docker run -d -p 5000:5000 -p 4002:4002 -e logs_port=4002 --name api nullpointerexeption/deep_api"
+                        //  sh "docker run -d -p 3000:3000 --name dashboard nullpointerexeption/deep_dashboard"
                        }
                 }
         }

@@ -1,5 +1,5 @@
-Web front-end, REST api and (hopefully) GraphQL api for Keras. It will provide ability to build, train and monitor deep learning models (more at once due possibility to run multiple Keras "nodes").
-It is still on POC stage so most of Keras functionalities are not covered and web ui is not extremely useful yet.  
+Web front-end, REST api api for Keras. Provides basic ability to build, train and monitor deep learning models (more at once due possibility to run multiple Keras "nodes").
+It is still on POC stage so most of Keras functionalities are not covered and web ui is not extremely not useful.  
 
 # How to run 
 Recommended way to run is to use docker containers.

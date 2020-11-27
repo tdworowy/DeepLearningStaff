@@ -1,7 +1,7 @@
-from front_end_tests.pages.add_layer import AddDense, AddConv2D, AddMaxPooling2D
+from .add_layer import AddDense, AddConv2D, AddMaxPooling2D
 
-from front_end_tests._tests_logging._logger import TestsLogger
-from front_end_tests.webdriver_wapper.webdriver_wrapper import WebDriverWrapper
+from ..logging.logger_ import TestsLogger
+from ..webdriver_wapper.webdriver_wrapper import WebDriverWrapper
 
 
 class AddLayerPageFactory:
@@ -11,7 +11,7 @@ class AddLayerPageFactory:
         "MaxPooling2D": AddMaxPooling2D
     }
 
-    def __init__(self,logger: TestsLogger, web_driver_wrapper: WebDriverWrapper):
+    def __init__(self, logger: TestsLogger, web_driver_wrapper: WebDriverWrapper):
         self.logger = logger
         self.web_driver_wrapper = web_driver_wrapper
         self.add_layer_pages_objects = {}

@@ -1,6 +1,5 @@
 import json
 import string
-import time
 from os import path
 from random import choice
 

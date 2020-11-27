@@ -2,12 +2,12 @@ import json
 
 from behave import given, when, then
 import time
-from front_end_tests.data_classes.layer import get_layer
-from front_end_tests.pages.add_network import AddNetworkPage
-from front_end_tests.data_classes.layer import MaxPooling2DLayer, DenseLayer, Conv2DLayer
-from front_end_tests.pages.compile_network_page import CompileNetworkPage
 
-from front_end_tests.pages.train_network_page import TrainNetworkPage
+from ...data_classes.layer import get_layer
+from ...pages.add_network import AddNetworkPage
+from ...data_classes.layer import MaxPooling2DLayer, DenseLayer, Conv2DLayer
+from ...pages.compile_network_page import CompileNetworkPage
+from ...pages.train_network_page import TrainNetworkPage
 
 
 def add_dense(add_network_page: AddNetworkPage, name: str, layer: DenseLayer):

@@ -39,7 +39,8 @@ def get_layer(layer_type: str):
 if __name__ == "__main__":
     import json
 
-    test_json = "{'name': 'Test_network','layer': {'type': 'Dense', 'units': 16, 'activation': 'relu', 'input_shape': '1000'}}".replace("'",'"')
+    test_json = "{'name': 'Test_network','layer': {'type': 'Dense', 'units': 16, 'activation': 'relu', 'input_shape': '1000'}}".replace(
+        "'", '"')
     values = json.loads(test_json)
     layer_type = values["layer"]["type"]
     test_layer = get_layer(layer_type)(**values["layer"])

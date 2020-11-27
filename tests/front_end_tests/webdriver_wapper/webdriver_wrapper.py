@@ -1,7 +1,9 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 
-from front_end_tests.webdriver_wapper.webdrover_factory import get_driver
+from .webdrover_factory import get_driver
 
 
 class WebDriverWrapper:
@@ -15,6 +17,10 @@ class WebDriverWrapper:
     def tear_down(self):
         self.driver.quit()
 
-    def wait_for_element(self, locator, element: str):
+    def wait_for_element(self, locator: By, element: str):
         wait = WebDriverWait(self.driver, 45)
         wait.until(expected_conditions.visibility_of_element_located((locator, element)))
+
+    def find_element(self, locator: By, element: str) -> WebElement:
+        self.wait_for_element(locator, element)
+        return self.driver.find_element(locator, element)

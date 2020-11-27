@@ -5,13 +5,13 @@ import json
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
-from front_end_tests._tests_logging._logger import TestsLogger
-from front_end_tests.webdriver_wapper.webdriver_wrapper import WebDriverWrapper
+from ..logging.logger_ import TestsLogger
+from ..webdriver_wapper.webdriver_wrapper import WebDriverWrapper
 
-from front_end_tests.pages.add_layer_page_factory import AddLayerPageFactory
-from front_end_tests.pages.compile_network_page import CompileNetworkPage
-from front_end_tests.pages.train_network_page import TrainNetworkPage
-from front_end_tests.pages.training_report_page import TrainingReportPage
+from ..pages.add_layer_page_factory import AddLayerPageFactory
+from ..pages.compile_network_page import CompileNetworkPage
+from ..pages.train_network_page import TrainNetworkPage
+from ..pages.training_report_page import TrainingReportPage
 
 
 class AddNetworkPage:
@@ -41,27 +41,27 @@ class AddNetworkPage:
 
     def click_add_layer_button(self) -> AddNetworkPage:
         self.logger.log().info(f"Click add layer button")
-        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.add_layer_button) \
+        self.web_driver_wrapper.find_element(*AddNetworkPage.add_layer_button) \
             .click()
         return self
 
     def click_add_network_button(self) -> AddNetworkPage:
         self.logger.log().info(f"Click add network button")
-        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.add_network_button) \
+        self.web_driver_wrapper.find_element(*AddNetworkPage.add_network_button) \
             .click()
         return self
 
     def clear_layers(self):
         self.logger.log().info(f"Clear layers")
-        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.clear_network_button) \
+        self.web_driver_wrapper.find_element(*AddNetworkPage.clear_network_button) \
             .click()
         return self
 
     def choose_layer_type(self, layer_type: str):
         self.logger.log().info(f"Choose layer type: {layer_type}")
-        Select(self.web_driver_wrapper.driver.find_element(*AddNetworkPage.layer_select)) \
+        Select(self.web_driver_wrapper.find_element(*AddNetworkPage.layer_select)) \
             .select_by_value(layer_type)
-        self.web_driver_wrapper.driver.find_element(*AddNetworkPage.choose_layer_button) \
+        self.web_driver_wrapper.find_element(*AddNetworkPage.choose_layer_button) \
             .click()
         return self.add_layer_page_factory.get_add_layer_page(layer_type)
 
@@ -78,7 +78,7 @@ class AddNetworkPage:
     def assert_layer(self, expected_name: str, expected_layers: list):
         self.logger.log().info(f"Assert network data")
 
-        actual_value = self.web_driver_wrapper.driver.find_element(*AddNetworkPage.layers_details).text
+        actual_value = self.web_driver_wrapper.find_element(*AddNetworkPage.layers_details).text
         actual_value = json.loads(actual_value)
 
         expected_value = self.generate_output_json(expected_name, expected_layers)
@@ -100,14 +100,14 @@ class AddNetworkPage:
 
         delete_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="delete"]')
         self.web_driver_wrapper.wait_for_element(*delete_button)
-        self.web_driver_wrapper.driver.find_element(*delete_button).click()
+        self.web_driver_wrapper.find_element(*delete_button).click()
 
     def click_network_details(self, name: str, next_page_type: str):
         self.logger.log().info(f"Details network {name}")
 
         details_button = (By.XPATH, f'//*[@id="{name}"]/td/button[@id="details"]')
         self.web_driver_wrapper.wait_for_element(*details_button)
-        self.web_driver_wrapper.driver.find_element(*details_button).click()
+        self.web_driver_wrapper.find_element(*details_button).click()
 
         return AddNetworkPage.next_pages[next_page_type](
             logger=self.logger,

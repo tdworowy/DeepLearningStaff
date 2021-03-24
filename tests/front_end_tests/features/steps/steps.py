@@ -145,7 +145,7 @@ def check_network(context):
 
 
 @then("Clear layers")
-def check_layers(context):
+def clear_layers(context):
     context.add_network_page.clear_layers()
 
 

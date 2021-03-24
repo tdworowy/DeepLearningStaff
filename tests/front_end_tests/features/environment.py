@@ -1,6 +1,5 @@
-import os
 import time
-from os import path
+from os import path, makedirs
 import yaml
 
 from ..logging.logger_ import TestsLogger, take_screenshot
@@ -11,8 +10,8 @@ logs_path = "logs"
 
 
 def create_dir(name: str):
-    if not os.path.exists(name):
-        os.makedirs(name)
+    if not path.exists(name):
+        makedirs(name)
 
 
 def read_config():

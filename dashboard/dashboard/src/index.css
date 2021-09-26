@@ -1,30 +1,30 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #DCDCDC;
+  background-color: #dcdcdc;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 #acc_frame {
-  position : absolute;
-  top      : 0;
-  right    : 0;
-  height   : 50%;
-  width    : 80%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 50%;
+  width: 80%;
 }
 #loss_frame {
-  position : absolute;
-  bottom   : 0;
-  right    : 0;
-  height   : 50%;
-  width    : 80%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 50%;
+  width: 80%;
 }
 ul li {
   background: #cce5ff;
@@ -42,8 +42,11 @@ ul[title]::before {
   box-sizing: border-box;
 }
 
-input[type=text],input[type=number], select, textarea#new_layer_details {
-  width: 100%; 
+input[type="text"],
+input[type="number"],
+select,
+textarea#new_layer_details {
+  width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -56,8 +59,8 @@ label {
   font-weight: bold;
 }
 
-input[type=submit] {
-  background-color: #4CAF50;
+input[type="submit"] {
+  background-color: #4caf50;
   color: white;
   padding: 12px 20px;
   border: none;
@@ -65,14 +68,14 @@ input[type=submit] {
   cursor: pointer;
 }
 
-input[type=submit]:hover {
+input[type="submit"]:hover {
   background-color: #45a049;
 }
 button:hover {
   background-color: #45a049;
 }
 button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 12px 20px;
   border: none;
@@ -104,19 +107,21 @@ button {
   display: table;
   clear: both;
 }
-table, th, td {
+table,
+th,
+td {
   border: 3px solid black;
 }
 table {
-  margin-left:auto; 
-  margin-right:auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 tr {
   background-color: #cce5ff;
 }
 td#false {
-  background-color: #8B0000;
+  background-color: #8b0000;
 }
 td#true {
   background-color: #006400;

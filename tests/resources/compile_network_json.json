@@ -1,6 +1,6 @@
 {
   "name": "test_network_",
-  "optimizer":"rmsprop",
-  "loss":"binary_crossentropy",
-  "metrics":["acc"]
+  "optimizer": "rmsprop",
+  "loss": "binary_crossentropy",
+  "metrics": ["acc"]
 }

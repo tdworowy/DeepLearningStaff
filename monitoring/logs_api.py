@@ -25,14 +25,14 @@ def get_logs_errors():
         return [line for line in log_file.readlines()[-1000:] if "ERROR" in line]
 
 
-@api.route('/logs/all')
+@api.route("/logs/all")
 class HealthCheck(Resource):
     @api.doc()
     def get(self):
         return get_logs()
 
 
-@api.route('/logs/errors')
+@api.route("/logs/errors")
 class HealthCheck(Resource):
     @api.doc()
     def get(self):
@@ -45,15 +45,15 @@ def get_app():
 
 def read_config():
     current_dir = path.join(path.dirname(path.realpath(__file__)))
-    with open(path.join(current_dir, '../config.yaml')) as file:
+    with open(path.join(current_dir, "../config.yaml")) as file:
         return yaml.safe_load(file)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     config = read_config()
     if len(sys.argv) == 1:
-        port = config.get('log_api_port')
+        port = config.get("log_api_port")
     else:
         port = sys.argv[1]
 
-    get_app().run(host=config.get('flask_host'), port=port, threaded=False, debug=True)
+    get_app().run(host=config.get("flask_host"), port=port, threaded=False, debug=True)

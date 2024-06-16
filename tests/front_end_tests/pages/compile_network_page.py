@@ -20,31 +20,42 @@ class CompileNetworkPage:
 
     def set_optimizer(self, optimizer: str) -> CompileNetworkPage:
         self.logger.log().info(f"Set optimizer field: {optimizer}")
-        Select(self.web_driver_wrapper.find_element(*CompileNetworkPage.network_optimizer_select)) \
-            .select_by_value(optimizer)
+        Select(
+            self.web_driver_wrapper.find_element(
+                *CompileNetworkPage.network_optimizer_select
+            )
+        ).select_by_value(optimizer)
         return self
 
     def set_loss(self, loss: str) -> CompileNetworkPage:
         self.logger.log().info(f"Set loss field: {loss}")
-        Select(self.web_driver_wrapper.find_element(*CompileNetworkPage.network_loss_select)) \
-            .select_by_value(loss)
+        Select(
+            self.web_driver_wrapper.find_element(
+                *CompileNetworkPage.network_loss_select
+            )
+        ).select_by_value(loss)
         return self
 
     def set_metrics(self, metrics: str) -> CompileNetworkPage:
         self.logger.log().info(f"Set metrics field: {metrics}")
-        Select(self.web_driver_wrapper.find_element(*CompileNetworkPage.network_metrics_select)) \
-            .select_by_value(metrics)
+        Select(
+            self.web_driver_wrapper.find_element(
+                *CompileNetworkPage.network_metrics_select
+            )
+        ).select_by_value(metrics)
         return self
 
     def click_compile_network_button(self) -> CompileNetworkPage:
         self.logger.log().info(f"Click compile network button")
-        self.web_driver_wrapper.find_element(*CompileNetworkPage.compile_network_button) \
-            .click()
+        self.web_driver_wrapper.find_element(
+            *CompileNetworkPage.compile_network_button
+        ).click()
         return self
 
     def check_if_network_is_compiled(self, names: list):
         for name in names:
             self.logger.log().info(f"Check if networks f{name} is compiled")
-            label = self.web_driver_wrapper.find_element(By.XPATH,
-                                                                f'//*[@id="{name}"]/td/label[@id="compiled"]').text
+            label = self.web_driver_wrapper.find_element(
+                By.XPATH, f'//*[@id="{name}"]/td/label[@id="compiled"]'
+            ).text
             assert label == "true"

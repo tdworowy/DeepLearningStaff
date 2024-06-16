@@ -28,20 +28,23 @@ class AddDense:
 
     def set_units(self, units: str) -> AddDense:
         self.logger.log().info(f"Set units field: {units}")
-        self.web_driver_wrapper.find_element(*AddDense.network_units_input) \
-            .send_keys(units)
+        self.web_driver_wrapper.find_element(*AddDense.network_units_input).send_keys(
+            units
+        )
         return self
 
     def set_activation(self, activation: str) -> AddDense:
         self.logger.log().info(f"Set activation field: {activation}")
-        Select(self.web_driver_wrapper.find_element(*AddDense.network_activation_select)) \
-            .select_by_value(activation)
+        Select(
+            self.web_driver_wrapper.find_element(*AddDense.network_activation_select)
+        ).select_by_value(activation)
         return self
 
     def set_input_shape(self, input_shape: str) -> AddDense:
         self.logger.log().info(f"Set input_shape field: {input_shape}")
-        self.web_driver_wrapper.find_element(*AddDense.network_input_shape_input) \
-            .send_keys(input_shape)
+        self.web_driver_wrapper.find_element(
+            *AddDense.network_input_shape_input
+        ).send_keys(input_shape)
         return self
 
     @staticmethod
@@ -74,26 +77,30 @@ class AddConv2D:
 
     def set_activation(self, activation: str) -> AddConv2D:
         self.logger.log().info(f"Set activation field: {activation}")
-        Select(self.web_driver_wrapper.find_element(*AddConv2D.network_activation_select)) \
-            .select_by_value(activation)
+        Select(
+            self.web_driver_wrapper.find_element(*AddConv2D.network_activation_select)
+        ).select_by_value(activation)
         return self
 
     def set_input_shape(self, input_shape: str) -> AddConv2D:
         self.logger.log().info(f"Set input_shape field: {input_shape}")
-        self.web_driver_wrapper.find_element(*AddConv2D.network_input_shape_input) \
-            .send_keys(input_shape)
+        self.web_driver_wrapper.find_element(
+            *AddConv2D.network_input_shape_input
+        ).send_keys(input_shape)
         return self
 
     def set_filters(self, filters: str) -> AddConv2D:
         self.logger.log().info(f"Set filters field: {filters}")
-        self.web_driver_wrapper.find_element(*AddConv2D.network_filter_input) \
-            .send_keys(filters)
+        self.web_driver_wrapper.find_element(*AddConv2D.network_filter_input).send_keys(
+            filters
+        )
         return self
 
     def set_kernel_size(self, kernel_size: str) -> AddConv2D:
         self.logger.log().info(f"Set kernel_size field: {kernel_size}")
-        self.web_driver_wrapper.find_element(*AddConv2D.network_kernel_size_input) \
-            .send_keys(kernel_size)
+        self.web_driver_wrapper.find_element(
+            *AddConv2D.network_kernel_size_input
+        ).send_keys(kernel_size)
         return self
 
     @staticmethod
@@ -118,21 +125,25 @@ class AddMaxPooling2D:
 
     def set_name(self, network_name: str) -> AddMaxPooling2D:
         self.logger.log().info(f"Set network name field: {network_name}")
-        name_input = self.web_driver_wrapper.find_element(*AddMaxPooling2D.network_name_input)
+        name_input = self.web_driver_wrapper.find_element(
+            *AddMaxPooling2D.network_name_input
+        )
         name_input.clear()
         name_input.send_keys(network_name)
         return self
 
     def set_pool_size(self, pool_size: str) -> AddMaxPooling2D:
         self.logger.log().info(f"Set pool_size field: {pool_size}")
-        self.web_driver_wrapper.find_element(*AddMaxPooling2D.network_pool_size_input) \
-            .send_keys(pool_size)
+        self.web_driver_wrapper.find_element(
+            *AddMaxPooling2D.network_pool_size_input
+        ).send_keys(pool_size)
         return self
 
     def set_strides(self, strides: str) -> AddMaxPooling2D:
         self.logger.log().info(f"Set strides field: {strides}")
-        self.web_driver_wrapper.find_element(*AddMaxPooling2D.network_strides_input) \
-            .send_keys(strides)
+        self.web_driver_wrapper.find_element(
+            *AddMaxPooling2D.network_strides_input
+        ).send_keys(strides)
         return self
 
     @staticmethod

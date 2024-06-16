@@ -9,8 +9,15 @@ logger = get_logger(__name__)
 
 
 class ModelWrapper:
-    def __init__(self, name: str, model: models, compiled: bool, trained: bool, history_json: json = None,
-                 update_time_stamp=None):
+    def __init__(
+        self,
+        name: str,
+        model: models,
+        compiled: bool,
+        trained: bool,
+        history_json: json = None,
+        update_time_stamp=None,
+    ):
         self.trained = trained
         self.compiled = compiled
         self.model = model
@@ -39,26 +46,41 @@ class KerasWrapper(metaclass=Singleton):
 
     def add_model(self, name: str, model: models, compiled=False, trained=False):
         logger.info(f"Add new Model {name}")
-        self.models[name] = ModelWrapper(name=name,
-                                         model=model,
-                                         compiled=compiled,
-                                         trained=trained)
+        self.models[name] = ModelWrapper(
+            name=name, model=model, compiled=compiled, trained=trained
+        )
         self.models[name].update_time_stamp = datetime.now()
 
     def compile(self, model_name: str, optimizer: str, loss: str, metrics: list):
         logger.info(f"Compiled model {model_name}")
-        self.get_model(model_name).model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
+        self.get_model(model_name).model.compile(
+            optimizer=optimizer, loss=loss, metrics=metrics
+        )
         self.get_model(model_name).compiled = True
         self.get_model(model_name).update_time_stamp = datetime.now()
 
-    def train(self, model_name: str, train_data, train_labels, val_data, val_labels, epochs: int, batch_size: int):
+    def train(
+        self,
+        model_name: str,
+        train_data,
+        train_labels,
+        val_data,
+        val_labels,
+        epochs: int,
+        batch_size: int,
+    ):
         logger.info(f"Train model {model_name}")
-        history = self.get_model(model_name).model.fit(train_data, train_labels,
-                                                       epochs=epochs,
-                                                       batch_size=batch_size,
-                                                       validation_data=(val_data, val_labels))
+        history = self.get_model(model_name).model.fit(
+            train_data,
+            train_labels,
+            epochs=epochs,
+            batch_size=batch_size,
+            validation_data=(val_data, val_labels),
+        )
         self.get_model(model_name).trained = True
-        self.get_model(model_name).history_json = pd.DataFrame.from_dict(history.history).to_json()
+        self.get_model(model_name).history_json = pd.DataFrame.from_dict(
+            history.history
+        ).to_json()
         self.get_model(model_name).update_time_stamp = datetime.now()
 
     def evaluate(self, model_name: str, test_data, test_labels):
@@ -73,14 +95,23 @@ class KerasWrapper(metaclass=Singleton):
 
     def get_models_names(self) -> list:
         if self.models:
-            return [model.name for model in list(self.models.values()) if not model.deleted]
+            return [
+                model.name for model in list(self.models.values()) if not model.deleted
+            ]
         else:
             return []
 
     def get_models_names_and_statuses(self) -> list:
         if self.models:
-            return [{"name": model.name, "compiled": model.compiled, "trained": model.trained} for model in
-                    list(self.models.values()) if not model.deleted]
+            return [
+                {
+                    "name": model.name,
+                    "compiled": model.compiled,
+                    "trained": model.trained,
+                }
+                for model in list(self.models.values())
+                if not model.deleted
+            ]
         else:
             return []
 

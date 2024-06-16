@@ -22,16 +22,16 @@ class DenseLayerBuilder:
         self.kwargs = {}
 
     def units(self, units: int):
-        self.kwargs['units'] = units
+        self.kwargs["units"] = units
         return self
 
     def activation(self, activation: str):
-        self.kwargs['activation'] = activation
+        self.kwargs["activation"] = activation
         return self
 
     def input_shape(self, input_shape: str):
-        input_shape = tuple(map(int, input_shape.split(',')))
-        self.kwargs['input_shape'] = input_shape
+        input_shape = tuple(map(int, input_shape.split(",")))
+        self.kwargs["input_shape"] = input_shape
         return self
 
     def build(self):
@@ -44,19 +44,19 @@ class Conv2DBuilder:
         self.kwargs = {}
 
     def filters(self, filters: int):
-        self.kwargs['filters'] = filters
+        self.kwargs["filters"] = filters
 
     def kernel_size(self, kernel_size: str):
-        kernel_size = tuple(map(int, kernel_size.split(',')))
-        self.kwargs['kernel_size'] = kernel_size
+        kernel_size = tuple(map(int, kernel_size.split(",")))
+        self.kwargs["kernel_size"] = kernel_size
 
     def activation(self, activation: str):
-        self.kwargs['activation'] = activation
+        self.kwargs["activation"] = activation
         return self
 
     def input_shape(self, input_shape: str):
-        input_shape = tuple(map(int, input_shape.split(',')))
-        self.kwargs['input_shape'] = input_shape
+        input_shape = tuple(map(int, input_shape.split(",")))
+        self.kwargs["input_shape"] = input_shape
         return self
 
     def build(self):
@@ -69,32 +69,34 @@ class MaxPooling2DBuilder:
         self.kwargs = {}
 
     def pool_size(self, pool_size: str):
-        pool_size = tuple(map(int, pool_size.split(',')))
-        self.kwargs['pool_size'] = pool_size
+        pool_size = tuple(map(int, pool_size.split(",")))
+        self.kwargs["pool_size"] = pool_size
 
     def strides(self, strides: int):
-        self.kwargs['strides'] = strides
+        self.kwargs["strides"] = strides
 
     def build(self):
         return getattr(layers, self._layer)(**self.kwargs)
 
 
-layer_types = {'Dense': DenseLayerBuilder,
-               'Conv2D': Conv2DBuilder,
-               'MaxPooling2D': MaxPooling2DBuilder}
+layer_types = {
+    "Dense": DenseLayerBuilder,
+    "Conv2D": Conv2DBuilder,
+    "MaxPooling2D": MaxPooling2DBuilder,
+}
 
 
 def build_layer(_layer: json):
-    layer = layer_types[_layer['layer']]()
+    layer = layer_types[_layer["layer"]]()
     for key in _layer.keys():
-        if key != 'layer' and _layer[key] != "":
+        if key != "layer" and _layer[key] != "":
             getattr(layer, key)(_layer[key])
     return layer
 
 
 def build_model(values: json) -> models.Sequential:
     model = ModelBuilder().model()
-    for _layer in values['layers']:
+    for _layer in values["layers"]:
         layer = build_layer(_layer)
         model = model.layer(layer.build())
     return model.build()

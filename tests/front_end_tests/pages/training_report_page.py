@@ -12,4 +12,5 @@ class TrainingReportPage:
     def __init__(self, logger: TestsLogger, web_driver_wrapper: WebDriverWrapper):
         self.logger = logger
         self.web_driver_wrapper = web_driver_wrapper
-    #TODO
+
+    # TODO

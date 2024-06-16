@@ -19,7 +19,9 @@ class WebDriverWrapper:
 
     def wait_for_element(self, locator: By, element: str):
         wait = WebDriverWait(self.driver, 45)
-        wait.until(expected_conditions.visibility_of_element_located((locator, element)))
+        wait.until(
+            expected_conditions.visibility_of_element_located((locator, element))
+        )
 
     def find_element(self, locator: By, element: str) -> WebElement:
         self.wait_for_element(locator, element)

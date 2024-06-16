@@ -11,19 +11,26 @@ class TestsLogger:
     def __init__(self):
         logging.shutdown()
         reload(logging)
-        logging.basicConfig(format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                            datefmt='%H:%M:%S', )
+        logging.basicConfig(
+            format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
+            datefmt="%H:%M:%S",
+        )
         self.loggers = []
 
     def add_log_file(self, path):
         self.log_file = path
         for logger in self.loggers:
-            if self.log_file in [handler.baseFilename for handler in logger.handlers if
-                                 hasattr(handler, 'baseFilename')]:
+            if self.log_file in [
+                handler.baseFilename
+                for handler in logger.handlers
+                if hasattr(handler, "baseFilename")
+            ]:
                 self.logger = logger
         else:
             file_handler = logging.FileHandler(self.log_file)
-            file_handler.setFormatter(logging.Formatter("%(levelname)s|%(asctime)s|%(message)s"))
+            file_handler.setFormatter(
+                logging.Formatter("%(levelname)s|%(asctime)s|%(message)s")
+            )
             file_handler.setLevel(logging.DEBUG)
 
             new_logger = logging.getLogger("Logger%s" % get_millis())
@@ -34,13 +41,16 @@ class TestsLogger:
             self.logger = new_logger
 
     def clear_loggers(self):
-        while self.loggers: self.loggers.pop()
+        while self.loggers:
+            self.loggers.pop()
 
     def log(self):
         return self.logger
 
 
-random_string = lambda length: ''.join([choice(string.ascii_letters + string.digits) for n in range(length)])
+random_string = lambda length: "".join(
+    [choice(string.ascii_letters + string.digits) for n in range(length)]
+)
 
 
 def take_screenshot(driver, path, file):

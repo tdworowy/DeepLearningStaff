@@ -8,7 +8,7 @@ class AddLayerPageFactory:
     add_layer_pages = {
         "Dense": AddDense,
         "Conv2D": AddConv2D,
-        "MaxPooling2D": AddMaxPooling2D
+        "MaxPooling2D": AddMaxPooling2D,
     }
 
     def __init__(self, logger: TestsLogger, web_driver_wrapper: WebDriverWrapper):
@@ -20,6 +20,8 @@ class AddLayerPageFactory:
         if layer_type in self.add_layer_pages_objects.keys():
             return self.add_layer_pages_objects[layer_type]
         else:
-            layer_page = AddLayerPageFactory.add_layer_pages[layer_type](self.logger, self.web_driver_wrapper)
+            layer_page = AddLayerPageFactory.add_layer_pages[layer_type](
+                self.logger, self.web_driver_wrapper
+            )
             self.add_layer_pages_objects[layer_type] = layer_page
         return layer_page
